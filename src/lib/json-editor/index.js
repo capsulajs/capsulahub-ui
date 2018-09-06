@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import JSONTree from 'react-json-tree';
+import ReactJson from 'react-json-view';
 
 const theme = {
   scheme: 'monokai',
@@ -33,7 +32,15 @@ const data = {
 };
 
 const JSONEditor = () => <div>
-  <JSONTree data={data} theme={theme} invertTheme={false}/>
+  <ReactJson src={data} name={false} collapsed={false} shouldCollapse={(field) => {
+    if (!field.name) {
+      return false;
+    }
+    
+    console.log(field);
+    
+    return true;
+  }}/>
 </div>;
 
 export { JSONEditor };
