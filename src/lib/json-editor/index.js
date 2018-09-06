@@ -1,3 +1,4 @@
+import 'typeface-montserrat';
 import React from 'react';
 import ReactJson from 'react-json-view';
 
@@ -37,6 +38,16 @@ export const theme = {
   base0F: '#DEDEDE'
 };
 
+const rootStyles = {
+  background: '#3F3F3F',
+  width: '661px',
+  height: '479px',
+  color: '#767676',
+  padding: '12px',
+  fontStyle: 'regular',
+  fontFamily: 'Montserrat'
+};
+
 const CustomEditor = () => <ReactJson src={data}
                                       name={false}
                                       shouldCollapse={shouldCollapse}
@@ -48,20 +59,26 @@ const CustomEditor = () => <ReactJson src={data}
                                       onDelete={true}
                                       onEdit={true}/>;
                                       
-const Row = () => <div style={{display: 'flex', flexDirection: 'row'}}>
-  <div style={{width: '50px'}}>2</div>
+const Row = ({ number }) => <div style={{display: 'flex', flexDirection: 'row'}}>
+  <div style={{width: '50px'}}>{number}</div>
   <div style={{width: '100px'}}>15:05:06</div>
   <div style={{width: '350px'}}>
     <CustomEditor/>
   </div>
 </div>;
 
-const JSONEditor = () => <div style={{background: '#3F3F3F', width: '600px', height: '400px', color: '#767676'}}>
-  <div style={{padding: '12px'}}>
-    <Row/>
-    <Row/>
+const JSONEditor = () => <div style={rootStyles}>
+  <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+    <div>LOG</div>
+    <div>&#10005;</div>
   </div>
-  <div>X</div>
+  
+  <div style={{display: 'flex', flexDirection: 'row'}}>
+    <div style={{width: '100%', padding: '10px 0'}}>
+      <Row number={1}/>
+      <Row number={2}/>
+    </div>
+  </div>
 </div>;
 
 export { JSONEditor };
