@@ -32,21 +32,8 @@ const data = {
   immutable: { key: 'value' }
 };
 
-
 const JSONEditor = () => <div>
-  <JSONTree data={data} theme={{
-    extend: theme,
-    // underline keys for literal values
-    valueLabel: {
-      textDecoration: 'underline'
-    },
-    nestedNodeLabel: ({ style }, nodeType, expanded) => ({
-      style: {
-        ...style,
-        textTransform: expanded ? 'uppercase' : style.textTransform
-      }
-    })
-  }} />
+  <JSONTree data={data} theme={theme} invertTheme={false}/>
 </div>;
 
 export { JSONEditor };
