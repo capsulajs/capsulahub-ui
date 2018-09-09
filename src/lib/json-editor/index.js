@@ -2,6 +2,7 @@ import 'typeface-montserrat';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 export const theme = {
   scheme: 'custom-theme',
@@ -23,15 +24,21 @@ export const theme = {
   base0F: '#DEDEDE'
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
   background: #3F3F3F;
   width: 661px;
   height: 479px;
   color: #767676;
-  padding: 12px;
   font-style: regular;
   font-family: Montserrat;
   font-size: 10px;
+  position: relative;
+`;
+
+const Wrapper = styled.div`
+  width: calc(100% - 24px);
+  height: calc(100% - 20px);
+  padding: 12px;
 `;
 
 const Header = styled.div`
@@ -40,14 +47,13 @@ const Header = styled.div`
   justify-content: space-between;
 `;
 
-const ScrollArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
-  padding: 10px 0;
-  overflow: hidden;
-  overflow-y: scroll;
-  height: calc(100% - 38px);
+const Footer = styled.div`
+  background: #373737;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0px;
+  padding: 10px;
 `;
 
 const RowWrapper = styled.div`
@@ -64,9 +70,9 @@ const decorate = (timestamp) => {
   const h = d.getHours();
   const m = d.getMinutes();
   const s = d.getSeconds();
-  const hours = h > 10 ? h : `${h}0`;
-  const minutes = m > 10 ? m : `${m}0`;
-  const seconds = s > 10 ? s : `${s}0`;
+  const hours = h > 9 ? h : `${h}0`;
+  const minutes = m > 9 ? m : `${m}0`;
+  const seconds = s > 9 ? s : `${s}0`;
   return [hours, minutes, seconds].join(':');
 };
                                       
@@ -101,21 +107,28 @@ const Row = ({ number, item, onDelete, onEdit }) => {
   </RowWrapper>)
 };
 
-const JSONEditor = ({ data, onDelete, onEdit }) => <Wrapper>
-  <Header>
-    <Title>LOG</Title>
-    <div>&#10005;</div>
-  </Header>
-  {data ? (
-    <ScrollArea>
-      {data.map((item, index) => <Row number={index + 1}
-                                      item={item}
-                                      onDelete={onDelete || false}
-                                      onEdit={onEdit || false}
-                                      key={index}/>
-      )}
-    </ScrollArea>
-  ) : (<div>No Data..</div>)}
-</Wrapper>;
+const JSONEditor = ({ data, onDelete, onEdit }) => <Container>
+  <Wrapper>
+    <Header>
+      <Title>LOG</Title>
+      <div>&#10005;</div>
+    </Header>
+    <div style={{width: 'calc(100% - 20px)', height: 'calc(100% - 52px)'}}>
+      {data ? (
+        <Scrollbars style={{marginLeft: '20px', marginTop: '10px'}}>
+          {data.map((item, index) => <Row number={index + 1}
+                                          item={item}
+                                          onDelete={onDelete || false}
+                                          onEdit={onEdit || false}
+                                          key={index}/>
+          )}
+        </Scrollbars>
+      ) : (<div>No Data..</div>)}
+    </div>
+  </Wrapper>
+  <Footer>path>path?path</Footer>
+</Container>;
 
 export { JSONEditor };
+
+// <div style={{margin: '20px', width: 'calc(100% - 20px)', height: 'calc(100% - 58px)'}}>
