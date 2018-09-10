@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import loaderImg from'../assets/loader.png';
 
-const LoaderDiv = styled.div`
+const LoaderImg = styled.img`
   width: 100%;
   height: 100%;
-  background-image: url(./assets/loader.png);
+  min-width: 100px;
+  min-height: 100px;
 `;
 
 class Loader extends Component {
   render() {
     return this.props.show ? (
-      <LoaderDiv></LoaderDiv>
+      <LoaderImg src={loaderImg} alt="SANDBOX"></LoaderImg>
     )
     : null;
   }
