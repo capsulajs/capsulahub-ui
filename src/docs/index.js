@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 import { DefaultButton } from '../lib/buttons/default';
 import { JSONEditor } from '../lib/json-editor/index';
 import { createRandomObj } from './utils';
@@ -24,15 +25,21 @@ data.push({
   timestamp: new Date(),
 });
 
+const EditorWrapper = styled.div`
+  width: 800px;
+  height: 550px;
+`;
 const App = () => (
   <div>
     <h1>CapsulaJS UI</h1>
     <h1>JSON Editor</h1>
-    <JSONEditor data={data}
-                path="path>path?path"
-                onDelete={(item) => console.log('Delete', item)}
-                onEdit={(item) => console.log('Edit', item)}
-                onClear={() => console.log('Clear all')}/>
+    <EditorWrapper>
+      <JSONEditor data={data}
+                  path="path>path?path"
+                  onDelete={(item) => console.log('Delete', item)}
+                  onEdit={(item) => console.log('Edit', item)}
+                  onClear={() => console.log('Clear all')}/>
+    </EditorWrapper>
   </div>
 );
 

@@ -26,8 +26,8 @@ export const theme = {
 
 const Container = styled.div`
   background: #3F3F3F;
-  width: 661px;
-  height: 479px;
+  width: 100%;
+  height: 100%;
   color: #767676;
   font-style: regular;
   font-family: Montserrat;
