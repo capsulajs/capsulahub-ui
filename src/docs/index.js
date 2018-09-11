@@ -10,10 +10,10 @@ const data = [{
   timestamp: new Date()
 }];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 3; i++) {
   data.push({
     status: 'success',
-    data: createRandomObj(1, true),
+    data: createRandomObj(5, true),
     timestamp: new Date()
   })
 }
@@ -28,7 +28,11 @@ const App = () => (
   <div>
     <h1>CapsulaJS UI</h1>
     <h1>JSON Editor</h1>
-    <JSONEditor data={data} path="path>path?path"/>
+    <JSONEditor data={data}
+                path="path>path?path"
+                onDelete={(item) => console.log('Delete', item)}
+                onEdit={(item) => console.log('Edit', item)}
+                onClear={() => console.log('Clear all')}/>
   </div>
 );
 

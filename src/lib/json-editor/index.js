@@ -31,7 +31,7 @@ const Container = styled.div`
   color: #767676;
   font-style: regular;
   font-family: Montserrat;
-  font-size: 10px;
+  font-size: 13px;
   position: relative;
 `;
 
@@ -45,6 +45,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: 10px;
 `;
 
 const Footer = styled.div`
@@ -52,7 +53,6 @@ const Footer = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: 0px;
   padding: 10px;
 `;
 
@@ -61,8 +61,13 @@ const FlexRow = styled.div`
   flex-direction: row;
 `;
 
-const RowNumber = styled.div`width: 50px;`;
-const RowTimestamp = styled.div`width: 100px;`;
+const RowNumber = styled.div`width: 30px;`;
+const RowTimestamp = styled.div`width: 50px;`;
+const RowContent = styled.div`
+  width: calc(100% - 80px);
+  padding-left: 12px;
+`;
+
 const Title = styled.div`font-size: 10px;`;
 const Timestamp = styled.div`color: #DEDEDE`;
 const Button = styled.div`
@@ -72,8 +77,8 @@ const Button = styled.div`
 `;
 
 const Content = styled.div`
-  width: calc(100% - 20px);
-  height: calc(100% - 52px);
+  width: calc(100% - 28px);
+  height: calc(100% - 62px);
 `;
 
 const Clear = styled.div`cursor: pointer`;
@@ -90,7 +95,7 @@ const decorate = (timestamp) => {
 };
                                       
 const Row = ({ number, item, onDelete, onEdit }) => {
-  let child = <ReactJson src={item.data}
+  let content = <ReactJson src={item.data}
                          name={false}
                          iconStyle={'circle'}
                          theme={theme}
@@ -100,22 +105,20 @@ const Row = ({ number, item, onDelete, onEdit }) => {
                          onDelete={onDelete}
                          onEdit={onEdit}/>;
   if (item.status === 'fail') {
-    child = <FlexRow>
+    content = <FlexRow>
       <Timestamp>{decorate(item.timestamp) + ' | '}</Timestamp>
       <Button> Resend</Button>
     </FlexRow>;
   }
   
   if (item.status === 'info') {
-    child = <div style={{color: '#2CFF28'}}>{item.data}</div>
+    content = <div style={{color: '#2CFF28'}}>{item.data}</div>
   }
   
   return (<FlexRow>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
-    <div style={{width: 'calc(100% - 150px)'}}>
-      {child}
-    </div>
+    <RowContent>{content}</RowContent>
   </FlexRow>)
 };
 
@@ -127,7 +130,7 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, path }) => <Container>
     </Header>
     <Content>
       {data ? (
-        <Scrollbars style={{marginLeft: '20px', marginTop: '10px'}}>
+        <Scrollbars style={{marginLeft: '30px', marginTop: '20px'}}>
           {data.map((item, index) => <Row number={index + 1}
                                           item={item}
                                           onDelete={onDelete || false}
