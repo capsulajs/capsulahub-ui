@@ -3,6 +3,7 @@ import React from 'react';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
+import image from '../assets/settings.png';
 
 export const theme = {
   scheme: 'custom-theme',
@@ -151,7 +152,7 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Con
   <Wrapper>
     <Header>
       <Title>
-        <img src="../assets/settings.png"/>
+        <img src={image}/>
         LOG
       </Title>
       <Clear onClick={onClear}>&#10005;</Clear>

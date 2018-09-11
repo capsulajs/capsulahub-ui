@@ -1,52 +1,38 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = {
-  entry: path.resolve(__dirname, 'src/lib/index.js'),
-  output: {
-    path: path.resolve(__dirname, './build/lib'),
-    filename: 'index.js',
-    library: '',
-    libraryTarget: 'commonjs'
-  },
-  externals: [nodeExternals()],
-  module: {
-    rules: [
-      {
+module.exports = (env, argv) => {
+  return {
+    externals: [nodeExternals()],
+    entry: path.resolve('src/lib/index.js'),
+    module: {
+      rules: [{
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/react']
-        }
-      },
-      {
+        exclude: /(node_modules)/,
+        loader: 'babel-loader'
+      }, {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(jpg|png|svg)$/,
-        loader: 'url-loader',
+      }, {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
+        loaders: 'file-loader',
         options: {
-          limit: 25000,
-        },
-      },
-      {
-        test: /\.(jpg|png|svg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[path][name].[hash].[ext]',
-          outputPath: 'build/lib/assets/'
-        },
-      },
-    ]
-  },
-  plugins: [
-    new CopyWebpackPlugin([ { from: 'src/lib/assets', to: 'assets' } ])
-  ]
+          name: '[name].[hash].[ext]',
+          outputPath: 'assets/'
+        }
+      }]
+    },
+    plugins: [new CleanWebpackPlugin(['dist'])],
+    output: {
+      publicPath: 'dist/',
+      filename: '[name].js',
+      chunkFilename: '[name].js',
+      library: '',
+      libraryTarget: 'commonjs'
+    },
+    resolve: {
+      extensions: ['.js']
+    }
+  };
 };
