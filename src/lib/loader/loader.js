@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import loaderImg from'../assets/loader.png';
 
 const LoaderImg = styled.img`
   width: 100%;
@@ -11,10 +10,7 @@ const LoaderImg = styled.img`
 
 class Loader extends Component {
   render() {
-    return this.props.show ? (
-      <LoaderImg src={loaderImg} alt="SANDBOX"></LoaderImg>
-    )
-    : null;
+    return this.props.show ? (<LoaderImg src="../assets/loader.png" alt="SANDBOX"></LoaderImg>) : null;
   }
 }
 

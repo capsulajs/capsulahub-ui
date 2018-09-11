@@ -11,7 +11,7 @@ const data = [{
   timestamp: new Date()
 }];
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 7; i++) {
   data.push({
     status: 'success',
     data: createRandomObj(Math.round(Math.random() * 5), true),

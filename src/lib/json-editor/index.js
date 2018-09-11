@@ -93,6 +93,13 @@ const Content = styled.div`
   height: calc(100% - 62px);
 `;
 
+const ContentMargin = styled.div`
+  margin-left: 30px;
+  margin-top: 20px;
+  width: 100%;
+  height: 100%;
+`;
+
 const Clear = styled.div`cursor: pointer`;
 
 const decorate = (timestamp) => {
@@ -143,21 +150,26 @@ const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
 const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
   <Wrapper>
     <Header>
-      <Title>LOG</Title>
+      <Title>
+        <img src="../assets/settings.png"/>
+        LOG
+      </Title>
       <Clear onClick={onClear}>&#10005;</Clear>
     </Header>
     <Content>
       {data ? (
-        <Scrollbars style={{marginLeft: '30px', marginTop: '20px'}}>
-          {data.map((item, index) => <Row number={index + 1}
-                                          item={item}
-                                          onDelete={onDelete || false}
-                                          onEdit={onEdit || false}
-                                          onResend={() => onResend(item)}
-                                          last={data.length - 1 === index}
-                                          key={index}/>
-          )}
-        </Scrollbars>
+        <ContentMargin>
+          <Scrollbars renderTrackVertical={(props) => <div {...props} className="track-horizontal"/>}>
+            {data.map((item, index) => <Row number={index + 1}
+                                            item={item}
+                                            onDelete={onDelete || false}
+                                            onEdit={onEdit || false}
+                                            onResend={() => onResend(item)}
+                                            last={data.length - 1 === index}
+                                            key={index}/>
+            )}
+          </Scrollbars>
+        </ContentMargin>
       ) : (<div>No Data..</div>)}
     </Content>
   </Wrapper>
