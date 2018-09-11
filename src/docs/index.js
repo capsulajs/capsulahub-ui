@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { DefaultButton } from '../lib/buttons/default';
 import { JSONEditor } from '../lib/json-editor/index';
 import { createRandomObj } from './utils';
+import { Paragraph, Span } from '../lib/text';
 
 const data = [{
   status: 'info',
@@ -41,6 +42,12 @@ const App = () => (
                   onClear={() => console.log('Clear all')}
                   onResend={(item) => console.log('Resend', item)}/>
     </EditorWrapper>
+    <Paragraph>
+      Hello, World!
+    </Paragraph>
+    <Paragraph fontStyle='italic' fontSize='2rem'>
+      Hello, World!
+    </Paragraph>
   </div>
 );
 
