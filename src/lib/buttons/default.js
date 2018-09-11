@@ -8,7 +8,7 @@ const StyledButton = styled.button`
   text-align: center;
   background-color: ${props => props.theme.props[0]};
   color: ${props => props.theme.props[2]};
-  border: none;
+  border: 1px solid ${props => props.theme.props[3]};
   padding: 0.3em 1em;
   cursor: pointer;
 
@@ -19,11 +19,13 @@ const StyledButton = styled.button`
   ${props => props.css};
 `;
 
-//theme name: background color, hover background color, text color
+//theme name: background color, hover background color, selected background color, text color, border
 const themes = [
-  {name: 'default', props: ['#57D7FF', '#4EBEE0', '#3B3B3B']},
-  {name: 'lightGrey', props: ['#EFEFEF', '#EFEFEF', '#3B3B3B']},
-  {name: 'grey', props: ['#626262', '#626262', '#F7F7F7']}
+  {name: 'default', props: ['#57D7FF', '#4EBEE0', '#3B3B3B', '#57D7FF']},
+  {name: 'lightGrey', props: ['#EFEFEF', '#EFEFEF', '#3B3B3B', '#EFEFEF']},
+  {name: 'grey', props: ['#626262', '#626262', '#F7F7F7', '#626262']},
+  {name: 'dark', props: ['#3C3C3C', '#3C3C3C', '#57D7FF', '#57D7FF']},
+  {name: 'transparent', props: ['transparent', 'transparent', '#57D7FF', '#57D7FF']}
 ];
 
 const Button = ({ text, theme, className, css, id, onClick}) => {
