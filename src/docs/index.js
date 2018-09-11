@@ -28,7 +28,7 @@ const App = () => (
   <div>
     <h1>CapsulaJS UI</h1>
     <h1>JSON Editor</h1>
-    <JSONEditor data={data}/>
+    <JSONEditor data={data} path="path>path?path"/>
   </div>
 );
 

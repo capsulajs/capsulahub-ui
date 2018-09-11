@@ -56,7 +56,7 @@ const Footer = styled.div`
   padding: 10px;
 `;
 
-const RowWrapper = styled.div`
+const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
 `;
@@ -64,6 +64,19 @@ const RowWrapper = styled.div`
 const RowNumber = styled.div`width: 50px;`;
 const RowTimestamp = styled.div`width: 100px;`;
 const Title = styled.div`font-size: 10px;`;
+const Timestamp = styled.div`color: #DEDEDE`;
+const Button = styled.div`
+  color: #2CFF28;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+const Content = styled.div`
+  width: calc(100% - 20px);
+  height: calc(100% - 52px);
+`;
+
+const Clear = styled.div`cursor: pointer`;
 
 const decorate = (timestamp) => {
   const d = new Date(timestamp);
@@ -86,34 +99,33 @@ const Row = ({ number, item, onDelete, onEdit }) => {
                          enableClipboard={true}
                          onDelete={onDelete}
                          onEdit={onEdit}/>;
-                         
   if (item.status === 'fail') {
-    child = <div style={{display: 'flex', flexDirection: 'row'}}>
-      <div style={{color: '#DEDEDE'}}>{decorate(item.timestamp) + ' | ' }</div>
-      <div style={{color: '#2CFF28', textDecoration: 'underline', cursor: 'pointer'}}> Resend</div>
-    </div>;
+    child = <FlexRow>
+      <Timestamp>{decorate(item.timestamp) + ' | '}</Timestamp>
+      <Button> Resend</Button>
+    </FlexRow>;
   }
   
   if (item.status === 'info') {
     child = <div style={{color: '#2CFF28'}}>{item.data}</div>
   }
   
-  return (<RowWrapper>
+  return (<FlexRow>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
     <div style={{width: 'calc(100% - 150px)'}}>
       {child}
     </div>
-  </RowWrapper>)
+  </FlexRow>)
 };
 
-const JSONEditor = ({ data, onDelete, onEdit }) => <Container>
+const JSONEditor = ({ data, onDelete, onEdit, onClear, path }) => <Container>
   <Wrapper>
     <Header>
       <Title>LOG</Title>
-      <div>&#10005;</div>
+      <Clear onClick={onClear}>&#10005;</Clear>
     </Header>
-    <div style={{width: 'calc(100% - 20px)', height: 'calc(100% - 52px)'}}>
+    <Content>
       {data ? (
         <Scrollbars style={{marginLeft: '20px', marginTop: '10px'}}>
           {data.map((item, index) => <Row number={index + 1}
@@ -124,11 +136,9 @@ const JSONEditor = ({ data, onDelete, onEdit }) => <Container>
           )}
         </Scrollbars>
       ) : (<div>No Data..</div>)}
-    </div>
+    </Content>
   </Wrapper>
-  <Footer>path>path?path</Footer>
+  {path && <Footer>{path}</Footer>}
 </Container>;
 
 export { JSONEditor };
-
-// <div style={{margin: '20px', width: 'calc(100% - 20px)', height: 'calc(100% - 58px)'}}>
