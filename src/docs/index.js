@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { DefaultButton } from '../lib/buttons/default';
-import { JSONEditor } from '../lib/json-editor/index';
+import { JSONEditor } from '../lib/json-editor/json-editor';
 import { createRandomObj } from './utils';
 import { Paragraph, Span } from '../lib/text';
 
