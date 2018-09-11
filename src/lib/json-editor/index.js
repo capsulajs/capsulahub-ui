@@ -61,11 +61,23 @@ const FlexRow = styled.div`
   flex-direction: row;
 `;
 
+const RowPoint = styled.div`
+  width: 20px;
+  display: flex;
+  align-items: center;
+`;
 const RowNumber = styled.div`width: 30px;`;
 const RowTimestamp = styled.div`width: 50px;`;
 const RowContent = styled.div`
-  width: calc(100% - 80px);
+  width: calc(100% - 120px);
   padding-left: 12px;
+`;
+
+const Point = styled.div`
+  background: #FF505A;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
 `;
 
 const Title = styled.div`font-size: 10px;`;
@@ -94,7 +106,7 @@ const decorate = (timestamp) => {
   return [hours, minutes, seconds].join(':');
 };
                                       
-const Row = ({ number, item, onDelete, onEdit }) => {
+const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
   let content = <ReactJson src={item.data}
                          name={false}
                          iconStyle={'circle'}
@@ -103,11 +115,14 @@ const Row = ({ number, item, onDelete, onEdit }) => {
                          displayObjectSize={false}
                          enableClipboard={true}
                          onDelete={onDelete}
-                         onEdit={onEdit}/>;
+                         onEdit={onEdit}
+                         shouldCollapse={(field) => {
+                           return Object.keys(field.src).length > 3;
+                         }}/>;
   if (item.status === 'fail') {
     content = <FlexRow>
       <Timestamp>{decorate(item.timestamp) + ' | '}</Timestamp>
-      <Button> Resend</Button>
+      <Button onClick={onResend}> Resend</Button>
     </FlexRow>;
   }
   
@@ -116,13 +131,16 @@ const Row = ({ number, item, onDelete, onEdit }) => {
   }
   
   return (<FlexRow>
+    <RowPoint>
+      {last &&<Point></Point>}
+    </RowPoint>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
     <RowContent>{content}</RowContent>
   </FlexRow>)
 };
 
-const JSONEditor = ({ data, onDelete, onEdit, onClear, path }) => <Container>
+const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
   <Wrapper>
     <Header>
       <Title>LOG</Title>
@@ -135,6 +153,8 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, path }) => <Container>
                                           item={item}
                                           onDelete={onDelete || false}
                                           onEdit={onEdit || false}
+                                          onResend={() => onResend(item)}
+                                          last={data.length - 1 === index}
                                           key={index}/>
           )}
         </Scrollbars>

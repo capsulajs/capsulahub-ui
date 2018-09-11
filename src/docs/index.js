@@ -11,10 +11,10 @@ const data = [{
   timestamp: new Date()
 }];
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 5; i++) {
   data.push({
     status: 'success',
-    data: createRandomObj(5, true),
+    data: createRandomObj(Math.round(Math.random() * 5), true),
     timestamp: new Date()
   })
 }
@@ -38,7 +38,8 @@ const App = () => (
                   path="path>path?path"
                   onDelete={(item) => console.log('Delete', item)}
                   onEdit={(item) => console.log('Edit', item)}
-                  onClear={() => console.log('Clear all')}/>
+                  onClear={() => console.log('Clear all')}
+                  onResend={(item) => console.log('Resend', item)}/>
     </EditorWrapper>
   </div>
 );
