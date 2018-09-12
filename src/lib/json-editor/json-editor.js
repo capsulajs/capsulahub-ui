@@ -152,7 +152,7 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Con
   <Wrapper>
     <Header>
       <Title>
-        <img src={image}/>
+        <img style={{width: '11px', height: '11px'}} src={image}/>
         LOG
       </Title>
       <Clear onClick={onClear}>&#10005;</Clear>
@@ -160,7 +160,7 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Con
     <Content>
       {data ? (
         <ContentMargin>
-          <Scrollbars renderTrackVertical={(props) => <div {...props} className="track-horizontal"/>}>
+          <Scrollbars>
             {data.map((item, index) => <Row number={index + 1}
                                             item={item}
                                             onDelete={onDelete || false}

@@ -4,7 +4,7 @@
   "description": "CapsulaJS UI component library",
   "main": "./dist/main.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --progress --watch --colors --no-inline",
+    "start": "parcel src/docs/index.html",
     "build": "webpack --mode production --progress --display-error-details"
   },
   "dependencies": {
@@ -13,8 +13,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.2.0",
     "react-json-view": "^1.19.1",
-    "typeface-montserrat": "^0.0.54",
-    "webpack-dev-server": "^3.1.8"
+    "typeface-montserrat": "^0.0.54"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
