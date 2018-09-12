@@ -4,6 +4,7 @@ import ReactJson from 'react-json-view';
 import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import image from '../assets/settings.png';
+import { defaultFontFamily } from '../constants';
 
 export const theme = {
   scheme: 'custom-theme',
@@ -26,13 +27,13 @@ export const theme = {
 };
 
 const Container = styled.div`
+  font-family: ${defaultFontFamily};
+  font-style: regular;
+  font-size: 13px;
   background: #3F3F3F;
   width: 100%;
   height: 100%;
   color: #767676;
-  font-style: regular;
-  font-family: Montserrat;
-  font-size: 13px;
   position: relative;
 `;
 

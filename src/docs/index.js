@@ -5,6 +5,7 @@ import { DefaultButton } from '../lib/buttons/default';
 import { JSONEditor } from '../lib/json-editor/json-editor';
 import { createRandomObj } from './utils';
 import { Paragraph, Span } from '../lib/text';
+import { Modal } from '../lib/modal/modal';
 
 const data = [{
   status: 'info',
@@ -42,6 +43,7 @@ const App = () => (
                   onClear={() => console.log('Clear all')}
                   onResend={(item) => console.log('Resend', item)}/>
     </EditorWrapper>
+    <Modal title="Some title...">Some content...</Modal>
     <Paragraph>
       Hello, World!
     </Paragraph>
