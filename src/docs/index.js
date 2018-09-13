@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { DefaultButton } from '../lib/buttons/default';
-import { JSONEditor } from '../lib/json-editor/json-editor';
+import { Logs } from '../lib/logs/logs';
 import { createRandomObj } from './utils';
 import { Paragraph, Span } from '../lib/text';
 import { Modal } from '../lib/modal/modal';
+import { Button } from '../lib/buttons/default';
+import { JsonInput } from '../lib/json-input/json-input';
 
 const data = [{
   status: 'info',
@@ -27,8 +28,8 @@ data.push({
   timestamp: new Date(),
 });
 
-const EditorWrapper = styled.div`
-  width: 800px;
+const LogsWrapper = styled.div`
+  width: 100%;
   height: 550px;
 `;
 
@@ -39,23 +40,21 @@ const toggle = () => {
 
 const App = () => (
   <div>
-    <h1>CapsulaJS UI</h1>
-    <h1>JSON Editor</h1>
-    <EditorWrapper>
-      <JSONEditor data={data}
-                  path="path>path?path"
-                  onDelete={(item) => console.log('Delete', item)}
-                  onEdit={(item) => console.log('Edit', item)}
-                  onClear={() => console.log('Clear all')}
-                  onResend={(item) => console.log('Resend', item)}/>
-    </EditorWrapper>
-    <button onClick={toggle}>Toggle modal</button>
+    <Paragraph>Logs</Paragraph>
+    <LogsWrapper>
+      <Logs data={data}
+            path="path>path?path"
+            onDelete={(item) => console.log('Delete', item)}
+            onEdit={(item) => console.log('Edit', item)}
+            onClear={() => console.log('Clear all')}
+            onResend={(item) => console.log('Resend', item)}/>
+    </LogsWrapper>
+    <Button onClick={toggle} theme="default" text="Toggle modal"/>
     <div id="modal" style={{display: 'none'}}>
       <Modal title="Some title..." onClose={toggle}>Some content...</Modal>
     </div>
-    <Paragraph>
-      Hello, World!
-    </Paragraph>
+    <Paragraph>Json Input</Paragraph>
+    <JsonInput id="json-input" data={createRandomObj(5, true)} width="100%" height="200px"/>
     <Paragraph fontStyle='italic' onClose={() => 'Close modal'} fontSize='2rem'>
       Hello, World!
     </Paragraph>

@@ -149,7 +149,7 @@ const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
   </FlexRow>)
 };
 
-const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
+const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
   <Wrapper>
     <Header>
       <Title>
@@ -178,4 +178,4 @@ const JSONEditor = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Con
   {path && <Footer>{path}</Footer>}
 </Container>;
 
-export { JSONEditor };
+export { Logs };
