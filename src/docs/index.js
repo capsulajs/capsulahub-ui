@@ -51,7 +51,7 @@ const App = () => (
     </EditorWrapper>
     <button onClick={toggle}>Toggle modal</button>
     <div id="modal" style={{display: 'none'}}>
-      <Modal title="Some title..." >Some content...</Modal>
+      <Modal title="Some title..." onClose={toggle}>Some content...</Modal>
     </div>
     <Paragraph>
       Hello, World!
