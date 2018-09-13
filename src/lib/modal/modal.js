@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 import { defaultFontFamily } from '../constants';
 
@@ -15,7 +15,7 @@ const Container = styled.div`
   width: 548px;
   height: 361px;
 `;
-
+const Close = styled.div`cursor: pointer`;
 const Header = styled.div`
   display: flex;
   flex-direction: row;
@@ -23,10 +23,10 @@ const Header = styled.div`
   font-size: 10px;
 `;
 
-const Modal = ({ title, ...props }) => <Container>
+const Modal = ({ title, onClose, ...props }) => <Container>
   <Header>
     <div>{title}</div>
-    <div>X</div>
+    <Close onClick={onClose}>&#10005;</Close>
   </Header>
   {props.children}
 </Container>;

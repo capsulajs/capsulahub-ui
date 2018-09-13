@@ -31,6 +31,12 @@ const EditorWrapper = styled.div`
   width: 800px;
   height: 550px;
 `;
+
+const toggle = () => {
+  const wrapper = document.getElementById('modal');
+  wrapper.style.display = wrapper.style.display === '' ? 'none' : '';
+};
+
 const App = () => (
   <div>
     <h1>CapsulaJS UI</h1>
@@ -43,11 +49,14 @@ const App = () => (
                   onClear={() => console.log('Clear all')}
                   onResend={(item) => console.log('Resend', item)}/>
     </EditorWrapper>
-    <Modal title="Some title...">Some content...</Modal>
+    <button onClick={toggle}>Toggle modal</button>
+    <div id="modal" style={{display: 'none'}}>
+      <Modal title="Some title..." >Some content...</Modal>
+    </div>
     <Paragraph>
       Hello, World!
     </Paragraph>
-    <Paragraph fontStyle='italic' fontSize='2rem'>
+    <Paragraph fontStyle='italic' onClose={() => 'Close modal'} fontSize='2rem'>
       Hello, World!
     </Paragraph>
   </div>
