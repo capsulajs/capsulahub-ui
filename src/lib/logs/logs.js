@@ -34,6 +34,7 @@ const Container = styled.div`
   background: #3F3F3F;
   width: 100%;
   height: 100%;
+  min-height: 100px;
   color: #767676;
   position: relative;
 `;

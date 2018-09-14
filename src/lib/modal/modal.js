@@ -14,6 +14,7 @@ const Container = styled.div`
   padding: 19px;
   width: 548px;
   height: 361px;
+  z-index: 9999;
 `;
 const Close = styled.div`cursor: pointer`;
 const Header = styled.div`
