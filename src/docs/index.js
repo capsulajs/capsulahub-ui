@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { Logs } from '../lib/logs/logs';
 import { createRandomObj } from './utils';
-import { Paragraph, Span } from '../lib/text';
-import { Modal } from '../lib/modal/modal';
-import { Button } from '../lib/buttons/button';
-import { JsonInput } from '../lib/json-input/json-input';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input } from '../lib';
 
 const data = [];
 for (let i = 0; i < 15; i++) {
@@ -64,6 +60,11 @@ const App = () => (
       <Button theme="grey" text="Grey button" css="margin: 5px"/>
       <Button theme="dark" text="Dark button" css="margin: 5px"/>
       <Button theme="transparent" text="Transparent button" css="margin: 5px"/>
+    </Block>
+    <Block>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Inputs:</Paragraph>
+      
+      <Input/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modals:</Paragraph>
