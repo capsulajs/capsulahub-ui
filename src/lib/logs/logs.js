@@ -116,7 +116,7 @@ const ContentMargin = styled.div`
 
 const Clear = styled.div`cursor: pointer`;
                                       
-const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
+const Row = ({ number, item, onDelete, onEdit, onResend }) => {
   let content = <ReactJson src={item.data}
                          name={false}
                          iconStyle={'circle'}
@@ -142,7 +142,7 @@ const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
   
   return (<FlexRow>
     <RowPoint>
-      {last &&<Point></Point>}
+      {item.status === 'fail' &&<Point></Point>}
     </RowPoint>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
@@ -168,7 +168,6 @@ const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container
                                             onDelete={onDelete || false}
                                             onEdit={onEdit || false}
                                             onResend={() => onResend(item)}
-                                            last={data.length - 1 === index}
                                             key={index}/>
             )}
           </Scrollbars>

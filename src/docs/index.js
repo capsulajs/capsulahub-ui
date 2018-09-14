@@ -8,25 +8,31 @@ import { Modal } from '../lib/modal/modal';
 import { Button } from '../lib/buttons/button';
 import { JsonInput } from '../lib/json-input/json-input';
 
-const data = [{
-  status: 'info',
-  data: 'connected',
-  timestamp: new Date()
-}];
-
-for (let i = 0; i < 7; i++) {
-  data.push({
-    status: 'success',
-    data: createRandomObj(Math.round(Math.random() * 5), true),
-    timestamp: new Date()
-  })
+const data = [];
+for (let i = 0; i < 15; i++) {
+  const ratio = Math.random();
+  if (0 <= ratio && ratio <= 1 / 3) {
+    data.push({
+      status: 'fail',
+      data: { message: 'Not Found' },
+      timestamp: new Date(),
+    });
+  }
+  if (1 / 3 <= ratio && ratio <= 2 / 3) {
+    data.push({
+      status: 'success',
+      data: createRandomObj(Math.ceil(Math.random() * 5), true),
+      timestamp: new Date()
+    })
+  }
+  if (2 / 3 <= ratio && ratio <= 1) {
+    data.push({
+      status: 'info',
+      data: ['connected', 'disconnected'][Math.floor(Math.random() * 2)],
+      timestamp: new Date()
+    })
+  }
 }
-
-data.push({
-  status: 'fail',
-  data: { message: 'Not Found' },
-  timestamp: new Date(),
-});
 
 const toggle = () => {
   const wrapper = document.getElementById('modal');
