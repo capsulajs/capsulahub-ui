@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import image from '../assets/settings.png';
 import { defaultFontFamily } from '../constants';
+import { decorate } from '../utils';
 
 export const theme = {
   scheme: 'custom-theme',
@@ -38,16 +39,27 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: calc(100% - 24px);
+  width: calc(100% - 20px);
   height: calc(100% - 20px);
-  padding: 12px;
+  padding: 10px;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 13px;
+`;
+
+const Image = styled.img`
+  padding-right: 5px;
+  width: 16px;
+  height: 16px;
+`;
+
+const Title = styled.div`
+  font-size: 13px;
+  text-transform: uppercase;
 `;
 
 const Footer = styled.div`
@@ -82,7 +94,6 @@ const Point = styled.div`
   border-radius: 2px;
 `;
 
-const Title = styled.div`font-size: 10px;`;
 const Timestamp = styled.div`color: #DEDEDE`;
 const Button = styled.div`
   color: #2CFF28;
@@ -103,17 +114,6 @@ const ContentMargin = styled.div`
 `;
 
 const Clear = styled.div`cursor: pointer`;
-
-const decorate = (timestamp) => {
-  const d = new Date(timestamp);
-  const h = d.getHours();
-  const m = d.getMinutes();
-  const s = d.getSeconds();
-  const hours = h > 9 ? h : `${h}0`;
-  const minutes = m > 9 ? m : `${m}0`;
-  const seconds = s > 9 ? s : `${s}0`;
-  return [hours, minutes, seconds].join(':');
-};
                                       
 const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
   let content = <ReactJson src={item.data}
@@ -152,10 +152,10 @@ const Row = ({ number, item, onDelete, onEdit, onResend, last }) => {
 const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
   <Wrapper>
     <Header>
-      <Title>
-        <img style={{width: '11px', height: '11px'}} src={image}/>
-        LOG
-      </Title>
+      <FlexRow>
+        <Image src={image}/>
+        <Title>LOG</Title>
+      </FlexRow>
       <Clear onClick={onClear}>&#10005;</Clear>
     </Header>
     <Content>
