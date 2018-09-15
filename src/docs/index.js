@@ -5,7 +5,7 @@ import { createRandomObj } from './utils';
 import { Paragraph, Logs, Modal, Button, JsonInput, Input } from '../lib';
 
 const data = [];
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 20; i++) {
   const ratio = Math.random();
   if (0 <= ratio && ratio <= 1 / 3) {
     data.push({
@@ -50,6 +50,8 @@ const LogsContainer = styled.div`
   padding-bottom: 10px;
 `;
 
+const InputContainer = styled.div`width: 30%`;
+
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
@@ -63,8 +65,9 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Inputs:</Paragraph>
-      
-      <Input/>
+      <InputContainer>
+        <Input onChange={(value) => console.log('New value', value)} placeholder="Default Input"/>
+      </InputContainer>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modals:</Paragraph>

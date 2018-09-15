@@ -1,3 +1,16 @@
 body {
     background: #FAFAFA;
 }
+
+
+::-webkit-scrollbar {
+    background: #3F3F3F;
+    width: 2px;
+}
+::-webkit-scrollbar-corner {
+    background: #3F3F3F;
+}
+::-webkit-scrollbar-thumb {
+    background: #797979;
+}
+s

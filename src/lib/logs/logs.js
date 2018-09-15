@@ -103,8 +103,8 @@ const Button = styled.div`
 `;
 
 const Content = styled.div`
-  width: calc(100% - 28px);
-  height: calc(100% - 62px);
+  width: calc(100% - 30px);
+  height: calc(100% - 60px);
 `;
 
 const ContentMargin = styled.div`
@@ -112,9 +112,21 @@ const ContentMargin = styled.div`
   margin-top: 20px;
   width: 100%;
   height: 100%;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    background: #3F3F3F;
+    width: 2px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: #3F3F3F;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #797979;
+  }
 `;
 
 const Clear = styled.div`cursor: pointer`;
+const Info = styled.div`color: #2CFF28`;
                                       
 const Row = ({ number, item, onDelete, onEdit, onResend }) => {
   let content = <ReactJson src={item.data}
@@ -137,7 +149,7 @@ const Row = ({ number, item, onDelete, onEdit, onResend }) => {
   }
   
   if (item.status === 'info') {
-    content = <div style={{color: '#2CFF28'}}>{item.data}</div>
+    content = <Info>{item.data}</Info>
   }
   
   return (<FlexRow>
@@ -162,15 +174,13 @@ const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container
     <Content>
       {data ? (
         <ContentMargin>
-          <Scrollbars>
-            {data.map((item, index) => <Row number={index + 1}
-                                            item={item}
-                                            onDelete={onDelete || false}
-                                            onEdit={onEdit || false}
-                                            onResend={() => onResend(item)}
-                                            key={index}/>
-            )}
-          </Scrollbars>
+          {data.map((item, index) => <Row number={index + 1}
+                                          item={item}
+                                          onDelete={onDelete || false}
+                                          onEdit={onEdit || false}
+                                          onResend={() => onResend(item)}
+                                          key={index}/>
+          )}
         </ContentMargin>
       ) : (<div>No Data..</div>)}
     </Content>
