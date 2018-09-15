@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import image from '../assets/loader.png';
+import image from '../../assets/loader.png';
 
 const LoaderImg = styled.img`
-  width: 100%;
-  height: 100%;
-  min-width: 100px;
-  min-height: 100px;
+  width: 100px;
+  height: 20px;
 `;
 
-class Loader extends Component {
-  render() {
-    return this.props.show ? (<LoaderImg src={image}></LoaderImg>) : null;
-  }
-}
+const Loader = () => <LoaderImg src={image}></LoaderImg>
 
 export { Loader };

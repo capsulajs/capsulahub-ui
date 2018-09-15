@@ -2,7 +2,7 @@ import React  from 'react';
 import JSONInput from 'react-json-editor-ajrm';
 import styled from 'styled-components';
 import { defaultFontFamily } from '../constants';
-import image from '../assets/settings.png';
+import image from '../../assets/settings.png';
 
 const colors = {
   default: '#767676',

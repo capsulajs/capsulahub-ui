@@ -10,7 +10,6 @@
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
     "react": "^16.2.0",
-    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.2.0",
     "react-json-editor-ajrm": "^2.5.4",
     "react-json-view": "^1.19.1",

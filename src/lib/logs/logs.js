@@ -2,8 +2,7 @@ import 'typeface-montserrat';
 import React from 'react';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
-import { Scrollbars } from 'react-custom-scrollbars';
-import image from '../assets/settings.png';
+import image from '../../assets/settings.png';
 import { defaultFontFamily } from '../constants';
 import { decorate } from '../utils';
 

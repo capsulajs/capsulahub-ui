@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
-import { Paragraph, Logs, Modal, Button, JsonInput, Input } from '../lib';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input, Loader } from '../lib';
 
 const data = [];
 for (let i = 0; i < 20; i++) {
@@ -55,6 +55,10 @@ const InputContainer = styled.div`width: 30%`;
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
+    <Block>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
+      <Loader/>
+    </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Buttons:</Paragraph>
       <Button theme="default" text="Default button" css="margin: 5px"/>
