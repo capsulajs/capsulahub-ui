@@ -9,9 +9,12 @@ const CButton = styled.button`
   background-color: ${props => props.theme.bg};
   color: ${props => props.theme.color};
   border: 1px solid ${props => props.theme.border};
-  padding: 0.3em 1em;
+  padding: 2px 8px;
   cursor: pointer;
-
+  &:focus {
+    outline: none;
+  }
+  
   &:hover {
     background-color: ${props => props.theme.hoverBg};
   }

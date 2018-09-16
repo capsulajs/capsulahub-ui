@@ -1,5 +1,6 @@
-import React  from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import enhanceWithClickOutside from 'react-click-outside';
 import { defaultFontFamily } from '../constants';
 
 const Container = styled.div`
@@ -24,12 +25,22 @@ const Header = styled.div`
   font-size: 10px;
 `;
 
-const Modal = ({ title, onClose, ...props }) => <Container>
-  <Header>
-    <div>{title}</div>
-    <Close onClick={onClose}>&#10005;</Close>
-  </Header>
-  {props.children}
-</Container>;
+class M extends React.Component {
+  handleClickOutside() {
+    this.props.toggle();
+  }
+  
+  render() {
+    return <Container>
+      <Header>
+        <div>{this.props.title}</div>
+        <Close onClick={this.props.toggle}>&#10005;</Close>
+      </Header>
+      {this.props.children}
+    </Container>;
+  }
+}
+
+const Modal = enhanceWithClickOutside(M);
 
 export { Modal };
