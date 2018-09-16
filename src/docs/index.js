@@ -61,11 +61,9 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Buttons:</Paragraph>
-      <Button theme="default" text="Default button" css="margin: 5px"/>
-      <Button theme="lightGrey" text="LightGrey button" css="margin: 5px"/>
-      <Button theme="grey" text="Grey button" css="margin: 5px"/>
-      <Button theme="dark" text="Dark button" css="margin: 5px"/>
-      <Button theme="transparent" text="Transparent button" css="margin: 5px"/>
+      <Button theme="active" text="Active" css="margin: 5px"/>
+      <Button theme="disabled" text="Disabled" css="margin: 5px"/>
+      <Button theme="clicked" text="Clicked" css="margin: 5px"/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Inputs:</Paragraph>
