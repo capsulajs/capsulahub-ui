@@ -26,15 +26,31 @@ const Header = styled.div`
 `;
 
 class M extends React.Component {
-  handleClickOutside() {
-    this.props.toggle();
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      isOpened: false
+    };
+  }
+  
+  handleClickOutside(e) {
+    e.target.id === this.props.id ? this.toggle() : this.setState({ isOpened: false });
+  }
+  
+  toggle() {
+    this.setState({ isOpened: !this.state.isOpened });
   }
   
   render() {
+    if (!this.state.isOpened) {
+      return null;
+    }
+    
     return <Container>
       <Header>
         <div>{this.props.title}</div>
-        <Close onClick={this.props.toggle}>&#10005;</Close>
+        <Close onClick={() => this.toggle()}>&#10005;</Close>
       </Header>
       {this.props.children}
     </Container>;

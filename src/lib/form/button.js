@@ -28,8 +28,8 @@ const themes = {
   clicked: { bg: '#fff', hoverBg: '#fff', color: '#57D7FF', border: '#57D7FF' }
 };
 
-const Button = ({ text, theme, onClick, css}) => {
-  return <CButton theme={themes[theme]|| themes['active']} onClick={onClick} css={css}>{text}</CButton>;
+const Button = ({ id, text, theme, onClick, css}) => {
+  return <CButton id={id} theme={themes[theme]|| themes['active']} onClick={onClick} css={css}>{text}</CButton>;
 };
 
 export { Button };

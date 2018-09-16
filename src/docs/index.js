@@ -30,12 +30,6 @@ for (let i = 0; i < 20; i++) {
   }
 }
 
-const toggle = (e) => {
-  if (e) return;
-  const wrapper = document.getElementById('modal');
-  wrapper.style.display = wrapper.style.display === '' ? 'none' : '';
-};
-
 const Container = styled.div`
   padding-top: 50px;
   padding-left: 10%;
@@ -74,10 +68,8 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modals:</Paragraph>
-      <Button onClick={toggle} theme="dark" text="Toggle modal"/>
-      <div id="modal" style={{display: 'none'}}>
-        <Modal title="Some title..." toggle={toggle}>Some content...</Modal>
-      </div>
+      <Button id="modal" text="Toggle modal"/>
+      <Modal id="modal" title="Some title...">Some content...</Modal>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Logs:</Paragraph>
