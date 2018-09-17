@@ -5,7 +5,7 @@ import { createRandomObj } from './utils';
 import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Loader } from '../lib';
 
 const data = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
   const ratio = Math.random();
   if (0 <= ratio && ratio <= 1 / 3) {
     data.push({
@@ -90,7 +90,7 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
-      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(5, true), null, 2)} onChange={onChange} width="100%" height="200px"/>
+      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)} onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Typography:</Paragraph>

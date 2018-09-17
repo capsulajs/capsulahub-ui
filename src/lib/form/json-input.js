@@ -1,23 +1,10 @@
 import React  from 'react';
-import AceEditor from 'react-ace';
 import styled from 'styled-components';
-import brace from 'brace';
 import { defaultFontFamily } from '../constants';
 import image from '../../assets/settings.png';
+import AceEditor from 'react-ace';
 import 'brace/mode/json';
-import './theme';
-
-const colors = {
-  default: '#767676',
-  background: '#3F3F3F',
-  background_warning: '#3F3F3F',
-  string: '#DEDEDE',
-  number: '#DEDEDE',
-  colon: '#57D7FF',
-  keys: '#57D7FF',
-  keys_whiteSpace: '#57D7FF',
-  primitive: '#DEDEDE'
-};
+import '../theme';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
