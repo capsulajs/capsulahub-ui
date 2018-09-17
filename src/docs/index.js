@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
-import { Paragraph, Logs, Modal, Button, JsonInput, Input, Loader } from '../lib';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Loader } from '../lib';
 
 const data = [];
 for (let i = 0; i < 20; i++) {
@@ -65,6 +65,10 @@ const App = () => (
       <InputContainer>
         <Input onChange={(value) => console.log('New value', value)} placeholder="Default Input"/>
       </InputContainer>
+    </Block>
+    <Block>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Checkboxes:</Paragraph>
+      <CheckBox/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modals:</Paragraph>
