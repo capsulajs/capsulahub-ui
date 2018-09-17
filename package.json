@@ -10,9 +10,9 @@
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
     "react": "^16.2.0",
+    "react-ace": "^6.1.4",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.2.0",
-    "react-json-editor-ajrm": "^2.5.4",
     "react-json-view": "^1.19.1",
     "typeface-montserrat": "^0.0.54"
   },

@@ -30,6 +30,10 @@ for (let i = 0; i < 20; i++) {
   }
 }
 
+const onChange = (newValue) => {
+  console.log('change', newValue);
+};
+
 const Container = styled.div`
   padding-top: 50px;
   padding-left: 10%;
@@ -63,7 +67,7 @@ const App = () => (
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Inputs:</Paragraph>
       <InputContainer>
-        <Input onChange={(value) => console.log('New value', value)} placeholder="Default Input"/>
+        <Input onChange={onChange} placeholder="Default Input"/>
       </InputContainer>
     </Block>
     <Block>
@@ -80,23 +84,21 @@ const App = () => (
       <LogsContainer>
         <Logs data={data}
               path="path>path?path"
-              onDelete={(item) => console.log('Delete', item)}
-              onEdit={(item) => console.log('Edit', item)}
               onClear={() => console.log('Clear all')}
               onResend={(item) => console.log('Resend', item)}/>
       </LogsContainer>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
-      <JsonInput id="json-input" data={createRandomObj(5, true)} width="100%" height="200px"/>
+      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(5, true), null, 2)} onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Typography:</Paragraph>
-      <Paragraph fontSize='2.5rem'>Hello, World!</Paragraph>
-      <Paragraph fontSize='2rem'>Hello, World!</Paragraph>
-      <Paragraph fontSize='1.5rem'>Hello, World!</Paragraph>
-      <Paragraph fontSize='1rem'>Hello, World!</Paragraph>
-      <Paragraph fontSize='0.5rem'>Hello, World!</Paragraph>
+      <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+      <Paragraph fontSize="2rem">Hello, World!</Paragraph>
+      <Paragraph fontSize="1.5rem">Hello, World!</Paragraph>
+      <Paragraph fontSize="1rem">Hello, World!</Paragraph>
+      <Paragraph fontSize="0.5rem">Hello, World!</Paragraph>
     </Block>
   </Container>
 );

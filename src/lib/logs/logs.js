@@ -127,7 +127,7 @@ const ContentMargin = styled.div`
 const Clear = styled.div`cursor: pointer`;
 const Info = styled.div`color: #2CFF28`;
                                       
-const Row = ({ number, item, onDelete, onEdit, onResend }) => {
+const Row = ({ number, item, onResend }) => {
   let content = <ReactJson src={item.data}
                          name={false}
                          iconStyle={'circle'}
@@ -135,8 +135,6 @@ const Row = ({ number, item, onDelete, onEdit, onResend }) => {
                          displayDataTypes={false}
                          displayObjectSize={false}
                          enableClipboard={true}
-                         onDelete={onDelete}
-                         onEdit={onEdit}
                          shouldCollapse={(field) => {
                            return Object.keys(field.src).length > 3;
                          }}/>;

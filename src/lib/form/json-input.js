@@ -1,8 +1,11 @@
 import React  from 'react';
-import JSONInput from 'react-json-editor-ajrm';
+import AceEditor from 'react-ace';
 import styled from 'styled-components';
+import brace from 'brace';
 import { defaultFontFamily } from '../constants';
 import image from '../../assets/settings.png';
+import 'brace/mode/json';
+import './theme';
 
 const colors = {
   default: '#767676',
@@ -24,15 +27,12 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   color: #767676;
-  padding-top: 10px;
-  padding-bottom: 10px;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: row;
-  padding-left: 10px;
-  padding-bottom: 5px;
+  padding: 10px;
 `;
 
 const Image = styled.img`
@@ -43,16 +43,24 @@ const Image = styled.img`
 
 const Title = styled.div`text-transform: uppercase`;
 
-const JsonInput = ({ id, data, width, height }) => <Container>
+const JsonInput = ({ id, value, width, height, onChange }) => <Container>
   <Header>
     <Image src={image}/>
     <Title>JSON Input</Title>
   </Header>
-  <JSONInput id={id}
-             placeholder={data}
-             colors={colors}
-             width={width}
-             height={height}/>
+  <AceEditor
+    mode="json"
+    theme="capsula-js"
+    value={value}
+    onChange={onChange}
+    name={id}
+    editorProps={{$blockScrolling: true}}
+    fontSize={11}
+    setOptions={{
+      tabSize: 2
+    }}
+    width={width}
+    height={height}/>
 </Container>;
 
 export { JsonInput };
