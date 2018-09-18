@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
-    "react": "^16.2.0",
+    "react": "^16.5.1",
     "react-ace": "^6.1.4",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.2.0",
