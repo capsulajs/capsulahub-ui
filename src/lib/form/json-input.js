@@ -1,6 +1,10 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
+import {
+  defaultFontFamily,
+  defaultFomtSize,
+  defaultFontWeight
+} from '../constants';
 import image from '../../assets/settings.png';
 import AceEditor from 'react-ace';
 import 'brace/mode/json';
@@ -8,8 +12,8 @@ import '../theme';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
-  font-style: regular;
-  font-size: 13px;
+  font-style: ${defaultFontWeight};
+  font-size: ${defaultFomtSize};
   background: #3F3F3F;
   width: 100%;
   height: 100%;

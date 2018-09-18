@@ -69,7 +69,7 @@ const Item = styled.li`
   cursor: pointer;
 `;
 
-class Dropdown extends React.Component {
+export class Dropdown extends React.Component {
   constructor(props){
     super(props);
     
@@ -106,7 +106,7 @@ class Dropdown extends React.Component {
         <Title>{Number.isInteger(selected) ? items[selected].label : title}</Title>
         {isOpen ? <ArrowUp/> : <ArrowDown/>}
       </Header>
-      {this.state.isOpen &&
+      {isOpen &&
         <List>
           {items.map((item, index) => (<Item key={index} onClick={() => this.select(index)}>{item.label}</Item>))}
         </List>
@@ -114,5 +114,3 @@ class Dropdown extends React.Component {
     </Container>);
   }
 }
-
-export { Dropdown };

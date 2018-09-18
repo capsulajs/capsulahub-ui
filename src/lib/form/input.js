@@ -23,7 +23,5 @@ const CInput = styled.input`
   }
 `;
 
-const Input = ({ onChange, placeholder }) => <CInput placeholder={placeholder}
+export const Input = ({ onChange, placeholder }) => <CInput placeholder={placeholder}
                                                      onChange={(e) => onChange(e.target.value)}/>;
-
-export { Input };
