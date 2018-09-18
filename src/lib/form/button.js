@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+  defaultFontFamily,
+  defaultFomtSize
+} from '../constants';
 
 const CButton = styled.button`
-  font-size: 1em;
-  font-family: Montserrat;
-  font-weight: 500;
+  font-family: ${defaultFontFamily};
+  font-size: ${defaultFomtSize};
   text-align: center;
   background-color: ${props => props.theme.bg};
   color: ${props => props.theme.color};
