@@ -22,7 +22,7 @@ const Input = styled.input`
   position: absolute;
   opacity: 0;
   cursor: pointer;
-  
+ s
   &:checked ~ span {
     background-color: #57D7FF;
     border: 1px solid #57D7FF;
@@ -39,7 +39,7 @@ const CheckMark = styled.span`
   left: 0;
   width: 16px;
   height: 15px;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #737373;
   
   &:after {
     content: "";
@@ -48,7 +48,8 @@ const CheckMark = styled.span`
   }
 `;
 
-const CheckBox = () => <Container>One
+const CheckBox = ({ label }) => <Container>
+  {label}
   <Input type="checkbox"/>
   <CheckMark/>
 </Container>;

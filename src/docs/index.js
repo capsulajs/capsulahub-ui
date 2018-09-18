@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
-import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Loader } from '../lib';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader } from '../lib';
 
 const data = [];
 for (let i = 0; i < 10; i++) {
@@ -30,6 +30,12 @@ for (let i = 0; i < 10; i++) {
   }
 }
 
+const items = [
+  { label: 'one' },
+  { label: 'two' },
+  { label: 'three' }
+];
+
 const onChange = (newValue) => {
   console.log('change', newValue);
 };
@@ -49,7 +55,15 @@ const LogsContainer = styled.div`
   padding-bottom: 10px;
 `;
 
-const InputContainer = styled.div`width: 30%`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #525252;
+  width: 300px;
+  height: 150px;
+  padding: 10px;
+`;
 
 const App = () => (
   <Container>
@@ -65,17 +79,16 @@ const App = () => (
       <Button theme="clicked" text="Clicked" css="margin: 5px"/>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Inputs:</Paragraph>
-      <InputContainer>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Form:</Paragraph>
+      <Form>
         <Input onChange={onChange} placeholder="Default Input"/>
-      </InputContainer>
+        <Dropdown title="Dropdown" items={items} onChange={onChange}/>
+        <CheckBox label="Checkbox" onChange={onChange}/>
+        <Button theme="active" text="Submit"/>
+      </Form>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Checkboxes:</Paragraph>
-      <CheckBox/>
-    </Block>
-    <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modals:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modal:</Paragraph>
       <Button id="modal" text="Toggle modal"/>
       <Modal id="modal" title="Some title...">Some content...</Modal>
     </Block>

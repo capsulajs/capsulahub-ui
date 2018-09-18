@@ -6,15 +6,18 @@ const CInput = styled.input`
   font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 12px;
-  width: 100%;
+  width: calc(100% - 20px);
   height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
   background: #737373;
   color: #B1B1B1;
   border: none;
-  padding-left: 10px;
-  :focus {
+  
+  &:focus {
     outline: none;
   }
+  
   ::placeholder {
     color: #B1B1B1;
   }

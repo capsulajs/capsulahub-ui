@@ -6,5 +6,6 @@ import { Button } from './form/button';
 import { Input } from './form/input';
 import { CheckBox } from './form/checkbox';
 import { JsonInput } from './form/json-input';
+import { Dropdown } from './form/dropdown';
 
-export { Button, Input, CheckBox, JsonInput, Loader, Modal, Logs, Paragraph };
+export { Button, Input, CheckBox, JsonInput, Dropdown, Loader, Modal, Logs, Paragraph };
