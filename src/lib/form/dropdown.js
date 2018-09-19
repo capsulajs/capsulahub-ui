@@ -5,9 +5,9 @@ import { defaultFontFamily } from '../constants';
 const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-size: 12px;
-  font-weight: 500;
+  font-style: regular;
   background: #737373;
-  color: #B1B1B1;
+  color: #F8F7F7;
   width: 100%;
   max-width: 300px;
 `;
@@ -54,7 +54,8 @@ const List = styled.ul`
   position: absolute;
   z-index: 99;
   list-style-type: none;
-  background: #F7F7F7;
+  background: #E1E1E1;
+  color: #373737;
   margin: 0;
   padding: 0;
   width: 300px;
@@ -63,8 +64,8 @@ const List = styled.ul`
 const Item = styled.li`
   text-decoration: none;
   padding: 10px;
-  border-bottom: solid #CCC 1px;
-  :first-child { border-top: solid #CCC 1px; }
+  border-bottom: solid #D9D9D9 1px;
+  :first-child { border-top: solid #D9D9D9 1px; }
   :last-child { border-bottom: none; }
   cursor: pointer;
 `;
