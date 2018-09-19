@@ -54,7 +54,7 @@ const List = styled.ul`
   position: absolute;
   z-index: 99;
   list-style-type: none;
-  background: #737373;
+  background: #F7F7F7;
   margin: 0;
   padding: 0;
   width: 300px;
@@ -63,8 +63,8 @@ const List = styled.ul`
 const Item = styled.li`
   text-decoration: none;
   padding: 10px;
-  border-bottom: solid #5F5F5F 1px;
-  :first-child { border-top: solid #5F5F5F 1px; }
+  border-bottom: solid #CCC 1px;
+  :first-child { border-top: solid #CCC 1px; }
   :last-child { border-bottom: none; }
   cursor: pointer;
 `;
