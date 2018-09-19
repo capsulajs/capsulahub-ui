@@ -68,6 +68,10 @@ const Item = styled.li`
   :first-child { border-top: solid #D9D9D9 1px; }
   :last-child { border-bottom: none; }
   cursor: pointer;
+  
+  &:hover {
+    background: #D9D9D9;
+  }
 `;
 
 export class Dropdown extends React.Component {
