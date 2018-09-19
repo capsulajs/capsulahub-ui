@@ -7,11 +7,10 @@ const Container = styled.label`
   font-style: regular;
   font-size: 12px;
   color: #898989;
-  display: block;
   position: relative;
   padding-left: 25px;
-  margin-bottom: 12px;
   cursor: pointer;
+  width: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
