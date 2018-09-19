@@ -1,0 +1,33 @@
+{
+  "name": "capsulahub-ui",
+  "version": "0.0.1",
+  "description": "CapsulaJS UI component library",
+  "main": "./dist/main.js",
+  "scripts": {
+    "start": "parcel src/docs/index.html",
+    "build": "webpack --mode production --progress --display-error-details"
+  },
+  "dependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "react": "^16.5.1",
+    "react-ace": "^6.1.4",
+    "react-click-outside": "^3.0.1",
+    "react-dom": "^16.2.0",
+    "react-json-view": "^1.19.1",
+    "typeface-montserrat": "^0.0.54"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "file-loader": "^2.0.0",
+    "parcel-bundler": "^1.9.7",
+    "styled-components": "^3.4.5",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-node-externals": "^1.6.0"
+  }
+}
