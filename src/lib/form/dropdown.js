@@ -102,6 +102,7 @@ export class D extends React.Component {
   select(selected) {
     this.setState({ selected });
     this.toggle();
+    this.props.onChange(this.state.items[selected]);
   }
   
   render() {
