@@ -75,7 +75,7 @@ const Form = () => <FormContaner>
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <Block style={{ height: 600, paddingBottom: 100 }}>
+    <Block style={{ height: 500, paddingBottom: 100 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
       <Canvas>
         <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}

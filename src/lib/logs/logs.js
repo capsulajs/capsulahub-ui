@@ -98,15 +98,10 @@ const Button = styled.div`
 `;
 
 const Content = styled.div`
-  width: calc(100% - 30px);
-  height: calc(100% - 60px);
-`;
-
-const ContentMargin = styled.div`
-  margin-left: 30px;
-  margin-top: 20px;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 45px);
+  height: calc(100% - 35px);
+  margin-left: 35px;
+  margin-right: 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
     background: #3F3F3F;
@@ -140,11 +135,9 @@ const Row = ({ number, item, onResend }) => {
       <Button onClick={onResend}> Resend</Button>
     </FlexRow>;
   }
-  
   if (item.status === 'info') {
     content = <Info>{item.data}</Info>
   }
-  
   return (<FlexRow>
     <RowPoint>{item.status === 'fail' &&<Point></Point>}</RowPoint>
     <RowNumber>{number}</RowNumber>
@@ -153,7 +146,7 @@ const Row = ({ number, item, onResend }) => {
   </FlexRow>)
 };
 
-const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
+export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
   <Header>
     <FlexRow>
       <Image src={image}/>
@@ -163,18 +156,12 @@ const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container
   </Header>
   <Content>
     {data ? (
-      <ContentMargin>
-        {data.map((item, index) => <Row number={index + 1}
-                                        item={item}
-                                        onDelete={onDelete || false}
-                                        onEdit={onEdit || false}
-                                        onResend={() => onResend(item)}
-                                        key={index}/>
-        )}
-      </ContentMargin>
+      data.map((item, index) => <Row key={index} number={index + 1} item={item}
+                                     onDelete={onDelete || false}
+                                     onEdit={onEdit || false}
+                                     onResend={() => onResend(item)}/>
+      )
     ) : (<div>No Data..</div>)}
   </Content>
   <Footer>{path}</Footer>
 </Container>;
-
-export { Logs };
