@@ -15,8 +15,6 @@ const Container = styled.div`
   font-style: ${defaultFontWeight};
   font-size: ${defaultFomtSize};
   background: #3F3F3F;
-  width: 100%;
-  height: 100%;
   color: #767676;
 `;
 
@@ -34,7 +32,7 @@ const Image = styled.img`
 
 const Title = styled.div`text-transform: uppercase`;
 
-const JsonInput = ({ id, value, width, height, onChange }) => <Container>
+const JsonInput = ({ id, value, width, height, onChange }) => <Container style={{ width, height }}>
   <Header>
     <Image src={image}/>
     <Title>JSON Input</Title>
@@ -51,7 +49,7 @@ const JsonInput = ({ id, value, width, height, onChange }) => <Container>
       tabSize: 2
     }}
     width={width}
-    height={height}/>
+    height={`calc(${height} - 39px)`}/>
 </Container>;
 
 export { JsonInput };

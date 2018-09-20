@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
-import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader } from '../lib';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader, Canvas } from '../lib';
 
 const data = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 25; i++) {
   const ratio = Math.random();
   if (0 <= ratio && ratio <= 1 / 3) {
     data.push({
@@ -68,6 +68,17 @@ const Form = styled.form`
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
+    <Block style={{ height: 500, paddingBottom: 100 }}>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
+      <Canvas>
+        <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                   onChange={onChange} width="100%" height="100%"/>
+        <Logs data={data}
+              path="path>path?path"
+              onClear={() => console.log('Clear all')}
+              onResend={(item) => console.log('Resend', item)}/>
+      </Canvas>
+    </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>
@@ -103,7 +114,8 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
-      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)} onChange={onChange} width="100%" height="200px"/>
+      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                 onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Typography:</Paragraph>
@@ -116,4 +128,4 @@ const App = () => (
   </Container>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));

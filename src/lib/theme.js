@@ -9,7 +9,7 @@ ace.define('ace/theme/capsula-js',['require','exports','module','ace/lib/dom'], 
 }\
 .ace-capsula-js .ace_print-margin {\
   width: 1px;\
-  background: #353030\
+  background: #3F3F3F\
 }\
 .ace-capsula-js {\
   background-color: #3F3F3F;\
@@ -32,10 +32,6 @@ ace.define('ace/theme/capsula-js',['require','exports','module','ace/lib/dom'], 
 }\
 .ace-capsula-js .ace_variable.ace_language {\
   color: #DEDEDE\
-}\
-.ace-capsula-js .ace_gutter-cell .ace_error {\
-  background-image: none !important;\
-  background-position: 200px;\
 }";
   const dom = acequire('../lib/dom');
   dom.importCssString(exports.cssText, exports.cssClass);
