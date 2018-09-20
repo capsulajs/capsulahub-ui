@@ -34,14 +34,9 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100px;
+  min-width: 300px;
   color: #767676;
   position: relative;
-`;
-
-const Wrapper = styled.div`
-  width: calc(100% - 20px);
-  height: calc(100% - 20px);
-  padding: 10px;
 `;
 
 const Header = styled.div`
@@ -49,6 +44,7 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: 13px;
+  padding: 10px;
 `;
 
 const Image = styled.img`
@@ -150,9 +146,7 @@ const Row = ({ number, item, onResend }) => {
   }
   
   return (<FlexRow>
-    <RowPoint>
-      {item.status === 'fail' &&<Point></Point>}
-    </RowPoint>
+    <RowPoint>{item.status === 'fail' &&<Point></Point>}</RowPoint>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
     <RowContent>{content}</RowContent>
@@ -160,29 +154,27 @@ const Row = ({ number, item, onResend }) => {
 };
 
 const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
-  <Wrapper>
-    <Header>
-      <FlexRow>
-        <Image src={image}/>
-        <Title>LOG</Title>
-      </FlexRow>
-      <Clear onClick={onClear}>&#10005;</Clear>
-    </Header>
-    <Content>
-      {data ? (
-        <ContentMargin>
-          {data.map((item, index) => <Row number={index + 1}
-                                          item={item}
-                                          onDelete={onDelete || false}
-                                          onEdit={onEdit || false}
-                                          onResend={() => onResend(item)}
-                                          key={index}/>
-          )}
-        </ContentMargin>
-      ) : (<div>No Data..</div>)}
-    </Content>
-  </Wrapper>
-  {path && <Footer>{path}</Footer>}
+  <Header>
+    <FlexRow>
+      <Image src={image}/>
+      <Title>LOG</Title>
+    </FlexRow>
+    <Clear onClick={onClear}>&#10005;</Clear>
+  </Header>
+  <Content>
+    {data ? (
+      <ContentMargin>
+        {data.map((item, index) => <Row number={index + 1}
+                                        item={item}
+                                        onDelete={onDelete || false}
+                                        onEdit={onEdit || false}
+                                        onResend={() => onResend(item)}
+                                        key={index}/>
+        )}
+      </ContentMargin>
+    ) : (<div>No Data..</div>)}
+  </Content>
+  <Footer>{path}</Footer>
 </Container>;
 
 export { Logs };
