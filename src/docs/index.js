@@ -55,7 +55,7 @@ const LogsContainer = styled.div`
   padding-bottom: 10px;
 `;
 
-const Form = styled.form`
+const FormContaner = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -65,10 +65,17 @@ const Form = styled.form`
   padding: 10px;
 `;
 
+const Form = () => <FormContaner>
+  <Input onChange={onChange} placeholder="Default Input"/>
+  <Dropdown title="Dropdown" items={items} onChange={onChange}/>
+  <CheckBox label="Checkbox" onChange={onChange}/>
+  <Button theme="active" text="Submit"/>
+</FormContaner>;
+
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <Block style={{ height: 500, paddingBottom: 100 }}>
+    <Block style={{ height: 600, paddingBottom: 100 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
       <Canvas>
         <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
@@ -77,6 +84,7 @@ const App = () => (
               path="path>path?path"
               onClear={() => console.log('Clear all')}
               onResend={(item) => console.log('Resend', item)}/>
+        <Form/>
       </Canvas>
     </Block>
     <Block>
@@ -91,12 +99,7 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Form:</Paragraph>
-      <Form>
-        <Input onChange={onChange} placeholder="Default Input"/>
-        <Dropdown title="Dropdown" items={items} onChange={onChange}/>
-        <CheckBox label="Checkbox" onChange={onChange}/>
-        <Button theme="active" text="Submit"/>
-      </Form>
+      <Form/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modal:</Paragraph>

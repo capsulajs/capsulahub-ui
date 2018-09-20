@@ -16,6 +16,7 @@ const Container = styled.div`
   font-size: ${defaultFomtSize};
   background: #3F3F3F;
   color: #767676;
+  min-width: 150px;
 `;
 
 const Header = styled.div`

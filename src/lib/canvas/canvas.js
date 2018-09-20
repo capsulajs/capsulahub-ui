@@ -28,7 +28,7 @@ export class Canvas extends React.Component {
         items.push(<ReflexElement key={items.length} style={styles.pane} minSize="100" maxSize="1000">
           {child}
         </ReflexElement>);
-        if (index % 2 === 0) {
+        if (count - 1 !== index) {
           items.push(<ReflexSplitter key={items.length} style={styles.splitter}/>);
         }
       });
