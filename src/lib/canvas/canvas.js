@@ -21,6 +21,27 @@ const styles = {
 };
 
 export class Canvas extends React.Component {
+  constructor() {
+    super();
+  
+    this.resizeProps = {
+      onStopResize: this.onStopResize.bind(this),
+      onResize: this.onResize.bind(this)
+    };
+  }
+  
+  onResize (e) {
+    if (e.domElement) {
+      e.domElement.classList.add('resizing');
+    }
+  }
+  
+  onStopResize (e) {
+    if (e.domElement) {
+      e.domElement.classList.remove('resizing');
+    }
+  }
+  
   render() {
     const { children, orientation } = this.props;
     const count = children.length;
@@ -33,7 +54,7 @@ export class Canvas extends React.Component {
       }
       
       children.forEach((child, index) => {
-        items.push(<ReflexElement key={items.length} style={elementStyles} minSize="100" maxSize="1000" {...this.resizeProps}>
+        items.push(<ReflexElement key={items.length} minSize="100" maxSize="1000" {...this.resizeProps}>
           {child}
         </ReflexElement>);
         if (count - 1 !== index) {
@@ -43,17 +64,10 @@ export class Canvas extends React.Component {
             splitterStyles.width = '100%';
           }
           
-          items.push(<ReflexSplitter key={items.length} propagate={true} style={splitterStyles} {...this.resizeProps}/>);
+          items.push(<ReflexSplitter key={items.length} {...this.resizeProps}/>);
         }
       });
     }
-  
-    // return (
-    //   <ReflexContainer orientation="horizontal">
-    //     <ReflexElement><div>Block 1</div></ReflexElement>
-    //     <ReflexSplitter/>
-    //     <ReflexElement><div>Block 2</div></ReflexElement>
-    //   </ReflexContainer>)
     
     return (<ReflexContainer orientation={orientation || 'vertical'} style={styles.container}>{items}</ReflexContainer>);
   }

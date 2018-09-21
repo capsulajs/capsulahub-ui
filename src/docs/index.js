@@ -75,10 +75,22 @@ const Form = () => <FormContaner>
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <Block style={{ height: 500, paddingBottom: 100 }}>
+    <Block style={{ height: 500, paddingBottom: 75 }}>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (vertical):</Paragraph>
+      <Canvas>
+        <JsonInput id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                   onChange={onChange} width="100%" height="100%"/>
+        <Logs data={data}
+              path="path>path?path"
+              onClear={() => console.log('Clear all')}
+              onResend={(item) => console.log('Resend', item)}/>
+        <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+      </Canvas>
+    </Block>
+    <Block style={{ height: 500, paddingBottom: 75 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (horizontal):</Paragraph>
       <Canvas orientation="horizontal">
-        <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+        <JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}
                    onChange={onChange} width="100%" height="100%"/>
         <Logs data={data}
               path="path>path?path"
@@ -117,7 +129,7 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
-      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+      <JsonInput id="json-input-0" value={JSON.stringify(createRandomObj(3, true), null, 2)}
                  onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
