@@ -5,15 +5,13 @@ import 'react-reflex/styles.css';
 const styles = {
   container: {
     background: '#414141',
-    // padding: '8px',
-    // overflow: 'hidden'
+    overflow: 'hidden'
   },
   element: {
     horizontal: {},
     vertical: {
       overflow: 'visible'
     }
-    // background: '#3F3F3F',
   },
   splitter: {
     horizontal: {

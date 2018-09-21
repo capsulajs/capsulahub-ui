@@ -99,6 +99,27 @@ const App = () => (
         <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
       </Canvas>
     </Block>
+    <Block style={{ height: 500, paddingBottom: 75 }}>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (mixed):</Paragraph>
+      <Canvas>
+        <Canvas orientation="horizontal">
+          <JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                     onChange={onChange} width="100%" height="100%"/>
+          <Logs data={data}
+                path="path>path?path"
+                onClear={() => console.log('Clear all')}
+                onResend={(item) => console.log('Resend', item)}/>
+          <Canvas>
+            <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+            <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+          </Canvas>
+        </Canvas>
+        <Canvas>
+          <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+          <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+        </Canvas>
+      </Canvas>
+    </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>
