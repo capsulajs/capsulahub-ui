@@ -99,7 +99,7 @@ const Button = styled.div`
 
 const Content = styled.div`
   width: calc(100% - 45px);
-  height: calc(100% - 35px);
+  height: calc(100% - 45px);
   margin-left: 35px;
   margin-right: 10px;
   overflow: scroll;

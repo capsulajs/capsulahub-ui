@@ -76,15 +76,15 @@ const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 100 }}>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
-      <Canvas>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (horizontal):</Paragraph>
+      <Canvas orientation="horizontal">
         <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)}
                    onChange={onChange} width="100%" height="100%"/>
         <Logs data={data}
               path="path>path?path"
               onClear={() => console.log('Clear all')}
               onResend={(item) => console.log('Resend', item)}/>
-        <Form/>
+        <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
       </Canvas>
     </Block>
     <Block>

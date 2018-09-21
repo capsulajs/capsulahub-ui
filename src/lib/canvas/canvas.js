@@ -4,13 +4,13 @@ import 'react-reflex/styles.css';
 
 const styles = {
   container: {
-    background: '#4B4B4B',
-    padding: '8px',
-    overflow: 'hidden'
+    background: '#414141',
+    // // padding: '8px',
+    // overflow: 'hidden'
   },
-  pane: {
-    background: '#3F3F3F',
-    overflow: 'visible'
+  element: {
+    // background: '#3F3F3F',
+    // overflow: 'visible'
   },
   splitter: {
     background: '#4B4B4B',
@@ -25,16 +25,36 @@ export class Canvas extends React.Component {
     const { children, orientation } = this.props;
     const count = children.length;
     const items = [];
+    
     if (count > 1) {
+      const elementStyles = styles.element;
+      if (orientation === 'horizontal') {
+        elementStyles.height = `calc(100% / ${count})`
+      }
+      
       children.forEach((child, index) => {
-        items.push(<ReflexElement key={items.length} style={styles.pane} minSize="100" maxSize="1000">
+        items.push(<ReflexElement key={items.length} style={elementStyles} minSize="100" maxSize="1000" {...this.resizeProps}>
           {child}
         </ReflexElement>);
         if (count - 1 !== index) {
-          items.push(<ReflexSplitter key={items.length} style={styles.splitter}/>);
+          const splitterStyles = styles.splitter;
+          if (orientation === 'horizontal') {
+            splitterStyles.height = '8px';
+            splitterStyles.width = '100%';
+          }
+          
+          items.push(<ReflexSplitter key={items.length} propagate={true} style={splitterStyles} {...this.resizeProps}/>);
         }
       });
     }
+  
+    // return (
+    //   <ReflexContainer orientation="horizontal">
+    //     <ReflexElement><div>Block 1</div></ReflexElement>
+    //     <ReflexSplitter/>
+    //     <ReflexElement><div>Block 2</div></ReflexElement>
+    //   </ReflexContainer>)
+    
     return (<ReflexContainer orientation={orientation || 'vertical'} style={styles.container}>{items}</ReflexContainer>);
   }
 }
