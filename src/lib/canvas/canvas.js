@@ -5,18 +5,29 @@ import 'react-reflex/styles.css';
 const styles = {
   container: {
     background: '#414141',
-    // // padding: '8px',
+    // padding: '8px',
     // overflow: 'hidden'
   },
   element: {
+    horizontal: {},
+    vertical: {
+      overflow: 'visible'
+    }
     // background: '#3F3F3F',
-    // overflow: 'visible'
   },
   splitter: {
-    background: '#4B4B4B',
-    border: 'none',
-    width: '8px',
-    height: '100%'
+    horizontal: {
+      background: '#4B4B4B',
+      border: 'none',
+      width: '100%',
+      height: '8px'
+    },
+    vertical: {
+      background: '#4B4B4B',
+      border: 'none',
+      width: '8px',
+      height: '100%'
+    }
   }
 };
 
@@ -43,32 +54,20 @@ export class Canvas extends React.Component {
   }
   
   render() {
-    const { children, orientation } = this.props;
+    const children = this.props.children;
+    const orientation = this.props.orientation || 'vertical';
     const count = children.length;
     const items = [];
-    
     if (count > 1) {
-      const elementStyles = styles.element;
-      if (orientation === 'horizontal') {
-        elementStyles.height = `calc(100% / ${count})`
-      }
-      
       children.forEach((child, index) => {
-        items.push(<ReflexElement key={items.length} minSize="100" maxSize="1000" {...this.resizeProps}>
+        items.push(<ReflexElement key={items.length} style={styles.element[orientation]} minSize="100" maxSize="1000">
           {child}
         </ReflexElement>);
         if (count - 1 !== index) {
-          const splitterStyles = styles.splitter;
-          if (orientation === 'horizontal') {
-            splitterStyles.height = '8px';
-            splitterStyles.width = '100%';
-          }
-          
-          items.push(<ReflexSplitter key={items.length} {...this.resizeProps}/>);
+          items.push(<ReflexSplitter key={items.length} style={styles.splitter[orientation]}/>);
         }
       });
     }
-    
-    return (<ReflexContainer orientation={orientation || 'vertical'} style={styles.container}>{items}</ReflexContainer>);
+    return (<ReflexContainer orientation={orientation} style={styles.container}>{items}</ReflexContainer>);
   }
 }
