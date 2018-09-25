@@ -33,7 +33,7 @@ const Container = styled.div`
   background: #3F3F3F;
   width: 100%;
   height: 100%;
-  min-height: 100px;
+  min-height: 200px;
   min-width: 300px;
   color: #767676;
   position: relative;
@@ -99,7 +99,7 @@ const Button = styled.div`
 
 const Content = styled.div`
   width: calc(100% - 45px);
-  height: calc(100% - 45px);
+  height: calc(100% - 65px);
   margin-left: 35px;
   margin-right: 10px;
   overflow: scroll;

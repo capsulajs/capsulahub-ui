@@ -72,54 +72,51 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
+const tabs = [{
+  id: 'logs',
+  title: 'LOGS',
+  content: <Logs data={data}
+                 path="path>path?path"
+                 onClear={() => console.log('Clear all')}
+                 onResend={(item) => console.log('Resend', item)}/>}, {
+  id: 'json-input',
+  title: 'JSON Input',
+  content: <JsonInput id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                      onChange={onChange} width="100%" height="100%"/>
+}, {
+  id: 'hello',
+  title: 'Typography',
+  content: <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+}];
+
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 75 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (vertical):</Paragraph>
-      <Canvas>
-        <JsonInput id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                   onChange={onChange} width="100%" height="100%"/>
-        <Logs data={data}
-              path="path>path?path"
-              onClear={() => console.log('Clear all')}
-              onResend={(item) => console.log('Resend', item)}/>
-        <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-      </Canvas>
+      <Canvas tabs={tabs}/>
     </Block>
-    <Block style={{ height: 500, paddingBottom: 75 }}>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (horizontal):</Paragraph>
-      <Canvas orientation="horizontal">
-        <JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                   onChange={onChange} width="100%" height="100%"/>
-        <Logs data={data}
-              path="path>path?path"
-              onClear={() => console.log('Clear all')}
-              onResend={(item) => console.log('Resend', item)}/>
-        <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-      </Canvas>
-    </Block>
-    <Block style={{ height: 500, paddingBottom: 75 }}>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (mixed):</Paragraph>
-      <Canvas>
-        <Canvas orientation="horizontal">
-          <JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                     onChange={onChange} width="100%" height="100%"/>
-          <Logs data={data}
-                path="path>path?path"
-                onClear={() => console.log('Clear all')}
-                onResend={(item) => console.log('Resend', item)}/>
-          <Canvas>
-            <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-            <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-          </Canvas>
-        </Canvas>
-        <Canvas>
-          <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-          <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
-        </Canvas>
-      </Canvas>
-    </Block>
+    {/*<Block style={{ height: 500, paddingBottom: 75 }}>*/}
+      {/*<Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (mixed):</Paragraph>*/}
+      {/*<Canvas>*/}
+        {/*<Canvas orientation="horizontal">*/}
+          {/*<JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}*/}
+                     {/*onChange={onChange} width="100%" height="100%"/>*/}
+          {/*<Logs data={data}*/}
+                {/*path="path>path?path"*/}
+                {/*onClear={() => console.log('Clear all')}*/}
+                {/*onResend={(item) => console.log('Resend', item)}/>*/}
+          {/*<Canvas>*/}
+            {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
+            {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
+          {/*</Canvas>*/}
+        {/*</Canvas>*/}
+        {/*<Canvas>*/}
+          {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
+          {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
+        {/*</Canvas>*/}
+      {/*</Canvas>*/}
+    {/*</Block>*/}
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>

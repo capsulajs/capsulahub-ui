@@ -1,71 +1,72 @@
 import React from 'react';
-import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex'
-import 'react-reflex/styles.css';
+import styled from 'styled-components';
+import { arrayMove } from 'react-sortable-hoc';
+import { defaultFontFamily, defaultBackgroundColor } from '../constants';
+import Header from './header';
 
-const styles = {
-  container: {
-    background: '#414141',
-    overflow: 'hidden'
-  },
-  element: {
-    horizontal: {},
-    vertical: {
-      overflow: 'visible'
-    }
-  },
-  splitter: {
-    horizontal: {
-      background: '#4B4B4B',
-      border: 'none',
-      width: '100%',
-      height: '8px'
-    },
-    vertical: {
-      background: '#4B4B4B',
-      border: 'none',
-      width: '8px',
-      height: '100%'
-    }
-  }
-};
+const Container = styled.div`
+  font-family: ${defaultFontFamily};
+  font-style: regular;
+  font-size: 13px;
+  background: ${defaultBackgroundColor};
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+`;
 
-export class Canvas extends React.Component {
-  constructor() {
-    super();
-  
-    this.resizeProps = {
-      onStopResize: this.onStopResize.bind(this),
-      onResize: this.onResize.bind(this)
+const Content = styled.div`
+  height: calc(100% - 39px);
+`;
+
+class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabs: this.props.tabs,
+      activeIndex: 0
     };
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
   
-  onResize (e) {
-    if (e.domElement) {
-      e.domElement.classList.add('resizing');
-    }
+  handleExtraButton() {
+    const { tabs } = this.state;
+    const newTabs = [...tabs, {id: `tab-${tabs.length}`, title: 'New Tab', content: 'New Content'}];
+    this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
   }
   
-  onStopResize (e) {
-    if (e.domElement) {
-      e.domElement.classList.remove('resizing');
+  handleTabChange(activeIndex) {
+    this.setState({ activeIndex });
+  }
+  
+  handleTabSequenceChange({oldIndex, newIndex}) {
+    const {tabs} = this.state;
+    const updateTabs = arrayMove(tabs, oldIndex, newIndex);
+    this.setState({tabs: updateTabs, activeIndex: newIndex});
+  }
+  
+  handleEdit({type, index}) {
+    let { tabs, activeIndex } = this.state;
+    if (type === 'delete') {
+      tabs.splice(index, 1);
     }
+    if (index - 1 >= 0) {
+      activeIndex = index - 1;
+    } else {
+      activeIndex = 0;
+    }
+    this.setState({ tabs, activeIndex });
   }
   
   render() {
-    const children = this.props.children;
-    const orientation = this.props.orientation || 'vertical';
-    const count = children.length;
-    const items = [];
-    if (count > 1) {
-      children.forEach((child, index) => {
-        items.push(<ReflexElement key={items.length} style={styles.element[orientation]} minSize="100" maxSize="1000">
-          {child}
-        </ReflexElement>);
-        if (count - 1 !== index) {
-          items.push(<ReflexSplitter key={items.length} style={styles.splitter[orientation]}/>);
-        }
-      });
-    }
-    return (<ReflexContainer orientation={orientation} style={styles.container}>{items}</ReflexContainer>);
+    const { tabs, activeIndex } = this.state;
+
+    return (
+      <Container>
+        <Header tabs={tabs} activeIndex={activeIndex} onSelect={this.handleTabChange}/>
+        <Content>{tabs[activeIndex].content}</Content>
+      </Container>
+    )
   }
 }
+
+export { Canvas };
