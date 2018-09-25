@@ -8,3 +8,10 @@ export const decorate = (timestamp) => {
   const seconds = s > 9 ? s : `${s}0`;
   return [hours, minutes, seconds].join(':');
 };
+
+export const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};

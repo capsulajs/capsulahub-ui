@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { arrayMove } from 'react-sortable-hoc';
 import { defaultFontFamily, defaultBackgroundColor } from '../constants';
 import Header from './header';
+import Grid from './grid';
+import { reorder } from '../utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 13px;
   background: ${defaultBackgroundColor};
+  color: #A9A9A9;
   width: 100%;
   height: 100%;
+  min-width: 500px;
   min-height: 100px;
 `;
 
@@ -25,23 +28,30 @@ class Canvas extends React.Component {
       tabs: this.props.tabs,
       activeIndex: 0
     };
-    this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleSelectTab = this.handleSelectTab.bind(this);
+    this.handleAddNewTab = this.handleAddNewTab.bind(this);
+    this.handleDragTab = this.handleDragTab.bind(this);
   }
   
-  handleExtraButton() {
-    const { tabs } = this.state;
-    const newTabs = [...tabs, {id: `tab-${tabs.length}`, title: 'New Tab', content: 'New Content'}];
-    this.setState({tabs: newTabs, activeIndex: newTabs.length - 1});
-  }
-  
-  handleTabChange(activeIndex) {
+  handleSelectTab(activeIndex) {
     this.setState({ activeIndex });
   }
   
-  handleTabSequenceChange({oldIndex, newIndex}) {
-    const {tabs} = this.state;
-    const updateTabs = arrayMove(tabs, oldIndex, newIndex);
-    this.setState({tabs: updateTabs, activeIndex: newIndex});
+  handleDragTab(result) {
+    if (!result.destination) {
+      return;
+    }
+    const tabs = reorder(this.state.tabs, result.source.index, result.destination.index);
+    this.setState({ tabs, activeIndex: result.destination.index });
+  }
+  
+  handleAddNewTab() {
+    const { tabs } = this.state;
+    const newTabs = [...tabs, {id: `tab-${tabs.length + 1}`, title: 'New Tab', content: 'New Content'}];
+    this.setState({
+      tabs: newTabs,
+      activeIndex: newTabs.length - 1
+    });
   }
   
   handleEdit({type, index}) {
@@ -59,13 +69,22 @@ class Canvas extends React.Component {
   
   render() {
     const { tabs, activeIndex } = this.state;
-
+    const tab = tabs[activeIndex];
+    
     return (
       <Container>
-        <Header tabs={tabs} activeIndex={activeIndex} onSelect={this.handleTabChange}/>
-        <Content>{tabs[activeIndex].content}</Content>
+        <Header tabs={tabs}
+                activeIndex={activeIndex}
+                onSelectTab={this.handleSelectTab}
+                onAddNewTab={this.handleAddNewTab}
+                onDragTab={this.handleDragTab}/>
+        <Content>
+          <Grid>
+            {[tab.content, tab.content]}
+          </Grid>
+        </Content>
       </Container>
-    )
+    );
   }
 }
 

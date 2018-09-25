@@ -29,7 +29,7 @@ const styles = {
   }
 };
 
-export class Grid extends React.Component {
+export default class Grid extends React.Component {
   constructor() {
     super();
     

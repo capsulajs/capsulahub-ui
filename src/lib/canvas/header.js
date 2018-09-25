@@ -1,12 +1,25 @@
 import React  from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  background: #515151;
+`;
+
+const AddNewTab = styled.div`
+  font-size: 31px;
+  color: #A9A9A9;
+  cursor: pointer;
+  width: 39px;
+  height: 39px;
+  text-align: center;
+  
+  &:hover {
+    color: #FEFEFE;
+  }
+`;
 
 const grid = 8;
 const getTabStyle = (isDragging, draggableStyle, isActive) => ({
@@ -27,59 +40,46 @@ const getListStyle = isDraggingOver => ({
   display: 'flex',
   padding: grid,
   overflow: 'auto',
+  width: 'calc(100% - 39px)'
 });
 
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tabs: this.props.tabs,
-      activeIndex: this.props.activeIndex || 0
-    };
-    this.onDragEnd = this.onDragEnd.bind(this);
-    this.onSelect = this.props.onSelect.bind(this);
-  }
-  
-  onDragEnd(result) {
-    if (!result.destination) {
-      return;
-    }
-    const tabs = reorder(this.state.tabs, result.source.index, result.destination.index);
-    this.setState({ tabs, activeIndex: result.destination.index });
-  }
-  
-  select(activeIndex) {
-    this.setState({ activeIndex });
-    this.onSelect(activeIndex);
+    this.onSelectTab = props.onSelectTab.bind(this);
+    this.onAddNewTab = props.onAddNewTab.bind(this);
+    this.onDragTab = props.onDragTab.bind(this);
   }
   
   render() {
-    const { tabs, activeIndex } = this.state;
+    const { tabs, activeIndex } = this.props;
 
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}
-              {...provided.droppableProps}>
-              {tabs.map((tab, index) => (
-                <Draggable key={tab.id} draggableId={tab.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div ref={provided.innerRef}
-                         {...provided.draggableProps}
-                         {...provided.dragHandleProps}
-                         style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, activeIndex === index)}
-                         onClick={() => this.select(index)}>
-                      {tab.title}
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Container>
+        <DragDropContext onDragEnd={this.onDragTab}>
+          <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
+            {(provided, snapshot) => (
+              <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
+                {tabs.map((tab, index) => (
+                  <Draggable key={tab.id} draggableId={tab.id} index={index}>
+                    {(provided, snapshot) => (
+                      <div ref={provided.innerRef}
+                           {...provided.draggableProps}
+                           {...provided.dragHandleProps}
+                           style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, activeIndex === index)}
+                           onClick={() => this.onSelectTab(index)}>
+                        {tab.title}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <AddNewTab onClick={this.onAddNewTab}>+</AddNewTab>
+      </Container>
     );
   }
 }
