@@ -72,13 +72,14 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
-const gridItems = [
-  <Logs key="logs" data={data} path="path>path?path" onClear={() => console.log('Clear all')}
-        onResend={(item) => console.log('Resend', item)}/>,
-  <JsonInput key="jsonInput" id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-             onChange={onChange} width="100%" height="100%"/>,
-  <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>
-];
+const LogsPane = () => <Logs key="logs" data={data} path="path>path?path"
+                             onClear={() => console.log('Clear all')}
+                             onResend={(item) => console.log('Resend', item)}/>;
+const InputPane = () => <JsonInput key="jsonInput" id="json-input-1"
+                                   value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                                   onChange={onChange} width="100%" height="100%"/>;
+//   {/*<Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>*/}
+// {/*];*/}
 
 const demoFlexPanes = {
   type: 'container',
@@ -88,11 +89,11 @@ const demoFlexPanes = {
       type: 'container',
       orientation: 'horizontal',
       elements: [
-        { type: 'element' },
+        { type: 'element', value: <LogsPane/> },
         {
           type: 'container',
           orientation: 'vertical',
-          elements: [{ type: 'element'}, { type: 'element'}]
+          elements: [{ type: 'element', value: <InputPane/> }, { type: 'element', value: 'Container 3' }]
         }
       ]
     },
@@ -106,6 +107,9 @@ const tabs = [{
   id: 'firstTab',
   title: 'First Tab',
   layout: demoFlexPanes
+}, {
+  id: 'secondTab',
+  title: 'Empty Tab'
 }];
 
 const App = () => (
@@ -115,27 +119,6 @@ const App = () => (
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (vertical):</Paragraph>
       <Canvas tabs={tabs}/>
     </Block>
-    {/*<Block style={{ height: 500, paddingBottom: 75 }}>*/}
-      {/*<Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (mixed):</Paragraph>*/}
-      {/*<Canvas>*/}
-        {/*<Canvas orientation="horizontal">*/}
-          {/*<JsonInput id="json-input-2" value={JSON.stringify(createRandomObj(3, true), null, 2)}*/}
-                     {/*onChange={onChange} width="100%" height="100%"/>*/}
-          {/*<Logs data={data}*/}
-                {/*path="path>path?path"*/}
-                {/*onClear={() => console.log('Clear all')}*/}
-                {/*onResend={(item) => console.log('Resend', item)}/>*/}
-          {/*<Canvas>*/}
-            {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
-            {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
-          {/*</Canvas>*/}
-        {/*</Canvas>*/}
-        {/*<Canvas>*/}
-          {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
-          {/*<Paragraph fontSize="2.5rem">Hello, World!</Paragraph>*/}
-        {/*</Canvas>*/}
-      {/*</Canvas>*/}
-    {/*</Block>*/}
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>

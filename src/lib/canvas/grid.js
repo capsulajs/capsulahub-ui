@@ -1,6 +1,42 @@
 import React from 'react';
+import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  
+  .controls {
+    display: none;
+  }
+  
+  &:hover {
+    .controls {
+      display: flex;
+    }
+  }
+`;
+const Controls = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  width: 50px;
+  background: #515151;
+  padding: 5px;
+  font-size: 10px;
+  z-index: 9999;
+`;
+const HorizontalSplitter = styled.span`
+  cursor: pointer;
+  margin-top: -1px;
+`;
+const VerticalSplitter = styled.span`
+  cursor: pointer;
+  transform: rotate(-90deg);
+`;
+const Remove = styled.span`cursor: pointer`;
 
 const styles = {
   container: {
@@ -15,61 +51,19 @@ const styles = {
   },
   splitter: {
     horizontal: {
-      background: '#4B4B4B',
+      background: '#515151',
       border: 'none',
       width: '100%',
       height: '8px'
     },
     vertical: {
-      background: '#4B4B4B',
+      background: '#515151',
       border: 'none',
       width: '8px',
       height: '100%'
     }
   }
 };
-
-class Grid1 extends React.Component {
-  constructor() {
-    super();
-    
-    this.resizeProps = {
-      onStopResize: this.onStopResize.bind(this),
-      onResize: this.onResize.bind(this)
-    };
-  }
-  
-  onResize (e) {
-    if (e.domElement) {
-      e.domElement.classList.add('resizing');
-    }
-  }
-  
-  onStopResize (e) {
-    if (e.domElement) {
-      e.domElement.classList.remove('resizing');
-    }
-  }
-  
-  render() {
-    const children = this.props.children;
-    const orientation = this.props.orientation || 'vertical';
-    const count = children.length;
-    const items = [];
-    if (count > 1) {
-      children.forEach((child, index) => {
-        items.push(<ReflexElement key={items.length} style={styles.element[orientation]} minSize="100" maxSize="1000">
-          {child}
-        </ReflexElement>);
-        if (count - 1 !== index) {
-          items.push(<ReflexSplitter key={items.length} style={styles.splitter[orientation]}/>);
-        }
-      });
-    }
-    return (<ReflexContainer orientation={orientation} style={styles.container}>{items}</ReflexContainer>);
-  }
-}
-
 
 const defaultLayout = {
   type: 'container',
@@ -80,13 +74,13 @@ const defaultLayout = {
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
-    this.builSplittedLayout = this.builSplittedLayout.bind(this);
+    this.build = this.build.bind(this);
     this.state = {
       layout: props.layout || defaultLayout
     }
   }
   
-  builSplittedLayout(layout, element, orientation) {
+  build(layout, element, orientation) {
     switch (true) {
       case layout === element:
         return {
@@ -100,92 +94,82 @@ export default class Grid extends React.Component {
         return {
           type: 'container',
           orientation: layout.orientation,
-          elements: layout.elements.map(curr => this.builSplittedLayout(curr, element, orientation))
+          elements: layout.elements.map(curr => this.build(curr, element, orientation))
         }
     }
   }
   
-  splitElement(element, orientation) {
+  split(element, orientation) {
     if (element.type === 'container') {
       return;
     }
     this.setState((state) => ({
-      layout: this.builSplittedLayout(state.layout, element, orientation)
+      layout: this.build(state.layout, element, orientation)
     }));
   }
   
-  removeElementInt(layout, element) {
-    if (layout.type === 'element') {
-      return layout;
-    } else {
-      if (layout.elements.indexOf(element) >= 0) {
-        return { type: 'element' };
-      } else {
-        return {
-          ...layout,
-          elements: layout.elements.map(curr => this.removeElementInt(curr, element))
-        }
-      }
-    }
-  }
-  
-  removeElement(element) {
+  remove(element) {
     if (element === this.state.layout.elements[0]) {
-      alert('Cannot remove root elelemnt!');
+      alert('Cannot remove root element!');
       return;
     }
-    this.setState((state) => ({
-      layout: this.removeElementInt(state.layout, element)
-    }));
-  }
-  
-  renderControls(onSplitH, onSplitV, onClose) {
-    return (
-      <div className="flexpane-controls">
-        <span onClick={onSplitH}>V</span>|
-        <span onClick={onSplitV}>H</span>|
-        <span onClick={onClose}>delete</span>
-      </div>
-    );
+    
+    const reduce = (layout, element) => {
+      if (layout.type === 'element') {
+        return layout;
+      } else {
+        if (layout.elements.indexOf(element) >= 0) {
+          return { type: 'element' };
+        } else {
+          return {
+            ...layout,
+            elements: layout.elements.map(curr => reduce(curr, element))
+          }
+        }
+      }
+    };
+    
+    this.setState((state) => ({ layout: reduce(state.layout, element) }));
   }
   
   renderElement(element, key) {
-    const { type, orientation, elements } = element;
+    const { type, value, orientation, elements } = element;
     const style = styles.element[orientation];
     
     if (type === 'container') {
-      return (<ReflexElement key={key}>
-        {this.renderContainer(orientation, elements)}
-      </ReflexElement>);
+      return (<ReflexElement key={key}>{this.renderContainer(orientation, elements)}</ReflexElement>);
     }
     
     return (
       <ReflexElement key={key} style={style} minSize="100" maxSize="1000">
-        {this.renderControls(
-          this.splitElement.bind(this, element, 'vertical'),
-          this.splitElement.bind(this, element, 'horizontal'),
-          this.removeElement.bind(this, element),
-        )}
+        <Container>
+          <Controls className="controls">
+            <HorizontalSplitter onClick={this.split.bind(this, element, 'horizontal')}>&#9776;</HorizontalSplitter>
+            <VerticalSplitter onClick={this.split.bind(this, element, 'vertical')}>&#9776;</VerticalSplitter>
+            <Remove onClick={this.remove.bind(this, element)}>&#10005;</Remove>
+          </Controls>
+          {value}
+        </Container>
       </ReflexElement>
     );
   }
   
   renderContainer(orientation, elements) {
-    const reducer = (acc, element, idx) => {
-      const splitter = <ReflexSplitter key={'S'+idx} style={styles.splitter[orientation]}/>;
-      const el = this.renderElement(element, 'E'+idx);
+    const reduce = (acc, element, idx) => {
+      const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation]}/>;
+      const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
     
     return (
       <ReflexContainer orientation={orientation} style={styles.container}>
-        {elements.reduce(reducer, [])}
+        {elements.reduce(reduce, [])}
       </ReflexContainer>
     );
   }
   
   render() {
-    const { layout: { orientation, elements} } = this.state;
+    const { orientation, elements } = this.state.layout;
     return this.renderContainer(orientation, elements);
   }
 };
