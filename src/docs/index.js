@@ -48,6 +48,7 @@ const Container = styled.div`
 
 const Block = styled.div`
   width: 100%;
+  padding-top: 25px;
 `;
 
 const LogsContainer = styled.div`
@@ -78,8 +79,6 @@ const LogsPane = () => <Logs key="logs" data={data} path="path>path?path"
 const InputPane = () => <JsonInput key="jsonInput" id="json-input-1"
                                    value={JSON.stringify(createRandomObj(3, true), null, 2)}
                                    onChange={onChange} width="100%" height="100%"/>;
-//   {/*<Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>*/}
-// {/*];*/}
 
 const demoFlexPanes = {
   type: 'container',
@@ -98,7 +97,8 @@ const demoFlexPanes = {
       ]
     },
     {
-      type: 'element'
+      type: 'element',
+      value: <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>
     }
   ]
 };
