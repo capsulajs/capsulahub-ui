@@ -72,21 +72,40 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
+const gridItems = [
+  <Logs key="logs" data={data} path="path>path?path" onClear={() => console.log('Clear all')}
+        onResend={(item) => console.log('Resend', item)}/>,
+  <JsonInput key="jsonInput" id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+             onChange={onChange} width="100%" height="100%"/>,
+  <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>
+];
+
+const demoFlexPanes = {
+  type: 'container',
+  orientation: 'vertical',
+  elements: [
+    {
+      type: 'container',
+      orientation: 'horizontal',
+      elements: [
+        { type: 'element' },
+        {
+          type: 'container',
+          orientation: 'vertical',
+          elements: [{ type: 'element'}, { type: 'element'}]
+        }
+      ]
+    },
+    {
+      type: 'element'
+    }
+  ]
+};
+
 const tabs = [{
-  id: 'logs',
-  title: 'LOGS',
-  content: <Logs data={data}
-                 path="path>path?path"
-                 onClear={() => console.log('Clear all')}
-                 onResend={(item) => console.log('Resend', item)}/>}, {
-  id: 'json-input',
-  title: 'JSON Input',
-  content: <JsonInput id="json-input-1" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                      onChange={onChange} width="100%" height="100%"/>
-}, {
-  id: 'hello',
-  title: 'Typography',
-  content: <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
+  id: 'firstTab',
+  title: 'First Tab',
+  layout: demoFlexPanes
 }];
 
 const App = () => (

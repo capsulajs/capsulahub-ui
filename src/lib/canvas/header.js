@@ -91,8 +91,8 @@ export default class Header extends React.Component {
     return (
       <Container>
         <Tabs>
-          <DragDropContext onDragEnd={this.onDragTab} style={{overflow: 'scroll'}}>
-            <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal" style={{overflow: 'scroll'}}>
+          <DragDropContext onDragEnd={this.onDragTab}>
+            <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
                   {tabs.map((tab, index) => (

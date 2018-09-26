@@ -40,7 +40,13 @@ class Canvas extends React.Component {
   
   handleAddNewTab() {
     const { tabs } = this.state;
-    const newTabs = [...tabs, {id: `tab-${tabs.length + 1}`, title: 'New Tab', content: 'New Content'}];
+    const newTabs = [...tabs, {
+      id: `tab-${tabs.length + 1}`,
+      title: 'New Tab',
+      content: {
+        items: []
+      }
+    }];
     this.setState({
       tabs: newTabs,
       activeIndex: newTabs.length - 1
@@ -69,7 +75,7 @@ class Canvas extends React.Component {
   render() {
     const { tabs, activeIndex } = this.state;
     const tab = tabs[activeIndex];
-    
+
     return (
       <Container>
         <Header tabs={tabs}
@@ -79,7 +85,7 @@ class Canvas extends React.Component {
                 onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}/>
         <Content>
-          {tab && tab.content}
+          <Grid layout={tab.layout}/>
         </Content>
       </Container>
     );
