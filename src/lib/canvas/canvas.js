@@ -24,25 +24,18 @@ const Content = styled.div`
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
+    this.handleSelectTab = this.handleSelectTab.bind(this);
+    this.handleAddNewTab = this.handleAddNewTab.bind(this);
+    this.handleRemoveTab = this.handleRemoveTab.bind(this);
+    this.handleDragTab = this.handleDragTab.bind(this);
     this.state = {
       tabs: this.props.tabs,
       activeIndex: 0
     };
-    this.handleSelectTab = this.handleSelectTab.bind(this);
-    this.handleAddNewTab = this.handleAddNewTab.bind(this);
-    this.handleDragTab = this.handleDragTab.bind(this);
   }
   
   handleSelectTab(activeIndex) {
     this.setState({ activeIndex });
-  }
-  
-  handleDragTab(result) {
-    if (!result.destination) {
-      return;
-    }
-    const tabs = reorder(this.state.tabs, result.source.index, result.destination.index);
-    this.setState({ tabs, activeIndex: result.destination.index });
   }
   
   handleAddNewTab() {
@@ -54,17 +47,23 @@ class Canvas extends React.Component {
     });
   }
   
-  handleEdit({type, index}) {
+  handleRemoveTab(index) {
     let { tabs, activeIndex } = this.state;
-    if (type === 'delete') {
-      tabs.splice(index, 1);
-    }
+    tabs.splice(index, 1);
     if (index - 1 >= 0) {
       activeIndex = index - 1;
     } else {
       activeIndex = 0;
     }
     this.setState({ tabs, activeIndex });
+  }
+  
+  handleDragTab(result) {
+    if (!result.destination) {
+      return;
+    }
+    const tabs = reorder(this.state.tabs, result.source.index, result.destination.index);
+    this.setState({ tabs, activeIndex: result.destination.index });
   }
   
   render() {
@@ -77,11 +76,10 @@ class Canvas extends React.Component {
                 activeIndex={activeIndex}
                 onSelectTab={this.handleSelectTab}
                 onAddNewTab={this.handleAddNewTab}
+                onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}/>
         <Content>
-          <Grid>
-            {[tab.content, tab.content]}
-          </Grid>
+          {tab && tab.content}
         </Content>
       </Container>
     );
