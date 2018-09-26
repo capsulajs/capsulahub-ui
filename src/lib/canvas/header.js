@@ -5,45 +5,59 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   background: #515151;
+  color: #A9A9A9;
+  width: 100%;
 `;
 
-const AddNewTab = styled.div`
-  font-size: 31px;
+const Tabs = styled.div`
+  width: calc(100% - 39px);
+  overflow-x: scroll;
+  ::-webkit-scrollbar {
+    background: #515151;
+    height: 2px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: #3F3F3F;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #797979;
+  }
+`;
+
+const AddNew = styled.div`
+  font-size: 30px;
   color: #A9A9A9;
   cursor: pointer;
   width: 39px;
-  height: 39px;
   text-align: center;
-  
   &:hover {
     color: #FEFEFE;
   }
 `;
 
-const CloseTab = styled.span`
+const Title = styled.div`white-space: nowrap`;
+const Close = styled.span`
   cursor: pointer;
   margin: auto;
   padding-left: 5px;
-  
   &:hover {
     color: #FEFEFE;
   }
 `;
 
-const grid = 8;
 const getListStyle = () => ({
   background: '#515151',
   display: 'flex',
-  padding: grid,
-  overflow: 'auto',
-  width: 'calc(100% - 39px)'
+  padding: '8px'
 });
+
 const getTabStyle = (isDragging, draggableStyle, isActive) => ({
   userSelect: 'none',
   textTransform: 'uppercase',
-  padding: grid / 2,
-  margin: `0 ${grid}px 0 0`,
+  padding: '4px',
+  margin: `0 8px 0 0`,
   background: '#515151',
   color: isActive ? '#FEFEFE' : '#A9A9A9',
   display: 'flex',
@@ -76,33 +90,35 @@ export default class Header extends React.Component {
     
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragTab}>
-          <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
-                {tabs.map((tab, index) => (
-                  <Draggable key={tab.id} draggableId={tab.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div ref={provided.innerRef}
-                           {...provided.draggableProps}
-                           {...provided.dragHandleProps}
-                           style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, activeIndex === index)}
-                           onMouseEnter={() => this.onHoverTab(index)}
-                           onMouseLeave={() => this.onHoverTab(-1)}>
-                        <div onClick={() => this.onSelectTab(index)}>{tab.title}</div>
-                        {activeIndex !== index &&
-                          <CloseTab style={getTabCloseStyle(hoverIndex === index)}
-                                    onClick={() => this.onRemoveTab(index)}>&#10005;</CloseTab>}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <AddNewTab onClick={this.onAddNewTab}>+</AddNewTab>
+        <Tabs>
+          <DragDropContext onDragEnd={this.onDragTab} style={{overflow: 'scroll'}}>
+            <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal" style={{overflow: 'scroll'}}>
+              {(provided, snapshot) => (
+                <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
+                  {tabs.map((tab, index) => (
+                    <Draggable key={tab.id} draggableId={tab.id} index={index}>
+                      {(provided, snapshot) => (
+                        <div ref={provided.innerRef}
+                             {...provided.draggableProps}
+                             {...provided.dragHandleProps}
+                             style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, activeIndex === index)}
+                             onMouseEnter={() => this.onHoverTab(index)}
+                             onMouseLeave={() => this.onHoverTab(-1)}>
+                          <Title onClick={() => this.onSelectTab(index)}>{tab.title}</Title>
+                          {activeIndex !== index &&
+                          <Close style={getTabCloseStyle(hoverIndex === index)}
+                                 onClick={() => this.onRemoveTab(index)}>&#10005;</Close>}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </Tabs>
+        <AddNew onClick={this.onAddNewTab}>+</AddNew>
       </Container>
     );
   }
