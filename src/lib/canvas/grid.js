@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
+import ContainerDimensions from 'react-container-dimensions'
 import { guid, excludeById, includes } from '../utils';
 
 const Container = styled.div`
@@ -23,21 +24,23 @@ const Controls = styled.div`
   flex-direction: row;
   justify-content: space-between;
   position: absolute;
-  width: 50px;
   background: #515151;
-  padding: 5px;
   font-size: 10px;
   z-index: 9999;
 `;
 const HorizontalSplitter = styled.span`
   cursor: pointer;
-  margin-top: -1px;
+  margin: 4px 5px 5px 8px;
 `;
 const VerticalSplitter = styled.span`
   cursor: pointer;
   transform: rotate(-90deg);
+  margin: 5px;
 `;
-const Remove = styled.span`cursor: pointer`;
+const Remove = styled.span`
+  cursor: pointer;
+  margin: 5px 8px 5px 5px;
+`;
 
 const styles = {
   container: {
@@ -134,21 +137,30 @@ export default class Grid extends React.Component {
   renderElement(element, key) {
     const { type, value, orientation, elements } = element;
     const style = styles.element[orientation];
+    const split = (type) => this.split.bind(this, element, type);
+    const minSize = 100;
+    const maxSize = 1000;
     
     if (type === 'container') {
       return (<ReflexElement key={key}>{this.renderContainer(orientation, elements)}</ReflexElement>);
     }
     
     return (
-      <ReflexElement key={key} style={style} minSize="100" maxSize="1000">
-        <Container>
-          <Controls className="controls">
-            <HorizontalSplitter onClick={this.split.bind(this, element, 'horizontal')}>&#9776;</HorizontalSplitter>
-            <VerticalSplitter onClick={this.split.bind(this, element, 'vertical')}>&#9776;</VerticalSplitter>
-            <Remove onClick={this.remove.bind(this, element)}>&#10005;</Remove>
-          </Controls>
-          {value}
-        </Container>
+      <ReflexElement key={key} style={style} minSize={minSize} maxSize={maxSize}>
+        <ContainerDimensions>
+          {({width, height}) => {
+            return (
+              <Container>
+                <Controls className="controls">
+                  {height / 2 > minSize &&<HorizontalSplitter onClick={split('horizontal')}>&#9776;</HorizontalSplitter>}
+                  {width / 2 > minSize &&<VerticalSplitter onClick={split('vertical')}>&#9776;</VerticalSplitter>}
+                  <Remove onClick={this.remove.bind(this, element)}>&#10005;</Remove>
+                </Controls>
+                {value}
+              </Container>
+            );
+          }}
+        </ContainerDimensions>
       </ReflexElement>
     );
   }
