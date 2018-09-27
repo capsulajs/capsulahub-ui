@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
 import ContainerDimensions from 'react-container-dimensions'
-import { guid, excludeById, includes } from '../utils';
+import { excludeById } from '../utils';
+import { buildLayout, removeElement } from './utils';
 
 const Container = styled.div`
   width: 100%;
@@ -19,6 +20,7 @@ const Container = styled.div`
     }
   }
 `;
+
 const Controls = styled.div`
   display: flex;
   flex-direction: row;
@@ -71,63 +73,43 @@ const styles = {
 
 export default class Grid extends React.Component {
   constructor(props) {
-    console.log('init -> Grid');
-    
     super(props);
     this.onDestroy = props.onDestroy.bind(this);
-    this.build = this.build.bind(this);
+    this.removeElement = this.removeElement.bind(this);
+    this.splitElement = this.splitElement.bind(this);
     this.state = {
       layout: props.layout
     }
   }
   
-  componentWillUpdate(nextProps) {
-    const { layout: newLayout } = nextProps;
-    const { layout } = this.state;
-    
-    if (layout && !newLayout) {
-      this.setState({ layout: null });
-    }
-    
-    if (!layout && newLayout) {
-      this.setState({ layout: newLayout });
-    }
-    
-    if (newLayout && layout && newLayout.id !== layout.id) {
-      this.setState({ layout: newLayout });
-    }
-  }
+  // componentWillUpdate(nextProps) {
+  //   const { layout: newLayout } = nextProps;
+  //   const { layout } = this.state;
+  //
+  //   if (layout && !newLayout) {
+  //     this.setState({ layout: null });
+  //   }
+  //
+  //   if (!layout && newLayout) {
+  //     this.setState({ layout: newLayout });
+  //   }
+  //
+  //   if (newLayout && layout && newLayout.id !== layout.id) {
+  //     this.setState({ layout: newLayout });
+  //   }
+  // }
   
-  build(layout, element, orientation) {
-    switch (true) {
-      case layout === element:
-        return {
-          id: guid(),
-          type: 'container',
-          orientation,
-          elements: [{ ...element }, { type: 'element', id: guid() }]
-        };
-      case layout.type === 'element':
-        return layout;
-      default:
-        return {
-          type: 'container',
-          orientation: layout.orientation,
-          elements: layout.elements.map(curr => this.build(curr, element, orientation))
-        }
-    }
-  }
   
-  split(element, orientation) {
+  splitElement(element, orientation) {
     if (element.type === 'container') {
       return;
     }
     this.setState((state) => ({
-      layout: this.build(state.layout, element, orientation)
+      layout: buildLayout(state.layout, element, orientation)
     }));
   }
   
-  remove(element) {
+  removeElement(element) {
     if (element === this.state.layout.elements[0]) {
       if (this.state.layout.elements.length > 1) {
         this.setState(state => ({
@@ -141,34 +123,26 @@ export default class Grid extends React.Component {
       }
       return;
     }
-
-    const reduce = (layout, element) => {
-      if (layout.type === 'element') {
-        return layout;
-      } else {
-        if (includes(layout.elements, element)) {
-          return {
-            ...layout,
-            elements: excludeById(layout.elements, element.id)
-          };
-        } else {
-          return {
-            ...layout,
-            elements: layout.elements.map(curr => reduce(curr, element))
-          }
-        }
-      }
-    };
-
-    this.setState(state => ({
-      layout: reduce(state.layout, element)
+    this.setState((state) => ({
+      layout: removeElement(state.layout, element)
     }));
+  }
+  
+  renderControls(element, canSplitHorizontal, canSplitVertical) {
+    return (
+      <Controls className="controls">
+        {canSplitHorizontal &&
+        <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>}
+        {canSplitVertical &&
+        <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>}
+        <Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>
+      </Controls>
+    );
   }
   
   renderElement(element, key) {
     const { type, value, orientation, elements } = element;
-    const style = styles.element[orientation];
-    const split = (type) => this.split.bind(this, element, type);
+    const style = styles.element[orientation || 'horizontal'];
     const minSize = 100;
     const maxSize = 1000;
     
@@ -182,11 +156,7 @@ export default class Grid extends React.Component {
           {({width, height}) => {
             return (
               <Container>
-                <Controls className="controls">
-                  {height / 4 > minSize &&<HorizontalSplitter onClick={split('horizontal')}>&#9776;</HorizontalSplitter>}
-                  {width / 4 > minSize &&<VerticalSplitter onClick={split('vertical')}>&#9776;</VerticalSplitter>}
-                  <Remove onClick={this.remove.bind(this, element)}>&#10005;</Remove>
-                </Controls>
+                {this.renderControls(element, height / 4 > minSize, width / 4 > minSize)}
                 {value}
               </Container>
             );
@@ -198,23 +168,19 @@ export default class Grid extends React.Component {
   
   renderContainer(orientation, elements) {
     const reduce = (acc, element, idx) => {
-      const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation]}/>;
+      const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']}/>;
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
     
     return (
-      <ReflexContainer orientation={orientation} style={styles.container}>
+      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
         {elements.reduce(reduce, [])}
       </ReflexContainer>
     );
   }
   
   render() {
-    if (!this.state.layout) {
-      return 'No Layout...'
-    }
-    
     const { orientation, elements } = this.state.layout;
     return this.renderContainer(orientation, elements);
   }

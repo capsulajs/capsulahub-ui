@@ -1,18 +1,5 @@
 import { excludeById, guid, includes } from '../utils';
 
-// if (element === this.state.layout.elements[0]) {
-//   if (this.state.layout.elements.length > 1) {
-//     this.setState(state => ({
-//       layout: {
-//         ...state.layout,
-//         elements: excludeById(state.layout.elements, element.id)
-//       }
-//     }));
-//   } else {
-//     this.onDestroy();
-//   }
-// }
-
 export const buildLayout = (layout, element, orientation) => {
   switch (true) {
     case layout === element:

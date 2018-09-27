@@ -127,30 +127,34 @@ const demoFlexPanes = {
 
 const tabs = [{
   id: guid(),
-  title: 'First Tab',
+  title: 'Tab 1',
   layout: demoFlexPanes
 }, {
   id: guid(),
-  title: 'Second Tab',
+  title: 'Tab 2',
   layout: {
     id: guid(),
     type: 'container',
+    orientation: 'horizontal',
     elements: [{
       id: guid(),
       type: 'element',
       value: <Form/>
+    }, {
+      id: guid(),
+      type: 'element'
     }]
   }
 }, {
   id: guid(),
-  title: 'Third Tab'
+  title: 'Tab 3'
 }];
 
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 75 }}>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas (vertical):</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
       <Canvas tabs={tabs}/>
     </Block>
     <Block>
