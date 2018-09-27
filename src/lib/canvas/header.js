@@ -9,6 +9,7 @@ const Container = styled.div`
   background: #515151;
   color: #A9A9A9;
   width: 100%;
+  overflow: hidden;
 `;
 
 const Tabs = styled.div`
@@ -24,13 +25,15 @@ const Tabs = styled.div`
   ::-webkit-scrollbar-thumb {
     background: #797979;
   }
+  overflow-y: hidden;
 `;
 
 const AddNew = styled.div`
-  font-size: 30px;
+  font-size: 35px;
   color: #A9A9A9;
   cursor: pointer;
   width: 39px;
+  height: 39px;
   text-align: center;
   &:hover {
     color: #FEFEFE;

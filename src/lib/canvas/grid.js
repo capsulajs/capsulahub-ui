@@ -89,6 +89,7 @@ export default class Grid extends React.Component {
           elements: [{ ...element }, { type: 'element', id: guid() }]
         };
       case layout.type === 'element':
+        console.log()
         return layout;
       default:
         return {
@@ -110,7 +111,16 @@ export default class Grid extends React.Component {
   
   remove(element) {
     if (element === this.state.layout.elements[0]) {
-      this.onDestroy();
+      if (this.state.layout.elements.length > 1) {
+        this.setState(state => ({
+          layout: {
+            ...state.layout,
+            elements: excludeById(state.layout.elements, element.id)
+          }
+        }));
+      } else {
+        this.onDestroy();
+      }
       return;
     }
 
@@ -119,7 +129,10 @@ export default class Grid extends React.Component {
         return layout;
       } else {
         if (includes(layout.elements, element)) {
-          return excludeById(layout.elements, element.id)[0];
+          return {
+            ...layout,
+            elements: excludeById(layout.elements, element.id)
+          };
         } else {
           return {
             ...layout,
@@ -152,8 +165,8 @@ export default class Grid extends React.Component {
             return (
               <Container>
                 <Controls className="controls">
-                  {height / 2 > minSize &&<HorizontalSplitter onClick={split('horizontal')}>&#9776;</HorizontalSplitter>}
-                  {width / 2 > minSize &&<VerticalSplitter onClick={split('vertical')}>&#9776;</VerticalSplitter>}
+                  {height / 4 > minSize &&<HorizontalSplitter onClick={split('horizontal')}>&#9776;</HorizontalSplitter>}
+                  {width / 4 > minSize &&<VerticalSplitter onClick={split('vertical')}>&#9776;</VerticalSplitter>}
                   <Remove onClick={this.remove.bind(this, element)}>&#10005;</Remove>
                 </Controls>
                 {value}

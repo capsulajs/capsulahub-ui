@@ -90,24 +90,38 @@ const demoFlexPanes = {
     {
       id: guid(),
       type: 'element',
-      value: <Text/>
+      value: <LogsPane/>
     },
-    // {
-    //   type: 'container',
-    //   orientation: 'horizontal',
-    //   elements: [
-    //     { type: 'element', value: <LogsPane/> },
-    //     {
-    //       type: 'container',
-    //       orientation: 'vertical',
-    //       elements: [{ type: 'element', value: <InputPane/> }, { type: 'element', value: 'Container 3' }]
-    //     }
-    //   ]
-    // },
-    // {
-    //   type: 'element',
-    //   value: <InputPane/>
-    // }
+    {
+      id: guid(),
+      type: 'container',
+      orientation: 'horizontal',
+      elements: [
+        {
+          id: guid(),
+          type: 'element',
+          value: <Text/> },
+        {
+          id: guid(),
+          type: 'container',
+          orientation: 'vertical',
+          elements: [{
+            id: guid(),
+            type: 'element',
+            value: <InputPane/>
+          }, {
+            id: guid(),
+            type: 'element',
+            value: 'Container 3'
+          }]
+        }
+      ]
+    },
+    {
+      id: guid(),
+      type: 'element',
+      value: <InputPane/>
+    }
   ]
 };
 
