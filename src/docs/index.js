@@ -126,12 +126,24 @@ const demoFlexPanes = {
 };
 
 const tabs = [{
-  id: 'firstTab',
+  id: guid(),
   title: 'First Tab',
   layout: demoFlexPanes
 }, {
-  id: 'secondTab',
-  title: 'Empty Tab'
+  id: guid(),
+  title: 'Second Tab',
+  layout: {
+    id: guid(),
+    type: 'container',
+    elements: [{
+      id: guid(),
+      type: 'element',
+      value: <Form/>
+    }]
+  }
+}, {
+  id: guid(),
+  title: 'Third Tab'
 }];
 
 const App = () => (

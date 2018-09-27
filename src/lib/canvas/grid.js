@@ -71,11 +71,30 @@ const styles = {
 
 export default class Grid extends React.Component {
   constructor(props) {
+    console.log('init -> Grid');
+    
     super(props);
     this.onDestroy = props.onDestroy.bind(this);
     this.build = this.build.bind(this);
     this.state = {
-      layout: props.layout || { type: 'element' }
+      layout: props.layout
+    }
+  }
+  
+  componentWillUpdate(nextProps) {
+    const { layout: newLayout } = nextProps;
+    const { layout } = this.state;
+    
+    if (layout && !newLayout) {
+      this.setState({ layout: null });
+    }
+    
+    if (!layout && newLayout) {
+      this.setState({ layout: newLayout });
+    }
+    
+    if (newLayout && layout && newLayout.id !== layout.id) {
+      this.setState({ layout: newLayout });
     }
   }
   
@@ -89,7 +108,6 @@ export default class Grid extends React.Component {
           elements: [{ ...element }, { type: 'element', id: guid() }]
         };
       case layout.type === 'element':
-        console.log()
         return layout;
       default:
         return {
@@ -185,10 +203,6 @@ export default class Grid extends React.Component {
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
     
-    if (!elements) {
-      return null;
-    }
-    
     return (
       <ReflexContainer orientation={orientation} style={styles.container}>
         {elements.reduce(reduce, [])}
@@ -197,6 +211,10 @@ export default class Grid extends React.Component {
   }
   
   render() {
+    if (!this.state.layout) {
+      return 'No Layout...'
+    }
+    
     const { orientation, elements } = this.state.layout;
     return this.renderContainer(orientation, elements);
   }

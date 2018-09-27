@@ -90,7 +90,7 @@ class Canvas extends React.Component {
                 onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}/>
         <Content>
-          {tab && tab.layout ? <Grid layout={tab.layout} onDestroy={this.handleOnDestroyGrid}/> : 'No Content...'}
+          <Grid layout={tab.layout} onDestroy={this.handleOnDestroyGrid}/>
         </Content>
       </Container>
     );
