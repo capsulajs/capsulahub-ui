@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
 import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader, Canvas } from '../lib';
+import { guid } from '../lib/utils';
 
 const data = [];
 for (let i = 0; i < 25; i++) {
@@ -79,27 +80,34 @@ const LogsPane = () => <Logs key="logs" data={data} path="path>path?path"
 const InputPane = () => <JsonInput key="jsonInput" id="json-input-1"
                                    value={JSON.stringify(createRandomObj(3, true), null, 2)}
                                    onChange={onChange} width="100%" height="100%"/>;
+const Text = () => <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>;
 
 const demoFlexPanes = {
+  id: guid(),
   type: 'container',
   orientation: 'vertical',
   elements: [
     {
-      type: 'container',
-      orientation: 'horizontal',
-      elements: [
-        { type: 'element', value: <LogsPane/> },
-        {
-          type: 'container',
-          orientation: 'vertical',
-          elements: [{ type: 'element', value: <InputPane/> }, { type: 'element', value: 'Container 3' }]
-        }
-      ]
-    },
-    {
+      id: guid(),
       type: 'element',
-      value: <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>
-    }
+      value: <Text/>
+    },
+    // {
+    //   type: 'container',
+    //   orientation: 'horizontal',
+    //   elements: [
+    //     { type: 'element', value: <LogsPane/> },
+    //     {
+    //       type: 'container',
+    //       orientation: 'vertical',
+    //       elements: [{ type: 'element', value: <InputPane/> }, { type: 'element', value: 'Container 3' }]
+    //     }
+    //   ]
+    // },
+    // {
+    //   type: 'element',
+    //   value: <InputPane/>
+    // }
   ]
 };
 

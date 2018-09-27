@@ -15,3 +15,16 @@ export const reorder = (list, startIndex, endIndex) => {
   result.splice(endIndex, 0, removed);
   return result;
 };
+
+export const guid = (n = 6) => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let text = '';
+  for (let i = 0; i < n; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
+export const findById = (elements, id) => elements.find(element => element.id === id);
+export const excludeById = (elements, id) => elements.filter(element => element.id !== id);
+export const includes = (elements, element) => !!findById(elements, element.id);

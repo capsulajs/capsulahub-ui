@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { defaultFontFamily, defaultBackgroundColor } from '../constants';
 import Header from './header';
 import Grid from './grid';
-import { reorder } from '../utils';
+import { reorder, guid } from '../utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -28,6 +28,7 @@ class Canvas extends React.Component {
     this.handleAddNewTab = this.handleAddNewTab.bind(this);
     this.handleRemoveTab = this.handleRemoveTab.bind(this);
     this.handleDragTab = this.handleDragTab.bind(this);
+    this.handleOnDestroyGrid = this.handleOnDestroyGrid.bind(this);
     this.state = {
       tabs: this.props.tabs,
       activeIndex: 0
@@ -41,7 +42,7 @@ class Canvas extends React.Component {
   handleAddNewTab() {
     const { tabs } = this.state;
     const newTabs = [...tabs, {
-      id: `tab-${tabs.length + 1}`,
+      id: `tab-${guid()}`,
       title: 'New Tab',
       content: {
         items: []
@@ -72,10 +73,14 @@ class Canvas extends React.Component {
     this.setState({ tabs, activeIndex: result.destination.index });
   }
   
+  handleOnDestroyGrid() {
+    this.handleRemoveTab(this.state.activeIndex);
+  }
+  
   render() {
     const { tabs, activeIndex } = this.state;
     const tab = tabs[activeIndex];
-
+    
     return (
       <Container>
         <Header tabs={tabs}
@@ -85,7 +90,7 @@ class Canvas extends React.Component {
                 onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}/>
         <Content>
-          <Grid layout={tab.layout}/>
+          {tab && tab.layout ? <Grid layout={tab.layout} onDestroy={this.handleOnDestroyGrid}/> : 'No Content...'}
         </Content>
       </Container>
     );

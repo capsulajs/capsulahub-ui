@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
+import { guid, excludeById, includes } from '../utils';
 
 const Container = styled.div`
   width: 100%;
@@ -65,18 +66,13 @@ const styles = {
   }
 };
 
-const defaultLayout = {
-  type: 'container',
-  orientation: 'horizontal',
-  elements: [{type: 'element'}]
-};
-
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
+    this.onDestroy = props.onDestroy.bind(this);
     this.build = this.build.bind(this);
     this.state = {
-      layout: props.layout || defaultLayout
+      layout: props.layout || { type: 'element' }
     }
   }
   
@@ -84,9 +80,10 @@ export default class Grid extends React.Component {
     switch (true) {
       case layout === element:
         return {
+          id: guid(),
           type: 'container',
           orientation,
-          elements: [{ type: 'element' }, { type: 'element' }]
+          elements: [{ ...element }, { type: 'element', id: guid() }]
         };
       case layout.type === 'element':
         return layout;
@@ -110,16 +107,16 @@ export default class Grid extends React.Component {
   
   remove(element) {
     if (element === this.state.layout.elements[0]) {
-      alert('Cannot remove root element!');
+      this.onDestroy();
       return;
     }
-    
+
     const reduce = (layout, element) => {
       if (layout.type === 'element') {
         return layout;
       } else {
-        if (layout.elements.indexOf(element) >= 0) {
-          return { type: 'element' };
+        if (includes(layout.elements, element)) {
+          return excludeById(layout.elements, element.id)[0];
         } else {
           return {
             ...layout,
@@ -128,8 +125,10 @@ export default class Grid extends React.Component {
         }
       }
     };
-    
-    this.setState((state) => ({ layout: reduce(state.layout, element) }));
+
+    this.setState(state => ({
+      layout: reduce(state.layout, element)
+    }));
   }
   
   renderElement(element, key) {
@@ -160,6 +159,10 @@ export default class Grid extends React.Component {
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
+    
+    if (!elements) {
+      return null;
+    }
     
     return (
       <ReflexContainer orientation={orientation} style={styles.container}>
