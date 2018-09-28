@@ -16,6 +16,7 @@ export const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+export const parceInteger = (str) => (str.match(/\d+/g) || []).map(Number)[0];
 export const guid = (n = 6) => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let text = '';

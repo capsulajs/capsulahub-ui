@@ -75,57 +75,38 @@ export default class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.onDestroy = props.onDestroy.bind(this);
+    this.onUpdate = props.onUpdate.bind(this);
     this.removeElement = this.removeElement.bind(this);
     this.splitElement = this.splitElement.bind(this);
-    this.state = {
-      layout: props.layout
-    }
   }
   
-  // componentWillUpdate(nextProps) {
-  //   const { layout: newLayout } = nextProps;
-  //   const { layout } = this.state;
-  //
-  //   if (layout && !newLayout) {
-  //     this.setState({ layout: null });
-  //   }
-  //
-  //   if (!layout && newLayout) {
-  //     this.setState({ layout: newLayout });
-  //   }
-  //
-  //   if (newLayout && layout && newLayout.id !== layout.id) {
-  //     this.setState({ layout: newLayout });
-  //   }
-  // }
-  
-  
   splitElement(element, orientation) {
-    if (element.type === 'container') {
-      return;
+    if (element.type !== 'container') {
+      this.onUpdate({
+        layout: buildLayout(this.props.tab.layout, element, orientation)
+      });
     }
-    this.setState((state) => ({
-      layout: buildLayout(state.layout, element, orientation)
-    }));
   }
   
   removeElement(element) {
-    if (element === this.state.layout.elements[0]) {
-      if (this.state.layout.elements.length > 1) {
-        this.setState(state => ({
+    const layout = this.props.tab.layout;
+    
+    if (element === layout.elements[0]) {
+      if (layout.elements.length > 1) {
+        this.onUpdate({
           layout: {
-            ...state.layout,
-            elements: excludeById(state.layout.elements, element.id)
+            ...layout,
+            elements: excludeById(layout.elements, element.id)
           }
-        }));
+        });
       } else {
         this.onDestroy();
       }
-      return;
+    } else {
+      this.onUpdate({
+        layout: removeElement(layout, element)
+      });
     }
-    this.setState((state) => ({
-      layout: removeElement(state.layout, element)
-    }));
   }
   
   renderControls(element, canSplitHorizontal, canSplitVertical) {
@@ -173,15 +154,25 @@ export default class Grid extends React.Component {
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
     
-    return (
-      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
-        {elements.reduce(reduce, [])}
-      </ReflexContainer>
-    );
+    if (elements) {
+      return (
+        <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
+          {elements.reduce(reduce, [])}
+        </ReflexContainer>
+      );
+    }
+    
+    return 'No elements..';
   }
   
   render() {
-    const { orientation, elements } = this.state.layout;
-    return this.renderContainer(orientation, elements);
+    const { tab } = this.props;
+
+    if (tab && tab.layout) {
+      const { orientation, elements } = tab.layout;
+      return this.renderContainer(orientation, elements);
+    }
+  
+    return 'No Layout..';
   }
 };

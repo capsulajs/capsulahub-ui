@@ -66,9 +66,13 @@ const getTabStyle = (isDragging, draggableStyle, isActive) => ({
   display: 'flex',
   flexDirection: 'row',
   paddingBottom: '2px',
-  borderBottom: isActive ? 'solid 1px #FEFEFE' : 'none',
   ...draggableStyle,
 });
+
+const getTitleStyle = (isActive) => ({
+  borderBottom: isActive ? 'solid 1px #FEFEFE' : 'none',
+});
+
 const getTabCloseStyle = (isHover) => ({
   color: isHover ? '' : '#515151'
 });
@@ -87,9 +91,30 @@ export default class Header extends React.Component {
     this.setState({ hoverIndex });
   }
   
-  render() {
+  renderDraggable(tab, index) {
     const { tabs, activeIndex } = this.props;
     const { hoverIndex } = this.state;
+    const isActive = activeIndex === index;
+    const isHover = hoverIndex === index;
+    const isRemovable = tabs.length > 1;
+    
+    return (
+      <Draggable key={tab.id} draggableId={tab.id} index={index}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+               style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, isActive)}
+               onMouseEnter={() => this.onHoverTab(index)}
+               onMouseLeave={() => this.onHoverTab(-1)}>
+            <Title onClick={() => this.onSelectTab(index)} style={getTitleStyle(isActive)}>{tab.title}</Title>
+            {isRemovable &&<Close onClick={() => this.onRemoveTab(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
+          </div>
+        )}
+      </Draggable>
+    );
+  }
+  
+  render() {
+    const { tabs } = this.props;
     
     return (
       <Container>
@@ -98,23 +123,7 @@ export default class Header extends React.Component {
             <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
-                  {tabs.map((tab, index) => (
-                    <Draggable key={tab.id} draggableId={tab.id} index={index}>
-                      {(provided, snapshot) => (
-                        <div ref={provided.innerRef}
-                             {...provided.draggableProps}
-                             {...provided.dragHandleProps}
-                             style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, activeIndex === index)}
-                             onMouseEnter={() => this.onHoverTab(index)}
-                             onMouseLeave={() => this.onHoverTab(-1)}>
-                          <Title onClick={() => this.onSelectTab(index)}>{tab.title}</Title>
-                          {activeIndex !== index &&
-                          <Close style={getTabCloseStyle(hoverIndex === index)}
-                                 onClick={() => this.onRemoveTab(index)}>&#10005;</Close>}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                  {tabs.map((tab, index) => this.renderDraggable(tab, index))}
                   {provided.placeholder}
                 </div>
               )}

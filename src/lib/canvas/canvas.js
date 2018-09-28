@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { defaultFontFamily, defaultBackgroundColor } from '../constants';
 import Header from './header';
 import Grid from './grid';
-import { reorder, guid } from '../utils';
+import { reorder, guid, parceInteger } from '../utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -28,7 +28,8 @@ class Canvas extends React.Component {
     this.handleAddNewTab = this.handleAddNewTab.bind(this);
     this.handleRemoveTab = this.handleRemoveTab.bind(this);
     this.handleDragTab = this.handleDragTab.bind(this);
-    this.handleOnDestroyGrid = this.handleOnDestroyGrid.bind(this);
+    this.handleGridUpdate = this.handleGridUpdate.bind(this);
+    this.handleGridDestroy = this.handleGridDestroy.bind(this);
     this.state = {
       tabs: this.props.tabs,
       activeIndex: 0
@@ -43,7 +44,7 @@ class Canvas extends React.Component {
     const { tabs } = this.state;
     const newTabs = [...tabs, {
       id: `tab-${guid()}`,
-      title: 'New Tab',
+      title: `Tab ${parceInteger(tabs[tabs.length - 1].title) + 1}`,
       content: {
         items: []
       }
@@ -57,10 +58,8 @@ class Canvas extends React.Component {
   handleRemoveTab(index) {
     let { tabs, activeIndex } = this.state;
     tabs.splice(index, 1);
-    if (index - 1 >= 0) {
-      activeIndex = index - 1;
-    } else {
-      activeIndex = 0;
+    if (activeIndex > tabs.length) {
+      activeIndex = activeIndex - 1;
     }
     this.setState({ tabs, activeIndex });
   }
@@ -73,8 +72,14 @@ class Canvas extends React.Component {
     this.setState({ tabs, activeIndex: result.destination.index });
   }
   
-  handleOnDestroyGrid() {
+  handleGridDestroy() {
     this.handleRemoveTab(this.state.activeIndex);
+  }
+  
+  handleGridUpdate(tab) {
+    const { tabs, activeIndex } = this.state;
+    tabs[activeIndex].layout = tab.layout;
+    this.setState({ tabs });
   }
   
   render() {
@@ -90,7 +95,7 @@ class Canvas extends React.Component {
                 onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}/>
         <Content>
-          <Grid layout={tab.layout} onDestroy={this.handleOnDestroyGrid}/>
+          <Grid tab={tab} onUpdate={this.handleGridUpdate} onDestroy={this.handleGridDestroy}/>
         </Content>
       </Container>
     );
