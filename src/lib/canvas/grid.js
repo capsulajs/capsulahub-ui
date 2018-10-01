@@ -111,15 +111,11 @@ export default class Grid extends React.Component {
   }
   
   renderControls(element) {
-    const { elements } = this.props.tab.layout;
-    const [first, last] = elements;
-    const isRemovable = first && last ? true : first !== element && first.value;
-    
     return (
       <Controls className="controls">
         <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>
         <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>
-        {isRemovable &&<Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>}
+        <Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>
       </Controls>
     );
   }

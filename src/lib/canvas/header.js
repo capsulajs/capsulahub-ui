@@ -84,6 +84,7 @@ export default class Header extends React.Component {
     this.onSelectTab = props.onSelectTab.bind(this);
     this.onAddNewTab = props.onAddNewTab.bind(this);
     this.onRemoveTab = props.onRemoveTab.bind(this);
+    this.onUpdateTab = props.onUpdateTab.bind(this);
     this.onDragTab = props.onDragTab.bind(this);
     this.state = {
       hoverIndex: -1,
@@ -95,8 +96,8 @@ export default class Header extends React.Component {
     this.setState({ hoverIndex });
   }
   
-  handleKeyDown(key) {
-  
+  handleEdit(editIndex) {
+    this.setState({ editIndex });
   }
   
   renderDraggable(tab, index) {
@@ -104,13 +105,9 @@ export default class Header extends React.Component {
     const { hoverIndex, editIndex } = this.state;
     const isActive = activeIndex === index;
     const isHover = hoverIndex === index;
-    const isRemovable = tabs.length > 1;
     const isEditing = editIndex === index;
-  
-    // <Title onClick={() => this.onSelectTab(index)} style={getTitleStyle(isActive)}>{tab.title}</Title>
-    // <EditableTab value={tab.title}
-    // isEditing={isEditing}
-    // onEdit={() => this.handleEdit(index)}/>
+    const isRemovable = !isEditing && tabs.length > 1;
+    
     return (
       <Draggable key={tab.id} draggableId={tab.id} index={index}>
         {(provided, snapshot) => (
@@ -118,7 +115,13 @@ export default class Header extends React.Component {
                style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, isActive)}
                onMouseEnter={() => this.handleHover(index)}
                onMouseLeave={() => this.handleHover(-1)}>
-            <Title onClick={() => this.onSelectTab(index)} style={getTitleStyle(isActive)}>{tab.title}</Title>
+            <EditableTab value={tab.title}
+                         isEditing={isEditing}
+                         isActive={isActive}
+                         onSelect={() => this.onSelectTab(index)}
+                         onEditStart={() => this.handleEdit(index)}
+                         onEditEnd={() => this.handleEdit(-1)}
+                         onUpdate={(value) => this.onUpdateTab(value)}/>
             {isRemovable &&
               <Close onClick={() => this.onRemoveTab(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
           </div>
