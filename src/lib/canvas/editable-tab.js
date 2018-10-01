@@ -71,9 +71,9 @@ export default class EditableTab extends React.Component {
 
     return (
       <div>
-        {!isEditing&&<Title style={getTitleStyle(isActive)}
-                            onClick={this.onSelect}
-                            onDoubleClick={this.onEditStart}>{value}</Title>}
+        {!isEditing &&<Title style={getTitleStyle(isActive)}
+                             onClick={this.onSelect}
+                             onDoubleClick={this.onEditStart}>{value}</Title>}
         {isEditing &&<Input
           value={value}
           onChange={this.handleChange}

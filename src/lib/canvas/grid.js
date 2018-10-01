@@ -83,9 +83,7 @@ export default class Grid extends React.Component {
   
   splitElement(element, orientation) {
     if (element.type !== 'container') {
-      this.onUpdate({
-        layout: buildLayout(this.props.tab.layout, element, orientation)
-      });
+      this.onUpdate(buildLayout(this.props.tab.layout, element, orientation));
     }
   }
   
@@ -94,19 +92,12 @@ export default class Grid extends React.Component {
     
     if (element === layout.elements[0]) {
       if (layout.elements.length > 1) {
-        this.onUpdate({
-          layout: {
-            ...layout,
-            elements: excludeById(layout.elements, element.id)
-          }
-        });
+        this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
       } else {
         this.onDestroy();
       }
     } else {
-      this.onUpdate({
-        layout: removeElement(layout, element)
-      });
+      this.onUpdate(removeElement(layout, element));
     }
   }
   
@@ -158,12 +149,7 @@ export default class Grid extends React.Component {
   
   render() {
     const { tab } = this.props;
-
-    if (tab && tab.layout) {
-      const { orientation, elements } = tab.layout;
-      return this.renderContainer(orientation, elements);
-    }
-  
-    return 'No Layout..';
+    const { orientation, elements } = tab.layout;
+    return this.renderContainer(orientation, elements);
   }
 };

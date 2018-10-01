@@ -41,7 +41,6 @@ const AddNew = styled.div`
   }
 `;
 
-const Title = styled.div`white-space: nowrap`;
 const Close = styled.span`
   cursor: pointer;
   margin: auto;
@@ -57,7 +56,7 @@ const getListStyle = () => ({
   padding: '8px'
 });
 
-const getTabStyle = (isDragging, draggableStyle, isActive) => ({
+const getTabStyle = (draggableStyle, isActive) => ({
   userSelect: 'none',
   textTransform: 'uppercase',
   padding: '4px',
@@ -68,10 +67,6 @@ const getTabStyle = (isDragging, draggableStyle, isActive) => ({
   flexDirection: 'row',
   paddingBottom: '2px',
   ...draggableStyle,
-});
-
-const getTitleStyle = (isActive) => ({
-  borderBottom: isActive ? 'solid 1px #FEFEFE' : 'none',
 });
 
 const getTabCloseStyle = (isHover) => ({
@@ -110,9 +105,9 @@ export default class Header extends React.Component {
     
     return (
       <Draggable key={tab.id} draggableId={tab.id} index={index}>
-        {(provided, snapshot) => (
+        {(provided) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-               style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, isActive)}
+               style={getTabStyle(provided.draggableProps.style, isActive)}
                onMouseEnter={() => this.handleHover(index)}
                onMouseLeave={() => this.handleHover(-1)}>
             <EditableTab value={tab.title}

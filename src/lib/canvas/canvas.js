@@ -29,11 +29,22 @@ class Canvas extends React.Component {
     this.handleRemoveTab = this.handleRemoveTab.bind(this);
     this.handleDragTab = this.handleDragTab.bind(this);
     this.handleUpdateTab = this.handleUpdateTab.bind(this);
-    this.handleGridUpdate = this.handleGridUpdate.bind(this);
+    this.handleLayoutUpdate = this.handleLayoutUpdate.bind(this);
     this.handleGridDestroy = this.handleGridDestroy.bind(this);
     this.state = {
       tabs: this.props.tabs,
       activeIndex: 0
+    };
+  }
+  
+  getDefaultLayout() {
+    return {
+      id: guid(),
+      type: 'container',
+      elements: [{
+        id: guid(),
+        type: 'element'
+      }]
     };
   }
   
@@ -46,14 +57,7 @@ class Canvas extends React.Component {
     const newTabs = [...tabs, {
       id: `tab-${guid()}`,
       title: `Tab ${parceInteger(tabs[tabs.length - 1].title) + 1}`,
-      layout: {
-        id: guid(),
-        type: 'container',
-        elements: [{
-          id: guid(),
-          type: 'element'
-        }]
-      }
+      layout: this.getDefaultLayout()
     }];
     this.setState({
       tabs: newTabs,
@@ -85,23 +89,15 @@ class Canvas extends React.Component {
   }
   
   handleGridDestroy() {
-    console.log('DESTROY');
-    
     const { tabs, activeIndex } = this.state;
     const tab = tabs[activeIndex];
-    tab.layout = {
-      ...tab.layout,
-      elements: [{
-        id: guid(),
-        type: 'element'
-      }]
-    };
+    tab.layout = this.getDefaultLayout();
     this.setState({ tabs });
   }
   
-  handleGridUpdate(tab) {
+  handleLayoutUpdate(layout) {
     const { tabs, activeIndex } = this.state;
-    tabs[activeIndex].layout = tab.layout;
+    tabs[activeIndex].layout = layout;
     this.setState({ tabs });
   }
   
@@ -119,7 +115,7 @@ class Canvas extends React.Component {
                 onDragTab={this.handleDragTab}
                 onUpdateTab={this.handleUpdateTab}/>
         <Content>
-          <Grid tab={tab} onUpdate={this.handleGridUpdate} onDestroy={this.handleGridDestroy}/>
+          <Grid tab={tab} onUpdate={this.handleLayoutUpdate} onDestroy={this.handleGridDestroy}/>
         </Content>
       </Container>
     );
