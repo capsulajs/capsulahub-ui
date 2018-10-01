@@ -90,7 +90,7 @@ const demoFlexPanes = {
     {
       id: guid(),
       type: 'element',
-      value: <LogsPane/>
+      value: 'Just text'
     },
     {
       id: guid(),
@@ -100,27 +100,14 @@ const demoFlexPanes = {
         {
           id: guid(),
           type: 'element',
-          value: <Text/> },
+          value: 'Just text'
+        },
         {
           id: guid(),
-          type: 'container',
-          orientation: 'vertical',
-          elements: [{
-            id: guid(),
-            type: 'element',
-            value: <InputPane/>
-          }, {
-            id: guid(),
-            type: 'element',
-            value: 'Container 3'
-          }]
+          type: 'element',
+          value: 'Just text'
         }
       ]
-    },
-    {
-      id: guid(),
-      type: 'element',
-      value: <InputPane/>
     }
   ]
 };
@@ -139,7 +126,7 @@ const tabs = [{
     elements: [{
       id: guid(),
       type: 'element',
-      value: <Form/>
+      value: 'Just text'
     }, {
       id: guid(),
       type: 'element'
