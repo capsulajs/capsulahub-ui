@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
-import ContainerDimensions from 'react-container-dimensions'
 import { excludeById } from '../utils';
 import { buildLayout, removeElement } from './utils';
 
@@ -47,12 +46,12 @@ const Remove = styled.span`
 const styles = {
   container: {
     background: '#414141',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    flex: '1 1 0%',
+    WebkitBoxFlex: 1
   },
   element: {
-    horizontal: {
-      flex: '1 1 0%'
-    },
+    horizontal: {},
     vertical: {
       overflow: 'visible'
     }
@@ -111,12 +110,16 @@ export default class Grid extends React.Component {
     }
   }
   
-  renderControls(element, canSplitHorizontal, canSplitVertical) {
+  renderControls(element) {
+    const { elements } = this.props.tab.layout;
+    const [first, last] = elements;
+    const isRemovable = first && last ? true : first !== element && first.value;
+    
     return (
       <Controls className="controls">
         <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>
         <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>
-        <Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>
+        {isRemovable &&<Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>}
       </Controls>
     );
   }
@@ -124,25 +127,21 @@ export default class Grid extends React.Component {
   renderElement(element, key) {
     const { type, value, orientation, elements } = element;
     const style = styles.element[orientation || 'horizontal'];
-    const minSize = 100;
+    const minSize = 200;
     const maxSize = 1000;
     
     if (type === 'container') {
-      return (<ReflexElement key={key}>{this.renderContainer(orientation, elements)}</ReflexElement>);
+      return (<ReflexElement key={key} styles={styles.container}>
+        {this.renderContainer(orientation, elements)}
+      </ReflexElement>);
     }
     
     return (
       <ReflexElement key={key} style={style} minSize={minSize} maxSize={maxSize}>
-        <ContainerDimensions>
-          {({width, height}) => {
-            return (
-              <Container>
-                {this.renderControls(element, height / 4 > minSize, width / 4 > minSize)}
-                {value}
-              </Container>
-            );
-          }}
-        </ContainerDimensions>
+        <Container>
+          {this.renderControls(element)}
+          {value}
+        </Container>
       </ReflexElement>
     );
   }
