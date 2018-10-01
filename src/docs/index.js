@@ -145,9 +145,6 @@ const tabs = [{
       type: 'element'
     }]
   }
-}, {
-  id: guid(),
-  title: 'Tab 3'
 }];
 
 const App = () => (

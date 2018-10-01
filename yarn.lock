@@ -4427,10 +4427,6 @@ react-container-dimensions@^1.4.1:
     prop-types "^15.6.2"
     schedule "^0.5.0"
 
-react-edit-inline@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/react-edit-inline/-/react-edit-inline-1.0.8.tgz#d144670b5217b5adc6c5bcb6976fc6b257f09b72"
-
 react-is@^16.3.1:
   version "16.4.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.4.2.tgz#84891b56c2b6d9efdee577cc83501dfc5ecead88"

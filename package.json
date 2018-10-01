@@ -15,7 +15,6 @@
     "react-click-outside": "^3.0.1",
     "react-container-dimensions": "^1.4.1",
     "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-edit-inline": "^1.0.8",
     "react-json-view": "^1.19.1",
     "react-reflex": "^2.2.9",
     "typeface-montserrat": "^0.0.54"

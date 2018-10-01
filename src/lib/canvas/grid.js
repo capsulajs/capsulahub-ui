@@ -50,7 +50,9 @@ const styles = {
     overflow: 'hidden'
   },
   element: {
-    horizontal: {},
+    horizontal: {
+      flex: '1 1 0%'
+    },
     vertical: {
       overflow: 'visible'
     }
@@ -112,10 +114,8 @@ export default class Grid extends React.Component {
   renderControls(element, canSplitHorizontal, canSplitVertical) {
     return (
       <Controls className="controls">
-        {canSplitHorizontal &&
-        <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>}
-        {canSplitVertical &&
-        <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>}
+        <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>
+        <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>
         <Remove onClick={() => this.removeElement(element)}>&#10005;</Remove>
       </Controls>
     );
@@ -153,16 +153,12 @@ export default class Grid extends React.Component {
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
-    
-    if (elements) {
-      return (
-        <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
-          {elements.reduce(reduce, [])}
-        </ReflexContainer>
-      );
-    }
-    
-    return 'No elements..';
+  
+    return (
+      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
+        {elements.reduce(reduce, [])}
+      </ReflexContainer>
+    );
   }
   
   render() {

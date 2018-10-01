@@ -45,8 +45,13 @@ class Canvas extends React.Component {
     const newTabs = [...tabs, {
       id: `tab-${guid()}`,
       title: `Tab ${parceInteger(tabs[tabs.length - 1].title) + 1}`,
-      content: {
-        items: []
+      layout: {
+        id: guid(),
+        type: 'container',
+        elements: [{
+          id: guid(),
+          type: 'element'
+        }]
       }
     }];
     this.setState({
@@ -73,7 +78,16 @@ class Canvas extends React.Component {
   }
   
   handleGridDestroy() {
-    this.handleRemoveTab(this.state.activeIndex);
+    const { tabs, activeIndex } = this.state;
+    const tab = tabs[activeIndex];
+    tab.layout = {
+      ...tab.layout,
+      elements: [{
+        id: guid(),
+        type: 'element'
+      }]
+    };
+    this.setState({ tabs });
   }
   
   handleGridUpdate(tab) {

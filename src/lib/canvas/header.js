@@ -1,6 +1,7 @@
 import React  from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import EditableTab from './editable-tab';
 
 const Container = styled.div`
   display: flex;
@@ -84,29 +85,42 @@ export default class Header extends React.Component {
     this.onAddNewTab = props.onAddNewTab.bind(this);
     this.onRemoveTab = props.onRemoveTab.bind(this);
     this.onDragTab = props.onDragTab.bind(this);
-    this.state = { hoverIndex: -1 };
+    this.state = {
+      hoverIndex: -1,
+      editIndex: -1
+    };
   }
   
-  onHoverTab(hoverIndex) {
+  handleHover(hoverIndex) {
     this.setState({ hoverIndex });
+  }
+  
+  handleKeyDown(key) {
+  
   }
   
   renderDraggable(tab, index) {
     const { tabs, activeIndex } = this.props;
-    const { hoverIndex } = this.state;
+    const { hoverIndex, editIndex } = this.state;
     const isActive = activeIndex === index;
     const isHover = hoverIndex === index;
     const isRemovable = tabs.length > 1;
-    
+    const isEditing = editIndex === index;
+  
+    // <Title onClick={() => this.onSelectTab(index)} style={getTitleStyle(isActive)}>{tab.title}</Title>
+    // <EditableTab value={tab.title}
+    // isEditing={isEditing}
+    // onEdit={() => this.handleEdit(index)}/>
     return (
       <Draggable key={tab.id} draggableId={tab.id} index={index}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
                style={getTabStyle(snapshot.isDragging, provided.draggableProps.style, isActive)}
-               onMouseEnter={() => this.onHoverTab(index)}
-               onMouseLeave={() => this.onHoverTab(-1)}>
+               onMouseEnter={() => this.handleHover(index)}
+               onMouseLeave={() => this.handleHover(-1)}>
             <Title onClick={() => this.onSelectTab(index)} style={getTitleStyle(isActive)}>{tab.title}</Title>
-            {isRemovable &&<Close onClick={() => this.onRemoveTab(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
+            {isRemovable &&
+              <Close onClick={() => this.onRemoveTab(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
           </div>
         )}
       </Draggable>
@@ -120,7 +134,7 @@ export default class Header extends React.Component {
       <Container>
         <Tabs>
           <DragDropContext onDragEnd={this.onDragTab}>
-            <Droppable droppableId="CapsulaJSCanvasHeader" direction="horizontal">
+            <Droppable droppableId="CapsulaJSDraggableTabs" direction="horizontal">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
                   {tabs.map((tab, index) => this.renderDraggable(tab, index))}
