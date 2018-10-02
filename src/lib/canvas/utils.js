@@ -5,10 +5,8 @@ const findEmptyContainers = (elements) => {
   const check = (element) => {
     if (element.elements && element.elements.length > 0) {
       element.elements.forEach((element) => check(element));
-    } else {
-      if (element.type === 'container') {
-        ids.push(element.id);
-      }
+    } else if (element.type === 'container') {
+      ids.push(element.id);
     }
   };
   elements.forEach(check);
@@ -37,6 +35,7 @@ export const buildLayout = (layout, element, orientation) => {
       return layout;
     default:
       return {
+        id: guid(),
         type: 'container',
         orientation: layout.orientation,
         elements: layout.elements.map(curr => buildLayout(curr, element, orientation))

@@ -145,11 +145,9 @@ export default class Grid extends React.Component {
   render() {
     const { tab } = this.props;
     const { orientation, elements } = tab.layout;
-    
     if (elements.length) {
       return this.renderContainer(orientation, elements);
     }
-    
     return 'No elements..';
   }
 };
