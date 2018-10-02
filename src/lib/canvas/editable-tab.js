@@ -53,7 +53,7 @@ export default class EditableTab extends React.Component {
   
   handleSave () {
     const value = this.state.value.trim();
-    if (value) {
+    if (value && value.length > 3) {
       this.onUpdate(value);
       this.onEditEnd();
     }
