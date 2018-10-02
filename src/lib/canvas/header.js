@@ -95,6 +95,13 @@ export default class Header extends React.Component {
     this.setState({ editIndex });
   }
   
+  wrapOnRemove(index) {
+    return (e) => {
+      e.preventDefault();
+      this.onRemoveTab(index);
+    }
+  }
+  
   renderDraggable(tab, index) {
     const { tabs, activeIndex } = this.props;
     const { hoverIndex, editIndex } = this.state;
@@ -118,7 +125,7 @@ export default class Header extends React.Component {
                          onEditEnd={() => this.handleEdit(-1)}
                          onUpdate={(value) => this.onUpdateTab(value)}/>
             {isRemovable &&
-              <Close onClick={() => this.onRemoveTab(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
+              <Close onClick={this.wrapOnRemove(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
           </div>
         )}
       </Draggable>
