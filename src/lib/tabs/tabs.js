@@ -1,7 +1,7 @@
 import React  from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import EditableTab from './editable-tab';
+import Tab from './tab';
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +73,7 @@ const getTabCloseStyle = (isHover) => ({
   color: isHover ? '' : '#515151'
 });
 
-export default class Header extends React.Component {
+export default class DraggableTabs extends React.Component {
   constructor(props) {
     super(props);
     this.onSelectTab = props.onSelectTab.bind(this);
@@ -117,7 +117,7 @@ export default class Header extends React.Component {
                style={getTabStyle(provided.draggableProps.style, isActive)}
                onMouseEnter={() => this.handleHover(index)}
                onMouseLeave={() => this.handleHover(-1)}>
-            <EditableTab value={tab.title}
+            <Tab value={tab.title}
                          isEditing={isEditing}
                          isActive={isActive}
                          onSelect={() => this.onSelectTab(index)}
@@ -125,7 +125,7 @@ export default class Header extends React.Component {
                          onEditEnd={() => this.handleEdit(-1)}
                          onUpdate={(value) => this.onUpdateTab(value)}/>
             {isRemovable &&
-              <Close onClick={this.wrapOnRemove(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
+            <Close onClick={this.wrapOnRemove(index)} style={getTabCloseStyle(isHover)}>&#10005;</Close>}
           </div>
         )}
       </Draggable>

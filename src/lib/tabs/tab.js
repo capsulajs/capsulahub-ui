@@ -30,7 +30,7 @@ const getTitleStyle = (isActive) => ({
   borderBottom: isActive ? 'solid 1px #FEFEFE' : 'none',
 });
 
-export default class EditableTab extends React.Component {
+export default class Tab extends React.Component {
   constructor(props) {
     super(props);
     this.ESCAPE_KEY = 27;
@@ -68,7 +68,7 @@ export default class EditableTab extends React.Component {
   render() {
     const { isEditing, isActive } = this.props;
     const { value } = this.state;
-
+    
     return (
       <div>
         {!isEditing &&<Title style={getTitleStyle(isActive)}

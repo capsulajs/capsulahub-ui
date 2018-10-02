@@ -106,11 +106,9 @@ const demoFlexPanes = {
 
 const tabs = [{
   id: guid(),
-  title: 'Tab 1',
   layout: demoFlexPanes
 }, {
   id: guid(),
-  title: 'Tab 2',
   layout: {
     id: guid(),
     type: 'container',
@@ -118,7 +116,7 @@ const tabs = [{
     elements: [{
       id: guid(),
       type: 'element',
-      value: 'Just text'
+      value: <Form/>
     }, {
       id: guid(),
       type: 'element'
