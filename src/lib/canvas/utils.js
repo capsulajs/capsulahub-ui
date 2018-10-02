@@ -1,9 +1,5 @@
 import { excludeById, guid, includes } from '../utils';
 
-const injectEmptyRootElement = (elements) => {
-  return elements.length === 0 ? [{ guid: guid(), type: 'element' }] : elements;
-};
-
 const findEmptyContainers = (elements) => {
   const ids = [];
   const check = (element) => {
@@ -61,7 +57,6 @@ export const removeElement = (layout, element) => {
   }
   
   elements = filterEmptyContainers(elements);
-  elements = injectEmptyRootElement(elements);
 
   return {
     ...layout,
