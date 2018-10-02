@@ -75,7 +75,6 @@ const styles = {
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
-    this.onDestroy = props.onDestroy.bind(this);
     this.onUpdate = props.onUpdate.bind(this);
     this.removeElement = this.removeElement.bind(this);
     this.splitElement = this.splitElement.bind(this);
@@ -91,11 +90,7 @@ export default class Grid extends React.Component {
     const layout = this.props.tab.layout;
     
     if (element === layout.elements[0]) {
-      if (layout.elements.length > 1) {
-        this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
-      } else {
-        this.onDestroy();
-      }
+      this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
     } else {
       this.onUpdate(removeElement(layout, element));
     }

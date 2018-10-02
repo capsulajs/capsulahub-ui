@@ -28,9 +28,8 @@ class Canvas extends React.Component {
     this.handleAddNewTab = this.handleAddNewTab.bind(this);
     this.handleRemoveTab = this.handleRemoveTab.bind(this);
     this.handleDragTab = this.handleDragTab.bind(this);
-    this.handleUpdateTab = this.handleUpdateTab.bind(this);
+    this.handleTitleUpdate = this.handleTitleUpdate.bind(this);
     this.handleLayoutUpdate = this.handleLayoutUpdate.bind(this);
-    this.handleGridDestroy = this.handleGridDestroy.bind(this);
     this.state = {
       tabs: this.props.tabs,
       activeIndex: 0
@@ -82,16 +81,9 @@ class Canvas extends React.Component {
     this.setState({ tabs, activeIndex: result.destination.index });
   }
   
-  handleUpdateTab(title) {
+  handleTitleUpdate(title) {
     const { tabs, activeIndex } = this.state;
     tabs[activeIndex].title = title;
-    this.setState({ tabs });
-  }
-  
-  handleGridDestroy() {
-    const { tabs, activeIndex } = this.state;
-    const tab = tabs[activeIndex];
-    tab.layout = this.getDefaultLayout();
     this.setState({ tabs });
   }
   
@@ -113,9 +105,9 @@ class Canvas extends React.Component {
                 onAddNewTab={this.handleAddNewTab}
                 onRemoveTab={this.handleRemoveTab}
                 onDragTab={this.handleDragTab}
-                onUpdateTab={this.handleUpdateTab}/>
+                onUpdateTab={this.handleTitleUpdate}/>
         <Content>
-          <Grid tab={tab} onUpdate={this.handleLayoutUpdate} onDestroy={this.handleGridDestroy}/>
+          <Grid tab={tab} onUpdate={this.handleLayoutUpdate}/>
         </Content>
       </Container>
     );

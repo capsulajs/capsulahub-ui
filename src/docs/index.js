@@ -74,14 +74,6 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
-const LogsPane = () => <Logs key="logs" data={data} path="path>path?path"
-                             onClear={() => console.log('Clear all')}
-                             onResend={(item) => console.log('Resend', item)}/>;
-const InputPane = () => <JsonInput key="jsonInput" id="json-input-1"
-                                   value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                                   onChange={onChange} width="100%" height="100%"/>;
-const Text = () => <Paragraph key="text" fontSize="2.5rem">Hello, World!</Paragraph>;
-
 const demoFlexPanes = {
   id: guid(),
   type: 'container',
