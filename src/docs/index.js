@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
-import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader } from '../lib';
+import { Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader, Canvas } from '../lib';
+import { guid } from '../lib/utils';
 
 const data = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 25; i++) {
   const ratio = Math.random();
   if (0 <= ratio && ratio <= 1 / 3) {
     data.push({
@@ -48,6 +49,7 @@ const Container = styled.div`
 
 const Block = styled.div`
   width: 100%;
+  padding-top: 25px;
 `;
 
 const LogsContainer = styled.div`
@@ -55,7 +57,7 @@ const LogsContainer = styled.div`
   padding-bottom: 10px;
 `;
 
-const Form = styled.form`
+const FormContaner = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -65,9 +67,70 @@ const Form = styled.form`
   padding: 10px;
 `;
 
+const Form = () => <FormContaner>
+  <Input onChange={onChange} placeholder="Default Input"/>
+  <Dropdown title="Dropdown" items={items} onChange={onChange}/>
+  <CheckBox label="Checkbox" onChange={onChange}/>
+  <Button theme="active" text="Submit"/>
+</FormContaner>;
+
+const demoFlexPanes = {
+  id: guid(),
+  type: 'container',
+  orientation: 'vertical',
+  elements: [
+    {
+      id: guid(),
+      type: 'element',
+      value: 'Just text'
+    },
+    {
+      id: guid(),
+      type: 'container',
+      orientation: 'horizontal',
+      elements: [
+        {
+          id: guid(),
+          type: 'element',
+          value: 'Just text'
+        },
+        {
+          id: guid(),
+          type: 'element',
+          value: 'Just text'
+        }
+      ]
+    }
+  ]
+};
+
+const tabs = [{
+  id: guid(),
+  layout: demoFlexPanes
+}, {
+  id: guid(),
+  layout: {
+    id: guid(),
+    type: 'container',
+    orientation: 'horizontal',
+    elements: [{
+      id: guid(),
+      type: 'element',
+      value: <Form/>
+    }, {
+      id: guid(),
+      type: 'element'
+    }]
+  }
+}];
+
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
+    <Block style={{ height: 500, paddingBottom: 75 }}>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
+      <Canvas tabs={tabs}/>
+    </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>
@@ -80,12 +143,7 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Form:</Paragraph>
-      <Form>
-        <Input onChange={onChange} placeholder="Default Input"/>
-        <Dropdown title="Dropdown" items={items} onChange={onChange}/>
-        <CheckBox label="Checkbox" onChange={onChange}/>
-        <Button theme="active" text="Submit"/>
-      </Form>
+      <Form/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modal:</Paragraph>
@@ -103,7 +161,8 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
-      <JsonInput id="json-input" value={JSON.stringify(createRandomObj(3, true), null, 2)} onChange={onChange} width="100%" height="200px"/>
+      <JsonInput id="json-input-0" value={JSON.stringify(createRandomObj(3, true), null, 2)}
+                 onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Typography:</Paragraph>
@@ -116,4 +175,4 @@ const App = () => (
   </Container>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));

@@ -16,5 +16,6 @@ export const Paragraph = styled.p`
   font-size: ${props => props.fontSize || defaultFomtSize};
   font-family: ${props => props.fontFamily || defaultFontFamily};
   color: ${props => props.color || defaultColor};
-  background-color: ${props => props.backgroundColor || defaultBackgroundColor};
+  background-color: ${props => props.backgroundColor || defaultBackgroundColor}
+  margin: 0;
 `;

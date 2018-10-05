@@ -33,15 +33,10 @@ const Container = styled.div`
   background: #3F3F3F;
   width: 100%;
   height: 100%;
-  min-height: 100px;
+  min-height: 200px;
+  min-width: 300px;
   color: #767676;
   position: relative;
-`;
-
-const Wrapper = styled.div`
-  width: calc(100% - 20px);
-  height: calc(100% - 20px);
-  padding: 10px;
 `;
 
 const Header = styled.div`
@@ -49,6 +44,7 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   font-size: 13px;
+  padding: 10px;
 `;
 
 const Image = styled.img`
@@ -102,15 +98,10 @@ const Button = styled.div`
 `;
 
 const Content = styled.div`
-  width: calc(100% - 30px);
-  height: calc(100% - 60px);
-`;
-
-const ContentMargin = styled.div`
-  margin-left: 30px;
-  margin-top: 20px;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 45px);
+  height: calc(100% - 65px);
+  margin-left: 35px;
+  margin-right: 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
     background: #3F3F3F;
@@ -144,45 +135,33 @@ const Row = ({ number, item, onResend }) => {
       <Button onClick={onResend}> Resend</Button>
     </FlexRow>;
   }
-  
   if (item.status === 'info') {
     content = <Info>{item.data}</Info>
   }
-  
   return (<FlexRow>
-    <RowPoint>
-      {item.status === 'fail' &&<Point></Point>}
-    </RowPoint>
+    <RowPoint>{item.status === 'fail' &&<Point></Point>}</RowPoint>
     <RowNumber>{number}</RowNumber>
     <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
     <RowContent>{content}</RowContent>
   </FlexRow>)
 };
 
-const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
-  <Wrapper>
-    <Header>
-      <FlexRow>
-        <Image src={image}/>
-        <Title>LOG</Title>
-      </FlexRow>
-      <Clear onClick={onClear}>&#10005;</Clear>
-    </Header>
-    <Content>
-      {data ? (
-        <ContentMargin>
-          {data.map((item, index) => <Row number={index + 1}
-                                          item={item}
-                                          onDelete={onDelete || false}
-                                          onEdit={onEdit || false}
-                                          onResend={() => onResend(item)}
-                                          key={index}/>
-          )}
-        </ContentMargin>
-      ) : (<div>No Data..</div>)}
-    </Content>
-  </Wrapper>
-  {path && <Footer>{path}</Footer>}
+export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
+  <Header>
+    <FlexRow>
+      <Image src={image}/>
+      <Title>LOG</Title>
+    </FlexRow>
+    <Clear onClick={onClear}>&#10005;</Clear>
+  </Header>
+  <Content>
+    {data ? (
+      data.map((item, index) => <Row key={index} number={index + 1} item={item}
+                                     onDelete={onDelete || false}
+                                     onEdit={onEdit || false}
+                                     onResend={() => onResend(item)}/>
+      )
+    ) : (<div>No Data..</div>)}
+  </Content>
+  <Footer>{path}</Footer>
 </Container>;
-
-export { Logs };

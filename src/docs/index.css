@@ -6,6 +6,7 @@ body {
 ::-webkit-scrollbar {
     background: #3F3F3F;
     width: 2px;
+    height: 2px;
 }
 ::-webkit-scrollbar-corner {
     background: #3F3F3F;
