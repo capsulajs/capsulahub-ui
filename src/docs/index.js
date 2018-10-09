@@ -74,7 +74,7 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
-const demoFlexPanes = {
+const layout = {
   id: guid(),
   type: 'container',
   orientation: 'vertical',
@@ -104,32 +104,12 @@ const demoFlexPanes = {
   ]
 };
 
-const tabs = [{
-  id: guid(),
-  layout: demoFlexPanes
-}, {
-  id: guid(),
-  layout: {
-    id: guid(),
-    type: 'container',
-    orientation: 'horizontal',
-    elements: [{
-      id: guid(),
-      type: 'element',
-      value: <Form/>
-    }, {
-      id: guid(),
-      type: 'element'
-    }]
-  }
-}];
-
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 75 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
-      <Canvas tabs={tabs}/>
+      <Canvas layout={layout}/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>

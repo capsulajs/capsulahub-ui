@@ -20,25 +20,19 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.state = {
-      tabs: this.props.tabs,
-      activeIndex: 0
-    };
+    this.state = { layout: this.props.layout };
   }
-  
+
   handleUpdate(layout) {
-    const { tabs, activeIndex } = this.state;
-    tabs[activeIndex].layout = layout;
-    this.setState({ tabs });
+    this.setState({ layout });
   }
-  
+
   render() {
-    const { tabs, activeIndex } = this.state;
-    const tab = tabs[activeIndex];
-    
+    const { layout } = this.state;
+
     return (
       <Container>
-        <Grid tab={tab} onUpdate={this.handleUpdate}/>
+        <Grid layout={layout} onUpdate={this.handleUpdate}/>
       </Container>
     );
   }

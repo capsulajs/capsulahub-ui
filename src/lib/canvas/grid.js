@@ -8,11 +8,11 @@ import { buildLayout, removeElement } from './utils';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  
+
   .controls {
     display: none;
   }
-  
+
   &:hover {
     .controls {
       display: flex;
@@ -79,23 +79,23 @@ export default class Grid extends React.Component {
     this.removeElement = this.removeElement.bind(this);
     this.splitElement = this.splitElement.bind(this);
   }
-  
+
   splitElement(element, orientation) {
     if (element.type !== 'container') {
-      this.onUpdate(buildLayout(this.props.tab.layout, element, orientation));
+      this.onUpdate(buildLayout(this.props.layout, element, orientation));
     }
   }
-  
+
   removeElement(element) {
-    const layout = this.props.tab.layout;
-    
+    const layout = this.props.layout;
+
     if (element === layout.elements[0]) {
       this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
     } else {
       this.onUpdate(removeElement(layout, element));
     }
   }
-  
+
   renderControls(element) {
     return (
       <Controls className="controls">
@@ -105,19 +105,19 @@ export default class Grid extends React.Component {
       </Controls>
     );
   }
-  
+
   renderElement(element, key) {
     const { type, value, orientation, elements } = element;
     const style = styles.element[orientation || 'horizontal'];
     const minSize = 200;
     const maxSize = 1000;
-    
+
     if (type === 'container') {
       return (<ReflexElement key={key} styles={styles.container}>
         {this.renderContainer(orientation, elements)}
       </ReflexElement>);
     }
-    
+
     return (
       <ReflexElement key={key} style={style} minSize={minSize} maxSize={maxSize}>
         <Container>
@@ -127,24 +127,23 @@ export default class Grid extends React.Component {
       </ReflexElement>
     );
   }
-  
+
   renderContainer(orientation, elements) {
     const reduce = (acc, element, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']}/>;
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
-  
+
     return (
       <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
         {elements.reduce(reduce, [])}
       </ReflexContainer>
     );
   }
-  
+
   render() {
-    const { tab } = this.props;
-    const { orientation, elements } = tab.layout;
+    const { orientation, elements } = this.props.layout;
     if (elements.length) {
       return this.renderContainer(orientation, elements);
     }
