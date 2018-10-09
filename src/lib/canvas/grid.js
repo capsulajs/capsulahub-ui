@@ -144,7 +144,7 @@ export default class Grid extends React.Component {
 
   render() {
     const { orientation, elements } = this.props.layout;
-    if (elements.length) {
+    if (elements) {
       return this.renderContainer(orientation, elements);
     }
     return 'No elements..';
