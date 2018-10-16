@@ -90,9 +90,10 @@ const App = () => (
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 125 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
-      <div id="listOfComponents" style={{width: 100, height: 100, background: '#fff', margin: 10}}>
+      <div id="listOfComponents" style={{width: 120, height: 80, margin: 10}}>
         <div className="item" draggable="true" id="item1">Draggable text 1</div>
         <div className="item" draggable="true" id="item2">Draggable text 2</div>
+        <div className="item" draggable="true" id="item3">Draggable text 3</div>
       </div>
       <Canvas draggableListId="listOfComponents" layout={layout}/>
     </Block>

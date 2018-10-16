@@ -40,7 +40,6 @@ class Canvas extends React.Component {
 
     return (
       <Container>
-        <div onDrop={(e) => console.log('drop', e.dataTransfer.getData('text'))} style={{width: 100, height: 100, background: '#fff'}}></div>
         <Grid layout={layout} onUpdate={this.handleUpdate}/>
       </Container>
     );

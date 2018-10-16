@@ -4,6 +4,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
 import { excludeById } from '../utils';
 import { buildLayout, removeElement } from './utils';
+import styles from './styles';
 
 const Container = styled.div`
   width: 100%;
@@ -43,41 +44,37 @@ const Remove = styled.span`
   margin: 5px 8px 5px 5px;
 `;
 
-const styles = {
-  container: {
-    background: '#414141',
-    overflow: 'hidden',
-    flex: '1 1 0%',
-    WebkitBoxFlex: 1
-  },
-  element: {
-    horizontal: {},
-    vertical: {
-      overflow: 'visible'
-    }
-  },
-  splitter: {
-    horizontal: {
-      background: '#515151',
-      border: 'none',
-      width: '100%',
-      height: '8px'
-    },
-    vertical: {
-      background: '#515151',
-      border: 'none',
-      width: '8px',
-      height: '100%'
-    }
-  }
-};
-
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.onUpdate = props.onUpdate.bind(this);
     this.removeElement = this.removeElement.bind(this);
     this.splitElement = this.splitElement.bind(this);
+  }
+
+  componentDidMount() {
+    const mount = ({ id, type, elements }) => {
+      if (type === 'container') {
+        const [container] = document.getElementsByClassName(id);
+
+        function dragover(e) {
+          e.preventDefault()
+        }
+        function dragenter(e) {
+          e.preventDefault()
+        }
+
+        function drop(e) {
+          console.log('drop', e.dataTransfer.getData('text'));
+        }
+
+        container.addEventListener('dragover', dragover);
+        container.addEventListener('dragenter', dragenter);
+        container.addEventListener('drop', drop);
+      }
+    }
+
+    mount(this.props.layout);
   }
 
   splitElement(element, orientation) {
@@ -107,20 +104,20 @@ export default class Grid extends React.Component {
   }
 
   renderElement(element, key) {
-    const { type, value, orientation, elements } = element;
+    const { id, type, value, orientation, elements } = element;
     const style = styles.element[orientation || 'horizontal'];
     const minSize = 200;
     const maxSize = 1000;
 
     if (type === 'container') {
       return (<ReflexElement key={key} styles={styles.container}>
-        {this.renderContainer(orientation, elements)}
+        {this.renderContainer(id, orientation, elements)}
       </ReflexElement>);
     }
 
     return (
       <ReflexElement key={key} style={style} minSize={minSize} maxSize={maxSize}>
-        <Container>
+        <Container className={id}>
           {this.renderControls(element)}
           {value}
         </Container>
@@ -128,48 +125,24 @@ export default class Grid extends React.Component {
     );
   }
 
-  renderContainer(orientation, elements) {
+  renderContainer(id, orientation, elements) {
     const reduce = (acc, element, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']}/>;
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
 
-    console.log('REnder container');
-
     return (
-      <ReflexContainer
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => console.log('drop', e.dataTransfer.getData('text'))} orientation={orientation || 'horizontal'} style={styles.container}>
+      <ReflexContainer className={id} orientation={orientation || 'horizontal'} style={styles.container}>
         {elements.reduce(reduce, [])}
       </ReflexContainer>
     );
   }
 
-  wrapInDroppable(container) {
-    console.log(container);
-
-    // function dragover(e) {
-    //   e.preventDefault()
-    // }
-    // function dragenter(e) {
-    //   e.preventDefault()
-    // }
-
-    // function drop(e) {
-    //   console.log('drop', e.dataTransfer.getData('text'));
-    // }
-
-    // container.addEventListener("dragover", dragover);
-    // container.addEventListener("dragenter", dragenter);
-    // container.addEventListener("drop", drop);
-    return container;
-  }
-
   render() {
-    const { orientation, elements } = this.props.layout;
+    const { id, orientation, elements } = this.props.layout;
     if (elements) {
-      return this.renderContainer(orientation, elements);
+      return this.renderContainer(id, orientation, elements);
     }
     return 'No elements..';
   }
