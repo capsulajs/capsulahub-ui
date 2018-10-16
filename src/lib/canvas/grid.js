@@ -135,11 +135,35 @@ export default class Grid extends React.Component {
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
 
+    console.log('REnder container');
+
     return (
-      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
+      <ReflexContainer
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => console.log('drop', e.dataTransfer.getData('text'))} orientation={orientation || 'horizontal'} style={styles.container}>
         {elements.reduce(reduce, [])}
       </ReflexContainer>
     );
+  }
+
+  wrapInDroppable(container) {
+    console.log(container);
+
+    // function dragover(e) {
+    //   e.preventDefault()
+    // }
+    // function dragenter(e) {
+    //   e.preventDefault()
+    // }
+
+    // function drop(e) {
+    //   console.log('drop', e.dataTransfer.getData('text'));
+    // }
+
+    // container.addEventListener("dragover", dragover);
+    // container.addEventListener("dragenter", dragenter);
+    // container.addEventListener("drop", drop);
+    return container;
   }
 
   render() {

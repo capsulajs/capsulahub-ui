@@ -20,11 +20,19 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.state = { layout: this.props.layout };
+    this.state = {
+      layout: this.props.layout,
+    };
   }
 
   handleUpdate(layout) {
     this.setState({ layout });
+  }
+
+  componentDidMount() {
+    for (const el of document.getElementById(this.props.draggableListId).children) {
+      el.addEventListener('dragstart', (e) => e.dataTransfer.setData('text', e.target.id))
+    }
   }
 
   render() {
@@ -32,6 +40,7 @@ class Canvas extends React.Component {
 
     return (
       <Container>
+        <div onDrop={(e) => console.log('drop', e.dataTransfer.getData('text'))} style={{width: 100, height: 100, background: '#fff'}}></div>
         <Grid layout={layout} onUpdate={this.handleUpdate}/>
       </Container>
     );

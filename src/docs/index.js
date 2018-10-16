@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { createRandomObj } from './utils';
 import {
   Paragraph, Logs, Modal, Button, JsonInput, Input,
-  CheckBox, Dropdown, Loader, CanvasProvider, CanvasDraggable,
+  CheckBox, Dropdown, Loader,
   Canvas
 } from '../lib';
 import { guid } from '../lib/utils';
@@ -88,15 +88,14 @@ const layout = {
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <CanvasProvider>
-      <Block style={{ height: 500, paddingBottom: 125 }}>
-        <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
-        <CanvasDraggable name="Glass">
-          <div>Draggable text</div>
-        </CanvasDraggable>
-        <Canvas layout={layout}/>
-      </Block>
-    </CanvasProvider>
+    <Block style={{ height: 500, paddingBottom: 125 }}>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
+      <div id="listOfComponents" style={{width: 100, height: 100, background: '#fff', margin: 10}}>
+        <div className="item" draggable="true" id="item1">Draggable text 1</div>
+        <div className="item" draggable="true" id="item2">Draggable text 2</div>
+      </div>
+      <Canvas draggableListId="listOfComponents" layout={layout}/>
+    </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
       <Loader/>
