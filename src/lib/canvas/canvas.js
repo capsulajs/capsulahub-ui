@@ -30,17 +30,15 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    for (const el of document.getElementById(this.props.draggableListId).children) {
+    for (const el of document.getElementById(this.props.draggableId).children) {
       el.addEventListener('dragstart', (e) => e.dataTransfer.setData('text', e.target.id))
     }
   }
 
   render() {
-    const { layout } = this.state;
-
     return (
       <Container>
-        <Grid layout={layout} onUpdate={this.handleUpdate}/>
+        <Grid layout={this.state.layout} onUpdate={this.handleUpdate}/>
       </Container>
     );
   }

@@ -1,6 +1,6 @@
 export default {
   container: {
-    background: '#414141',
+    // background: '#414141',
     overflow: 'hidden',
     flex: '1 1 0%',
     WebkitBoxFlex: 1

@@ -47,14 +47,14 @@ export const removeElement = (layout, element) => {
   if (layout.type === 'element') {
     return layout;
   }
-  
+
   let elements = [];
   if (includes(layout.elements, element)) {
     elements = excludeById(layout.elements, element.id);
   } else {
     elements = layout.elements.map(curr => removeElement(curr, element));
   }
-  
+
   elements = filterEmptyContainers(elements);
 
   return {
@@ -62,3 +62,5 @@ export const removeElement = (layout, element) => {
     elements
   }
 };
+
+export const union = (arr1, arr2) => arr1.filter(value => -1 !== arr2.indexOf(value));

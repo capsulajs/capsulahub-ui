@@ -95,7 +95,7 @@ const App = () => (
         <div className="item" draggable="true" id="item2">Draggable text 2</div>
         <div className="item" draggable="true" id="item3">Draggable text 3</div>
       </div>
-      <Canvas draggableListId="listOfComponents" layout={layout}/>
+      <Canvas draggableId="listOfComponents" layout={layout}/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
