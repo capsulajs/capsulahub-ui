@@ -125,7 +125,7 @@ export default class Grid extends React.Component {
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
 
-    if (true || elements.length) {
+    if (elements.length) {
       return (
         <ReflexContainer className={id} orientation={orientation || 'horizontal'} style={styles.container}>
           {elements.reduce(reduce, [])}
@@ -133,7 +133,7 @@ export default class Grid extends React.Component {
       );
     }
 
-    return <Dropzone/>;
+    return <Dropzone droppableId={id}/>;
   }
 
   render() {

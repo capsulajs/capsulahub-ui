@@ -25,9 +25,16 @@ const SECTOR_COMBINATION = {
 export default class Dropzone extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       sectors: [null, null]
-    }
+    };
+
+    this.handleOnMouseLeave = this.handleOnMouseLeave.bind(this);
+  }
+
+  handleOnMouseLeave() {
+    this.setState({ sectors: [null, null] });
   }
 
   handleOnMouseEnter(s) {
@@ -46,7 +53,7 @@ export default class Dropzone extends React.Component {
 
   render() {
     return (
-      <Container id={this.props.droppableId}>
+      <Container className={this.props.droppableId} onMouseLeave={this.handleOnMouseLeave}>
         {SECTORS.map((sector) => <Item key={sector}
                                             onMouseEnter={this.handleOnMouseEnter(sector)}
                                             style={this.getBackground(sector)}></Item>
