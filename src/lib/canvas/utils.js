@@ -22,28 +22,20 @@ const filterEmptyContainers = (elements) => {
   });
 };
 
-const ORIENTATION = {
-  '1,2': 'horizontal',
-  '3,4': 'horizontal',
-  '1,4': 'vertical',
-  '2,3': 'vertical'
-};
+const getElements = (element, value, sectors) => {
+  return (elements => reverse => reverse ? elements.reverse() : elements)
+    ([{ ...element, value }, { type: 'element', id: guid() }])
+    (({ '3,4': true, '2,4': true })[sectors.toString()]);
+}
 
-// const ELEMENTS = {
-//   '1,2': [{ ...element }, { type: 'element', id: guid() }],
-//   '3,4': [{ type: 'element', id: guid() }, { ...element }],
-//   '1,4': [{ ...element }, { type: 'element', id: guid() }],
-//   '2,3': [{ type: 'element', id: guid() }, { ...element }]
-// }
-
-export const buildLayout = (layout, element, orientation) => {
+export const buildLayout = (layout, element, orientation, value, sectors) => {
   switch (true) {
     case layout === element:
       return {
         id: guid(),
         type: 'container',
         orientation,
-        elements: [{ ...element }, { type: 'element', id: guid() }]
+        elements: getElements(element, value, sectors)
       };
     case layout.type === 'element':
       return layout;
@@ -52,7 +44,7 @@ export const buildLayout = (layout, element, orientation) => {
         id: guid(),
         type: 'container',
         orientation: layout.orientation,
-        elements: layout.elements.map(curr => buildLayout(curr, element, orientation))
+        elements: layout.elements.map(curr => buildLayout(curr, element, orientation, value, sectors))
       }
   }
 };

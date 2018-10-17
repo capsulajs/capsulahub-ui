@@ -12,14 +12,14 @@ export default {
   container: {
     background: '#414141',
     overflow: 'hidden',
-    ...align
+    // ...align
   },
   element: {
     horizontal: {
-      ...align
+      // ...align
     },
     vertical: {
-      ...align,
+      // ...align,
       overflow: 'visible'
     }
   },

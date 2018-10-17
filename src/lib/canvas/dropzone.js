@@ -50,7 +50,7 @@ export default class Dropzone extends React.Component {
   }
 
   handleOnDrop(e) {
-    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors });
+    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors.sort() });
     this.setState({ sectors: [null, null] });
   }
 
