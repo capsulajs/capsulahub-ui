@@ -15,7 +15,7 @@ const Item = styled.div`
 `;
 
 const SECTORS = [1, 2, 3, 4];
-const SECTOR_COMBINATION = {
+const COMBINATION = {
   1: [2, 3],
   2: [1, 4],
   3: [1, 4],
@@ -30,33 +30,39 @@ export default class Dropzone extends React.Component {
       sectors: [null, null]
     };
 
-    this.handleOnMouseLeave = this.handleOnMouseLeave.bind(this);
+    this.handleOnDragEnter = this.handleOnDragEnter.bind(this);
+    this.handleOnDragOver = this.handleOnDragOver.bind(this);
+    this.handleOnDrop = this.handleOnDrop.bind(this);
   }
 
-  handleOnMouseLeave() {
-    this.setState({ sectors: [null, null] });
-  }
-
-  handleOnMouseEnter(s) {
+  handleOnDragEnter(s) {
     return () => {
       if (this.state.sectors.find(Number)) {
-        this.setState({ sectors: [s, ...union(SECTOR_COMBINATION[s], this.state.sectors)] });
+        this.setState({ sectors: [s, ...union(COMBINATION[s], this.state.sectors)] });
       } else {
         this.setState({ sectors: [s, s + 1 > SECTORS.length ? s - 1 : s + 1] });
       }
     }
   }
 
-  getBackground(s) {
+  handleOnDragOver(e) {
+    e.preventDefault();
+  }
+
+  handleOnDrop(e) {
+    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors });
+    this.setState({ sectors: [null, null] });
+  }
+
+  getStyle(s) {
     return this.state.sectors.find((sector) => sector === s) ? { background: '#DDD' } : {};
   }
 
   render() {
     return (
-      <Container className={this.props.droppableId} onMouseLeave={this.handleOnMouseLeave}>
-        {SECTORS.map((sector) => <Item key={sector}
-                                            onMouseEnter={this.handleOnMouseEnter(sector)}
-                                            style={this.getBackground(sector)}></Item>
+      <Container onDragOver={this.handleOnDragOver} onDrop={this.handleOnDrop}>
+        {SECTORS.map((sector) =>
+          <Item key={sector} onDragEnter={this.handleOnDragEnter(sector)} style={this.getStyle(sector)}></Item>
         )}
       </Container>
     )

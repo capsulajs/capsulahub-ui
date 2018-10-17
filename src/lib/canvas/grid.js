@@ -40,39 +40,28 @@ const Remove = styled.span`
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      creators: this.props.creators
+    };
+
     this.onUpdate = props.onUpdate.bind(this);
     this.removeElement = this.removeElement.bind(this);
-    this.splitElement = this.splitElement.bind(this);
+    this.handleOnDrop = this.handleOnDrop.bind(this);
   }
 
-  componentDidMount() {
-    const mount = ({ id, type, elements }) => {
-      if (type === 'container') {
-        const [container] = document.getElementsByClassName(id);
+  handleOnDrop(element) {
+    const ORIENTATION = {
+      '1,2': 'horizontal',
+      '3,4': 'horizontal',
+      '1,4': 'vertical',
+      '2,3': 'vertical'
+    };
 
-        function dragover(e) {
-          e.preventDefault()
-        }
-        function dragenter(e) {
-          e.preventDefault()
-        }
+    return ({ creatorId, sectors }) => {
+      // element.value = this.state.creators[creatorId].element();
 
-        function drop(e) {
-          console.log('drop', e.dataTransfer.getData('text'));
-        }
-
-        container.addEventListener('dragover', dragover);
-        container.addEventListener('dragenter', dragenter);
-        container.addEventListener('drop', drop);
-      }
-    }
-
-    mount(this.props.layout);
-  }
-
-  splitElement(element, orientation) {
-    if (element.type !== 'container') {
-      this.onUpdate(buildLayout(this.props.layout, element, orientation));
+      this.onUpdate(buildLayout(this.props.layout, element, ORIENTATION[sectors.toString()]));
     }
   }
 
@@ -85,9 +74,6 @@ export default class Grid extends React.Component {
     }
   }
 
-  // <HorizontalSplitter onClick={() => this.splitElement(element, 'horizontal')}>&#9776;</HorizontalSplitter>
-  //       <VerticalSplitter onClick={() => this.splitElement(element, 'vertical')}>&#9776;</VerticalSplitter>
-
   renderControls(element) {
     return (
       <Controls className="controls">
@@ -97,51 +83,47 @@ export default class Grid extends React.Component {
   }
 
   renderElement(element, key) {
-    const { id, type, value, orientation, elements } = element;
-    const style = styles.element[orientation || 'horizontal'];
+    const { type, value, orientation, elements } = element;
     const minSize = 200;
     const maxSize = 1000;
 
     if (type === 'container') {
       return (<ReflexElement key={key} styles={styles.container}>
-        {this.renderContainer(id, orientation, elements)}
+        {this.renderContainer(orientation, elements)}
       </ReflexElement>);
     }
 
     return (
-      <ReflexElement key={key} style={style} minSize={minSize} maxSize={maxSize}>
-        <Container className={id}>
-          {this.renderControls(element)}
-          {value}
-        </Container>
+      <ReflexElement key={key} style={styles.element[orientation || 'horizontal']} minSize={minSize} maxSize={maxSize}>
+        {value
+          ? <Container>{this.renderControls(element)}{value}</Container>
+          : <Dropzone onDrop={this.handleOnDrop(element)}/>
+        }
       </ReflexElement>
     );
   }
 
-  renderContainer(id, orientation, elements) {
+  renderContainer(orientation, elements) {
     const reduce = (acc, element, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']}/>;
       const el = this.renderElement(element, 'E' + idx);
       return idx > 0 ? [...acc, splitter, el] : [...acc, el]
     };
 
-    if (elements.length) {
-      return (
-        <ReflexContainer className={id} orientation={orientation || 'horizontal'} style={styles.container}>
-          {elements.reduce(reduce, [])}
-        </ReflexContainer>
-      );
-    }
-
-    return <Dropzone droppableId={id}/>;
+    return (
+      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
+        {elements.reduce(reduce, [])}
+      </ReflexContainer>
+    );
   }
 
   render() {
-    console.log('render -> Grid')
-    const { id, orientation, elements } = this.props.layout;
-    if (elements) {
-      return this.renderContainer(id, orientation, elements);
+    console.log('render -> Grid', this.props.layout);
+    const { orientation, elements } = this.props.layout;
+    if (elements && elements.length) {
+      return this.renderContainer(orientation, elements);
     }
-    return 'No elements..';
+
+    return <Dropzone onDrop={this.handleOnDrop(this.props.layout)}/>;
   }
 };

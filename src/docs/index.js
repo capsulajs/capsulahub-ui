@@ -80,9 +80,12 @@ const Form = () => <FormContaner>
 
 const layout = {
   id: guid(),
-  type: 'container',
-  orientation: 'vertical',
-  elements: []
+  type: 'element'
+};
+
+const creators = {
+  text: { name: 'Paragraph', element: () => <Paragraph fontSize="2.5rem">Hello, World!</Paragraph> },
+  form: { name: 'Form', element: () => <Form/> }
 };
 
 const App = () => (
@@ -90,12 +93,10 @@ const App = () => (
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 125 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
-      <div id="listOfComponents" style={{width: 120, height: 80, margin: 10}}>
-        <div className="item" draggable="true" id="item1">Draggable text 1</div>
-        <div className="item" draggable="true" id="item2">Draggable text 2</div>
-        <div className="item" draggable="true" id="item3">Draggable text 3</div>
-      </div>
-      <Canvas draggableId="listOfComponents" layout={layout}/>
+      <ul id="list" style={{width: 120, height: 80, margin: 10}}>
+        {Object.keys(creators).map((key) => <li draggable key={key} id={key}>{creators[key].name}</li>)}
+      </ul>
+      <Canvas creatorListId="list" layout={layout} creators={creators}/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>

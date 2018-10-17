@@ -22,6 +22,20 @@ const filterEmptyContainers = (elements) => {
   });
 };
 
+const ORIENTATION = {
+  '1,2': 'horizontal',
+  '3,4': 'horizontal',
+  '1,4': 'vertical',
+  '2,3': 'vertical'
+};
+
+// const ELEMENTS = {
+//   '1,2': [{ ...element }, { type: 'element', id: guid() }],
+//   '3,4': [{ type: 'element', id: guid() }, { ...element }],
+//   '1,4': [{ ...element }, { type: 'element', id: guid() }],
+//   '2,3': [{ type: 'element', id: guid() }, { ...element }]
+// }
+
 export const buildLayout = (layout, element, orientation) => {
   switch (true) {
     case layout === element:
