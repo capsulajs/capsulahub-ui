@@ -29,3 +29,26 @@ export const guid = (n = 6) => {
 export const findById = (elements, id) => elements.find(element => element.id === id);
 export const excludeById = (elements, id) => elements.filter(element => element.id !== id);
 export const includes = (elements, element) => !!findById(elements, element.id);
+export const union = (arr1, arr2) => arr1.filter(value => -1 !== arr2.indexOf(value));
+export const getMouseCordinatesInsideElement = (element) => {
+  return (e) => {
+    let x, y;
+
+    if (e.pageX || e.pageY) {
+      x = e.pageX;
+      y = e.pageY;
+    } else {
+      x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+      y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+
+    x -= element.offsetLeft;
+    y -= element.offsetTop;
+
+    return { x, y };
+  };
+};
+
+export const getPointInsideRectangle = (x, y, width, height) => {
+  return (x0, y0) => (x <= x0 && x0 <= x + width && y <= y0 && y0 <= y + height);
+};

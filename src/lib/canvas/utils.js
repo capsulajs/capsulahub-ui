@@ -68,5 +68,3 @@ export const removeElement = (layout, element) => {
     elements
   }
 };
-
-export const union = (arr1, arr2) => arr1.filter(value => -1 !== arr2.indexOf(value));
