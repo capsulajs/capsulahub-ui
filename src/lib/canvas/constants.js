@@ -1,4 +1,5 @@
 export const SECTORS = [1, 2, 3, 4];
+export const SECTORS_DEFAULT = [null, null];
 export const SECTORS_NEIGHBORS = {
   1: [2, 3],
   2: [1, 4],

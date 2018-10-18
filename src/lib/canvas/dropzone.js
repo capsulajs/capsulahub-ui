@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { getSectorCouple } from './utils';
 import { getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors, union } from '../utils';
 import _ from 'lodash';
-import { SECTORS, SECTORS_CENTRE_RATIO } from './constants';
+import { SECTORS, SECTORS_DEFAULT, SECTORS_CENTRE_RATIO } from './constants';
+import { Observable, fromEvent } from 'rxjs';
+import { throttleTime, map, distinctUntilChanged } from 'rxjs/operators';
 
 const Container = styled.div`
   height: 100%;
@@ -17,11 +19,6 @@ const Item = styled.div`
   height: 50%;
   float: left;
 `;
-
-const DEFAULT_SECTORS = [null, null];
-
-let timerId = null;
-let isThrottled = false;
 
 const getDropzoneSectors = (id, sectors0, e) => {
   const container = document.getElementById(id);
@@ -54,11 +51,27 @@ export default class Dropzone extends React.Component {
     super(props);
 
     this.state = {
-      sectors: DEFAULT_SECTORS
+      sectors: SECTORS_DEFAULT
     };
+  }
 
-    this.handleOnDrop = this.handleOnDrop.bind(this);
-    this.handleOnDragOver = this.handleOnDragOver.bind(this);
+  componentDidMount() {
+    const container = ReactDOM.findDOMNode(this);
+
+    fromEvent(container, 'dragover').pipe(
+      // throttleTime(100),
+      map((e) => {
+        e.preventDefault();
+        return getDropzoneSectors(this.props.dropzoneId, this.state.sectors, e)
+      }),
+      distinctUntilChanged((a, b) => a.toString() === b.toString())
+    ).subscribe((sectors) => {
+      this.setSectors(sectors);
+    });
+
+    fromEvent(container, 'drop').subscribe((e) => {
+      console.log('drop')
+    });
   }
 
   setSectors(sectors) {
@@ -68,32 +81,13 @@ export default class Dropzone extends React.Component {
     }
   }
 
-  handleOnDragOver(e) {
-    e.preventDefault();
-
-    if (!isThrottled) {
-      isThrottled = true;
-      setTimeout(() => isThrottled = false, 200);
-
-      this.setSectors(getDropzoneSectors(this.props.dropzoneId, this.state.sectors, e));
-    }
-  }
-
-  handleOnDrop(e) {
-    e.preventDefault();
-    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors });
-    this.setSectors(DEFAULT_SECTORS);
-  }
-
-  getStyle(s) {
-    return this.state.sectors.filter((sector) => sector === s).length
-      ? { background: '#C9DADF' }
-      : { background: ['#000', '#111', '#222', '#333'][s - 1] };
+  getStyle(sector) {
+    return this.state.sectors.includes(sector) ? { background: '#C9DADF' } : {};
   }
 
   render() {
     return (
-      <Container id={this.props.dropzoneId} onDrop={this.handleOnDrop} onDragOver={this.handleOnDragOver}>
+      <Container id={this.props.dropzoneId}>
         {SECTORS.map((sector) => <Item key={sector} style={this.getStyle(sector)}></Item>)}
       </Container>
     )
