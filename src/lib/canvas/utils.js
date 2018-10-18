@@ -1,5 +1,5 @@
-import { excludeById, guid, union, includes } from '../utils';
-import { SECTORS, SECTORS_NEIGHBORS, SECTORS_REVERSE } from './constants';
+import { excludeById, guid, union, includes, getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors } from '../utils';
+import { SECTORS, SECTORS_NEIGHBORS, SECTORS_REVERSE, SECTORS_CENTRE_RATIO } from './constants';
 
 const findEmptyContainers = (elements) => {
   const ids = [];
@@ -77,9 +77,3 @@ export const removeElement = (layout, element) => {
     elements
   }
 };
-
-export const getSectorCouple = (sectors, sector) => {
-  return !!sectors.find(Number)
-    ? [sector, ...union(SECTORS_NEIGHBORS[sector], sectors)].sort()
-    : [sector, SECTORS_NEIGHBORS[sector][sector % 2]].sort();
-}
