@@ -40,7 +40,7 @@ export const getSectorCouple = (sectors, sector) => {
 
   return !!sectors.find(Number)
     ? [sector, ...union(COMBINATIONS[sector], sectors)].sort()
-    : [sector, sector + 1 > 4 ? sector - 1 : sector + 1].sort();
+    : [sector, COMBINATIONS[sector][sector % 2]].sort();
 }
 
 export const buildLayout = (layout, element, orientation, value, sectors) => {

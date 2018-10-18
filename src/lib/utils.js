@@ -42,6 +42,8 @@ export const getMouseInsideRectangle = (element) => {
       y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
 
+    // console.log(element.offsetLeft, element.offsetTop)
+
     x -= element.offsetLeft;
     y -= element.offsetTop;
 
