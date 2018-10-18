@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { getSectorCouple } from './utils';
 import { getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors, union } from '../utils';
 import _ from 'lodash';
+import { SECTORS, SECTORS_CENTRE_RATIO } from './constants';
 
 const Container = styled.div`
   height: 100%;
@@ -17,8 +18,6 @@ const Item = styled.div`
   float: left;
 `;
 
-const RATIO = 0.1;
-const SECTORS = [1, 2, 3, 4];
 const DEFAULT_SECTORS = [null, null];
 
 let timerId = null;
@@ -29,7 +28,7 @@ const getDropzoneSectors = (id, sectors0, e) => {
   const { width, height } = container.getBoundingClientRect();
   const x0 = width / 2;
   const y0 = height / 2;
-  const r0 = Math.min(...[width, height]) * RATIO;
+  const r0 = Math.min(...[width, height]) * SECTORS_CENTRE_RATIO;
   const { x, y } = getMouseInsideRectangle(container)(e);
   const r = Math.sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
 
@@ -38,17 +37,12 @@ const getDropzoneSectors = (id, sectors0, e) => {
   if (r < r0) {
     sectors = SECTORS;
   } else {
-    // console.log({ x, y });
-
     const sector = getRectangleSectors(width, height)
       .map((rect, i) => isPonitInsideRectangle(...rect)(x, y) ? (i + 1) : null)
       .find(Number);
 
-
     sectors = getSectorCouple(sectors0.length > 2 ? [null, null] : sectors0, sector);
   }
-
-  // console.log('handleOnDragOver', x, y);
 
   return sectors;
 }
@@ -67,10 +61,8 @@ export default class Dropzone extends React.Component {
 
   setSectors(sectors) {
     if (this.state.sectors.toString() !== sectors.toString()) {
-      if (['1,2', '3,4', '1,3', '2,4', '1,2,3,4'].includes(sectors.toString())) {
-        console.log('SECTORS', sectors);
-        this.setState({ sectors });
-      }
+      console.log('SECTORS', sectors);
+      this.setState({ sectors });
     }
   }
 

@@ -7,6 +7,7 @@ import { buildLayout, removeElement } from './utils';
 import { guid } from '../utils';
 import styles from './styles';
 import Dropzone from './dropzone';
+import { SECTORS_ORIENTATION } from './constants';
 
 const Container = styled.div`
   width: 100%;
@@ -52,18 +53,9 @@ export default class Grid extends React.Component {
   }
 
   handleOnDrop(element) {
-    const ORIENTATION = {
-      '1,2': 'horizontal',
-      '3,4': 'horizontal',
-      '1,3': 'vertical',
-      '2,4': 'vertical'
-    };
-
     return ({ creatorId, sectors }) => {
-      console.log('DROP', sectors);
-
       if (element.type !== 'container') {
-        const orientation = ORIENTATION[sectors.toString()];
+        const orientation = SECTORS_ORIENTATION[sectors.toString()];
         const value = this.state.creators[creatorId].element();
         this.onUpdate(buildLayout(this.props.layout, element, orientation, value, sectors));
       }

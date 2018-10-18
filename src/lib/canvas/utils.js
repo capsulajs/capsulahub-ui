@@ -1,4 +1,5 @@
 import { excludeById, guid, union, includes } from '../utils';
+import { SECTORS, SECTORS_NEIGHBORS, SECTORS_REVERSE } from './constants';
 
 const findEmptyContainers = (elements) => {
   const ids = [];
@@ -23,30 +24,15 @@ const filterEmptyContainers = (elements) => {
 };
 
 const getElements = (element, value, sectors) => {
-  // DOTO REFACTOR THIS VERY CAREFULLY!! !! !!
   return (elements => reverse => reverse ? elements.reverse() : elements)
     ([{ ...element, value }, { type: 'element', id: guid() }])
-    (({ '3,4': true, '2,4': true })[sectors.toString()]);
-}
-
-export const getSectorCouple = (sectors, sector) => {
-  // DOTO REFACTOR THIS VERY CAREFULLY!! !! !!
-  const COMBINATIONS = {
-    1: [2, 3],
-    2: [1, 4],
-    3: [1, 4],
-    4: [2, 3]
-  };
-
-  return !!sectors.find(Number)
-    ? [sector, ...union(COMBINATIONS[sector], sectors)].sort()
-    : [sector, COMBINATIONS[sector][sector % 2]].sort();
+    (SECTORS_REVERSE[sectors.toString()]);
 }
 
 export const buildLayout = (layout, element, orientation, value, sectors) => {
   switch (true) {
     case layout === element:
-      if (sectors.toString() === '1,2,3,4') {
+      if (sectors.toString() === SECTORS.toString()) {
         return {
           id: guid(),
           type: 'element',
@@ -91,3 +77,9 @@ export const removeElement = (layout, element) => {
     elements
   }
 };
+
+export const getSectorCouple = (sectors, sector) => {
+  return !!sectors.find(Number)
+    ? [sector, ...union(SECTORS_NEIGHBORS[sector], sectors)].sort()
+    : [sector, SECTORS_NEIGHBORS[sector][sector % 2]].sort();
+}
