@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { getSectorCouple } from './utils';
 import { getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors, union } from '../utils';
-import _ from 'lodash';
 import { SECTORS, SECTORS_DEFAULT, SECTORS_CENTRE_RATIO, SECTORS_COLOR } from './constants';
-import { Observable, fromEvent } from 'rxjs';
-import { throttleTime, map, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 const Container = styled.div`
   height: 100%;
@@ -21,6 +20,7 @@ const Item = styled.div`
 `;
 
 const getDropzoneSectors = (container, sectors0, e) => {
+  e.preventDefault();
   const { width, height } = container.getBoundingClientRect();
   const x0 = width / 2;
   const y0 = height / 2;
@@ -48,29 +48,24 @@ const getDropzoneSectors = (container, sectors0, e) => {
 export default class Dropzone extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { sectors: [null, null] };
+
+    this.state = {
+      sectors: [null, null]
+    };
   }
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
 
     this.onDragOver$ = fromEvent(container, 'dragover').pipe(
-      // throttleTime(100),
-      map((e) => {
-        e.preventDefault();
-        return getDropzoneSectors(container, this.state.sectors, e)
-      }),
+      map(e => getDropzoneSectors(container, this.state.sectors, e)),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
-    ).subscribe((sectors) => {
-      this.setState({ sectors });
-    });
+    ).subscribe(sectors => this.setState({ sectors }));
 
-    this.onDrop$ = fromEvent(container, 'drop').subscribe((e) => {
-      this.props.onDrop({
-        creatorId: e.dataTransfer.getData('creatorId'),
-        sectors: this.state.sectors
-      });
-    });
+    this.onDrop$ = fromEvent(container, 'drop').subscribe(e => this.props.onDrop({
+      creatorId: e.dataTransfer.getData('creatorId'),
+      sectors: this.state.sectors
+    }));
   }
 
   componentWillUnmount() {
