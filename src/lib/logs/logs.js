@@ -117,7 +117,7 @@ const Content = styled.div`
 
 const Clear = styled.div`cursor: pointer`;
 const Info = styled.div`color: #2CFF28`;
-                                      
+
 const Row = ({ number, item, onResend }) => {
   let content = <ReactJson src={item.data}
                          name={false}
@@ -152,7 +152,6 @@ export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Co
       <Image src={image}/>
       <Title>LOG</Title>
     </FlexRow>
-    <Clear onClick={onClear}>&#10005;</Clear>
   </Header>
   <Content>
     {data ? (

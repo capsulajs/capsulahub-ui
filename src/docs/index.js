@@ -97,7 +97,7 @@ const creators = {
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <Block style={{ height: 500, paddingBottom: 125 }}>
+    <Block style={{ height: 400, paddingBottom: 125 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
       <ul id="list" style={{width: 120, height: 80, margin: 10}}>
         {Object.keys(creators).map((key) => <li draggable key={key} id={key}>{creators[key].name}</li>)}

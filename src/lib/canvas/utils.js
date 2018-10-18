@@ -1,4 +1,4 @@
-import { excludeById, guid, includes } from '../utils';
+import { excludeById, guid, union, includes } from '../utils';
 
 const findEmptyContainers = (elements) => {
   const ids = [];
@@ -23,20 +23,43 @@ const filterEmptyContainers = (elements) => {
 };
 
 const getElements = (element, value, sectors) => {
+  // DOTO REFACTOR THIS VERY CAREFULLY!! !! !!
   return (elements => reverse => reverse ? elements.reverse() : elements)
     ([{ ...element, value }, { type: 'element', id: guid() }])
     (({ '3,4': true, '2,4': true })[sectors.toString()]);
 }
 
+export const getSectorCouple = (sectors, sector) => {
+  // DOTO REFACTOR THIS VERY CAREFULLY!! !! !!
+  const COMBINATIONS = {
+    1: [2, 3],
+    2: [1, 4],
+    3: [1, 4],
+    4: [2, 3]
+  };
+
+  return !!sectors.find(Number)
+    ? [sector, ...union(COMBINATIONS[sector], sectors)].sort()
+    : [sector, sector + 1 > 4 ? sector - 1 : sector + 1].sort();
+}
+
 export const buildLayout = (layout, element, orientation, value, sectors) => {
   switch (true) {
     case layout === element:
-      return {
-        id: guid(),
-        type: 'container',
-        orientation,
-        elements: getElements(element, value, sectors)
-      };
+      if (sectors.toString() === '1,2,3,4') {
+        return {
+          id: guid(),
+          type: 'element',
+          value
+        }
+      } else {
+        return {
+          id: guid(),
+          type: 'container',
+          orientation,
+          elements: getElements(element, value, sectors)
+        };
+      }
     case layout.type === 'element':
       return layout;
     default:

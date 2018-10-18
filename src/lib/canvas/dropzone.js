@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { getMouseCordinatesInsideElement, getPointInsideRectangle, union } from '../utils';
+import { getSectorCouple } from './utils';
+import { getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors, union } from '../utils';
 import _ from 'lodash';
 
 const Container = styled.div`
@@ -16,61 +17,56 @@ const Item = styled.div`
   float: left;
 `;
 
-const RATIO = 0.3;
+const RATIO = 0.1;
 const SECTORS = [1, 2, 3, 4];
 const DEFAULT_SECTORS = [null, null];
-const COMBINATION = {
-  1: [2, 3],
-  2: [1, 4],
-  3: [1, 4],
-  4: [2, 3]
-}
 
+let timerId = null;
 let isThrottled = false;
+
+const getDropzoneSectors = (id, sectors0, e) => {
+  const container = document.getElementById(id);
+  const { width, height } = container.getBoundingClientRect();
+  const x0 = width / 2;
+  const y0 = height / 2;
+  const r0 = Math.min(...[width, height]) * RATIO;
+  const { x, y } = getMouseInsideRectangle(container)(e);
+  const r = Math.sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+
+  let sectors = [];
+
+  if (r < r0) {
+    sectors = SECTORS;
+  } else {
+    const sector = getRectangleSectors(width, height)
+      .map((rect, i) => isPonitInsideRectangle(...rect)(x, y) ? (i + 1) : null)
+      .find(Number);
+    sectors = getSectorCouple(sectors0.length > 2 ? [null, null] : sectors0, sector);
+  }
+
+  // console.log('handleOnDragOver', x, y);
+
+  return sectors;
+}
 
 export default class Dropzone extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sectors: DEFAULT_SECTORS,
-      center: {
-        x: null,
-        y: null,
-        r: null
-      }
+      sectors: DEFAULT_SECTORS
     };
 
     this.handleOnDrop = this.handleOnDrop.bind(this);
     this.handleOnDragOver = this.handleOnDragOver.bind(this);
-    this.handleOnDragLeave = this.handleOnDragLeave.bind(this);
-    this.initialize = this.initialize.bind(this);
-  }
-
-  componentDidMount() {
-    this.initialize();
-    window.addEventListener('scroll', this.initialize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.initialize);
-  }
-
-  initialize() {
-    console.log('initialize');
-    const container = ReactDOM.findDOMNode(this);
-    const { width, height } = container.getBoundingClientRect();
-    const x = width / 2;
-    const y = height / 2;
-    const r = (Math.min(...[x, y])) * RATIO;
-    this.getMouseCordinatesInsideDropzone = getMouseCordinatesInsideElement(container).bind(this);
-    this.setState({ r, x, y });
   }
 
   setSectors(sectors) {
     if (this.state.sectors.toString() !== sectors.toString()) {
-      console.log(sectors)
-      this.setState({ sectors });
+      if (['1,2', '3,4', '1,3', '2,4', '1,2,3,4'].includes(sectors.toString())) {
+        console.log('SECTORS', sectors);
+        this.setState({ sectors });
+      }
     }
   }
 
@@ -79,83 +75,27 @@ export default class Dropzone extends React.Component {
 
     if (!isThrottled) {
       isThrottled = true;
-      setTimeout(() => isThrottled = false, 100);
-      const { r: r0, x: x0, y: y0, sectors: sectors0 } = this.state;
-      const { x, y } = this.getMouseCordinatesInsideDropzone(e);
-      const r = Math.sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
-      let sectors = [];
+      setTimeout(() => isThrottled = false, 200);
 
-      const getSelectors = (sectors, sector) => sectors.filter(Number).length
-        ? [sector, ...union(COMBINATION[sector], sectors)].sort()
-        : [sector, sector + 1 > SECTORS.length ? sector - 1 : sector + 1].sort();
-
-      if (r < r0) {
-        sectors = SECTORS;
-        console.log('CENTER')
-      } else {
-        sectors = sectors0;
-
-        if (getPointInsideRectangle(0, 0, x0, y0)(x, y)) {
-          sectors = getSelectors(sectors, 1);
-          console.log('SECTOR 1')
-        }
-
-        if (getPointInsideRectangle(x0 / 2, 0, x0, y0)(x, y)) {
-          sectors = getSelectors(sectors, 2);
-          console.log('SECTOR 2')
-        }
-
-        if (getPointInsideRectangle(0, y0 / 2, x0, y0)(x, y)) {
-          sectors = getSelectors(sectors, 3);
-          console.log('SECTOR 3')
-        }
-
-        if (getPointInsideRectangle(x0 / 2, y0 / 2, x0, y0)(x, y)) {
-          sectors = getSelectors(sectors, 4);
-          console.log('SECTOR 4')
-        }
-      }
-
-      console.log('OVER', sectors);
-      this.setSectors(sectors);
+      this.setSectors(getDropzoneSectors(this.props.dropzoneId, this.state.sectors, e));
     }
   }
 
   handleOnDrop(e) {
     e.preventDefault();
-    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors.sort() });
+    this.props.onDrop({ creatorId: e.dataTransfer.getData('creatorId'), sectors: this.state.sectors });
     this.setSectors(DEFAULT_SECTORS);
-    console.log('DROP');
-  }
-
-  // handleOnDragEnter(sector) {
-  //   return _.debounce((e) => {
-  //     e.preventDefault();
-  //     if (this.state.sectors.length === DEFAULT_SECTORS.length) {
-      //   this.setSectors(this.state.sectors.filter(Number).length
-      //     ? [sector, ...union(COMBINATION[sector], this.state.sectors)].sort()
-      //     : [sector, sector + 1 > SECTORS.length ? sector - 1 : sector + 1].sort()
-      //   );
-      // }
-  //     console.log('ENTER', sector)
-  //   }, 50);
-  // }
-
-  handleOnDragLeave(e) {
-    e.preventDefault();
-    // this.setSectors(DEFAULT_SECTORS);
-    console.log('LEAVE');
   }
 
   getStyle(s) {
-    return this.state.sectors.find((sector) => sector === s) ? { background: '#DDD' } : {};
+    return this.state.sectors.filter((sector) => sector === s).length
+      ? { background: '#C9DADF' }
+      : { background: ['#000', '#111', '#222', '#333'][s - 1] };
   }
 
-  // onDragEnter={this.handleOnDragEnter(sector)}
   render() {
-    console.log('render -> Dragzone');
     return (
-      <Container onDrop={this.handleOnDrop} onDragOver={this.handleOnDragOver}>
+      <Container id={this.props.dropzoneId} onDrop={this.handleOnDrop} onDragOver={this.handleOnDragOver}>
         {SECTORS.map((sector) => <Item key={sector} style={this.getStyle(sector)}></Item>)}
       </Container>
     )

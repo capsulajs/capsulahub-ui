@@ -4,6 +4,7 @@ import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
 import { excludeById } from '../utils';
 import { buildLayout, removeElement } from './utils';
+import { guid } from '../utils';
 import styles from './styles';
 import Dropzone from './dropzone';
 
@@ -59,9 +60,9 @@ export default class Grid extends React.Component {
     };
 
     return ({ creatorId, sectors }) => {
-      if (element.type !== 'container') {
-        console.log('DROP', sectors);
+      console.log('DROP', sectors);
 
+      if (element.type !== 'container') {
         const orientation = ORIENTATION[sectors.toString()];
         const value = this.state.creators[creatorId].element();
         this.onUpdate(buildLayout(this.props.layout, element, orientation, value, sectors));
@@ -71,6 +72,12 @@ export default class Grid extends React.Component {
 
   removeElement(element) {
     const layout = this.props.layout;
+
+    if (element === layout) {
+      this.onUpdate({ id: guid(), type: 'element' });
+      return;
+    }
+
     if (element === layout.elements[0]) {
       this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
     } else {
@@ -101,7 +108,7 @@ export default class Grid extends React.Component {
       <ReflexElement key={key} style={styles.element[orientation || 'horizontal']} minSize={minSize} maxSize={maxSize}>
         {value
           ? <Container>{this.renderControls(element)}{value}</Container>
-          : <Dropzone onDrop={this.handleOnDrop(element)}/>
+          : <Dropzone dropzoneId={element.id} onDrop={this.handleOnDrop(element)}/>
         }
       </ReflexElement>
     );
@@ -122,12 +129,16 @@ export default class Grid extends React.Component {
   }
 
   render() {
-    console.log('render -> Grid', this.props.layout);
-    const { orientation, elements } = this.props.layout;
+    const { id, type, value, orientation, elements } = this.props.layout;
+
     if (elements && elements.length) {
       return this.renderContainer(orientation, elements);
     }
 
-    return <Dropzone onDrop={this.handleOnDrop(this.props.layout)}/>;
+    if (value) {
+      return <Container>{this.renderControls(this.props.layout)}{value}</Container>
+    }
+
+    return <Dropzone dropzoneId={id} onDrop={this.handleOnDrop(this.props.layout)}/>;
   }
 };

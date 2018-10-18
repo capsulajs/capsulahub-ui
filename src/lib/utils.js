@@ -30,7 +30,7 @@ export const findById = (elements, id) => elements.find(element => element.id ==
 export const excludeById = (elements, id) => elements.filter(element => element.id !== id);
 export const includes = (elements, element) => !!findById(elements, element.id);
 export const union = (arr1, arr2) => arr1.filter(value => -1 !== arr2.indexOf(value));
-export const getMouseCordinatesInsideElement = (element) => {
+export const getMouseInsideRectangle = (element) => {
   return (e) => {
     let x, y;
 
@@ -49,6 +49,15 @@ export const getMouseCordinatesInsideElement = (element) => {
   };
 };
 
-export const getPointInsideRectangle = (x, y, width, height) => {
+export const getRectangleSectors = (w, h) => {
+  return [
+    [0,     0,     w / 2, h / 2],
+    [w / 2, 0,     w / 2, h / 2],
+    [0,     h / 2, w / 2, h / 2],
+    [w / 2, h / 2, w / 2, h / 2]
+  ];
+}
+
+export const isPonitInsideRectangle = (x, y, width, height) => {
   return (x0, y0) => (x <= x0 && x0 <= x + width && y <= y0 && y0 <= y + height);
 };
