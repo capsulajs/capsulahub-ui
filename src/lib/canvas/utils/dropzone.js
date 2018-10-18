@@ -60,19 +60,13 @@ export const getHighlightedSectors = (e, container, sectors0) => {
   const { x, y } = getMouseInsideRectangle(container)(e);
   const r = Math.sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
 
-  let sectors = [];
-
   if (r < r0) {
-    sectors = SECTORS;
-  } else {
-    const sector = getRectangleSectors(width, height).map(
-      (sector, i) => isPonitInsideRectangle(...sector)(x, y) ? (i + 1) : null
-    ).find(Number);
-
-    if (sector) {
-      sectors = getSectorCouple(sectors0.length > 2 ? [] : sectors0, sector);
-    }
+    return SECTORS;
   }
 
-  return sectors;
+  const sector = getRectangleSectors(width, height).map(
+    (sector, i) => isPonitInsideRectangle(...sector)(x, y) ? (i + 1) : null
+  ).find(Number);
+
+  return getSectorCouple(sectors0.length > 2 ? [] : sectors0, sector);
 }

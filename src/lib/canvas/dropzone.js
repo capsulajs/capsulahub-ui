@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { getHighlightedSectors } from './utils/dropzone';
-import { SECTORS, SECTORS_COLOR } from './constants';
+import { SECTORS, SECTORS_HIGHLIGHT_COLOR } from './constants';
 
 const Container = styled.div`
   height: 100%;
@@ -53,7 +53,7 @@ export default class Dropzone extends React.Component {
   }
 
   getStyle(sector) {
-    return this.state.sectors.includes(sector) ? { background: SECTORS_COLOR } : {};
+    return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
   }
 
   render() {

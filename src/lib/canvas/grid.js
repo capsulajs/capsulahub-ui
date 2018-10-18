@@ -121,7 +121,7 @@ export default class Grid extends React.Component {
   }
 
   render() {
-    const { id, type, value, orientation, elements } = this.props.layout;
+    const { type, value, orientation, elements } = this.props.layout;
 
     if (elements && elements.length) {
       return this.renderContainer(orientation, elements);
@@ -131,6 +131,6 @@ export default class Grid extends React.Component {
       return <Container>{this.renderControls(this.props.layout)}{value}</Container>
     }
 
-    return <Dropzone dropzoneId={id} onDrop={this.handleOnDrop(this.props.layout)}/>;
+    return <Dropzone onDrop={this.handleOnDrop(this.props.layout)}/>;
   }
 };

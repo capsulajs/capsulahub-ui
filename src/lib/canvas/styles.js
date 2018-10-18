@@ -1,8 +1,3 @@
-const align = {
-  flex: '1 1 0%',
-  WebkitBoxFlex: 1
-};
-
 const splitter = {
   background: '#515151',
   border: 'none'
@@ -12,14 +7,10 @@ export default {
   container: {
     background: '#414141',
     overflow: 'hidden',
-    // ...align
   },
   element: {
-    horizontal: {
-      // ...align
-    },
+    horizontal: {},
     vertical: {
-      // ...align,
       overflow: 'visible'
     }
   },

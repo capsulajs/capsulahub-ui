@@ -24,4 +24,4 @@ export const SECTORS_ORIENTATION = {
 };
 
 export const SECTORS_CENTRE_RATIO = 0.2;
-export const SECTORS_COLOR = '#C9DADF';
+export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
