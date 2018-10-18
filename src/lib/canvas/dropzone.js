@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { getSectorCouple } from './utils';
 import { getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors, union } from '../utils';
 import _ from 'lodash';
-import { SECTORS, SECTORS_DEFAULT, SECTORS_CENTRE_RATIO } from './constants';
+import { SECTORS, SECTORS_DEFAULT, SECTORS_CENTRE_RATIO, SECTORS_COLOR } from './constants';
 import { Observable, fromEvent } from 'rxjs';
 import { throttleTime, map, distinctUntilChanged } from 'rxjs/operators';
 
@@ -20,8 +20,7 @@ const Item = styled.div`
   float: left;
 `;
 
-const getDropzoneSectors = (id, sectors0, e) => {
-  const container = document.getElementById(id);
+const getDropzoneSectors = (container, sectors0, e) => {
   const { width, height } = container.getBoundingClientRect();
   const x0 = width / 2;
   const y0 = height / 2;
@@ -49,45 +48,43 @@ const getDropzoneSectors = (id, sectors0, e) => {
 export default class Dropzone extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      sectors: SECTORS_DEFAULT
-    };
+    this.state = { sectors: [null, null] };
   }
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
 
-    fromEvent(container, 'dragover').pipe(
+    this.onDragOver$ = fromEvent(container, 'dragover').pipe(
       // throttleTime(100),
       map((e) => {
         e.preventDefault();
-        return getDropzoneSectors(this.props.dropzoneId, this.state.sectors, e)
+        return getDropzoneSectors(container, this.state.sectors, e)
       }),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
     ).subscribe((sectors) => {
-      this.setSectors(sectors);
+      this.setState({ sectors });
     });
 
-    fromEvent(container, 'drop').subscribe((e) => {
-      console.log('drop')
+    this.onDrop$ = fromEvent(container, 'drop').subscribe((e) => {
+      this.props.onDrop({
+        creatorId: e.dataTransfer.getData('creatorId'),
+        sectors: this.state.sectors
+      });
     });
   }
 
-  setSectors(sectors) {
-    if (this.state.sectors.toString() !== sectors.toString()) {
-      console.log('SECTORS', sectors);
-      this.setState({ sectors });
-    }
+  componentWillUnmount() {
+    this.onDragOver$.unsubscribe();
+    this.onDrop$.unsubscribe();
   }
 
   getStyle(sector) {
-    return this.state.sectors.includes(sector) ? { background: '#C9DADF' } : {};
+    return this.state.sectors.includes(sector) ? { background: SECTORS_COLOR } : {};
   }
 
   render() {
     return (
-      <Container id={this.props.dropzoneId}>
+      <Container>
         {SECTORS.map((sector) => <Item key={sector} style={this.getStyle(sector)}></Item>)}
       </Container>
     )
