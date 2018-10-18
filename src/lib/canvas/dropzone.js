@@ -41,7 +41,9 @@ const getDropzoneSectors = (id, sectors0, e) => {
       .map((rect, i) => isPonitInsideRectangle(...rect)(x, y) ? (i + 1) : null)
       .find(Number);
 
-    sectors = getSectorCouple(sectors0.length > 2 ? [null, null] : sectors0, sector);
+    if (sector) {
+      sectors = getSectorCouple(sectors0.length > 2 ? [null, null] : sectors0, sector);
+    }
   }
 
   return sectors;
@@ -69,12 +71,12 @@ export default class Dropzone extends React.Component {
   handleOnDragOver(e) {
     e.preventDefault();
 
-    // if (!isThrottled) {
-    //   isThrottled = true;
-    //   setTimeout(() => isThrottled = false, 200);
+    if (!isThrottled) {
+      isThrottled = true;
+      setTimeout(() => isThrottled = false, 200);
 
       this.setSectors(getDropzoneSectors(this.props.dropzoneId, this.state.sectors, e));
-    // }
+    }
   }
 
   handleOnDrop(e) {

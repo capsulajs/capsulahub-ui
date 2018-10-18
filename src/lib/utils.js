@@ -31,6 +31,14 @@ export const excludeById = (elements, id) => elements.filter(element => element.
 export const includes = (elements, element) => !!findById(elements, element.id);
 export const union = (arr1, arr2) => arr1.filter(value => -1 !== arr2.indexOf(value));
 export const getMouseInsideRectangle = (element) => {
+  const getNearestOffset = (element, offset) => {
+    if (element) {
+      return element[offset] > 0 ? element[offset] : getNearestOffset(element.parentNode, offset);
+    }
+
+    return 0;
+  }
+
   return (e) => {
     let x, y;
 
@@ -42,10 +50,8 @@ export const getMouseInsideRectangle = (element) => {
       y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
     }
 
-    console.log(element.offsetLeft, element.offsetTop)
-
-    x -= element.offsetLeft;
-    y -= element.offsetTop;
+    x -= getNearestOffset(element, 'offsetLeft');
+    y -= getNearestOffset(element, 'offsetTop');
 
     return { x, y };
   };
