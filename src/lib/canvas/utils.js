@@ -73,10 +73,7 @@ export const removeElement = (layout, element) => {
 
   elements = filterEmptyContainers(elements);
 
-  return {
-    ...layout,
-    elements
-  }
+  return elements.length ? { ...layout, elements } : { id: guid(), type: 'element' };
 };
 
 export const isSmallSize = (container) => {
