@@ -43,10 +43,6 @@ export default class Grid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      creators: this.props.creators
-    };
-
     this.onUpdate = props.onUpdate.bind(this);
     this.removeElement = this.removeElement.bind(this);
     this.handleOnDrop = this.handleOnDrop.bind(this);
@@ -56,7 +52,7 @@ export default class Grid extends React.Component {
     return ({ creatorId, sectors }) => {
       if (element.type !== 'container') {
         const orientation = SECTORS_ORIENTATION[sectors.toString()];
-        const value = this.state.creators[creatorId].element();
+        const value = this.props.creators[creatorId].element();
         this.onUpdate(buildLayout(this.props.layout, element, orientation, value, sectors));
       }
     }

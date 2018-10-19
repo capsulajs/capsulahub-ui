@@ -1,5 +1,5 @@
-import { excludeById, guid, union, includes, getMouseInsideRectangle, isPonitInsideRectangle, getRectangleSectors } from '../utils';
-import { SECTORS, SECTORS_NEIGHBORS, SECTORS_REVERSE, SECTORS_CENTRE_RATIO } from './constants';
+import { excludeById, guid, includes } from '../utils';
+import { SECTORS, SECTORS_REVERSE } from './constants';
 
 const findEmptyContainers = (elements) => {
   const ids = [];

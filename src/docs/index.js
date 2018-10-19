@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
 import {
-  Paragraph, Logs, Modal, Button, JsonInput, Input,
-  CheckBox, Dropdown, Loader,
-  Canvas
-} from '../lib';
+  Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader, Canvas } from '../lib';
 import { guid } from '../lib/utils';
 
 const data = [];
@@ -83,11 +80,6 @@ const Form = () => <FormContaner>
   <Button theme="active" text="Submit"/>
 </FormContaner>;
 
-const layout = {
-  id: guid(),
-  type: 'element'
-};
-
 const creators = {
   text: { name: 'Paragraph', element: () => <Paragraph fontSize="2.5rem">Hello, World!</Paragraph> },
   form: { name: 'Form', element: () => <Form/> },
@@ -97,12 +89,12 @@ const creators = {
 const App = () => (
   <Container>
     <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
-    <Block style={{ height: 400, paddingBottom: 125 }}>
+    <Block style={{ height: 500, paddingBottom: 125 }}>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
       <ul id="list" style={{width: 120, height: 80, margin: 10}}>
         {Object.keys(creators).map((key) => <li draggable key={key} id={key}>{creators[key].name}</li>)}
       </ul>
-      <Canvas creatorListId="list" layout={layout} creators={creators}/>
+      <Canvas creatorListId="list" creators={creators}/>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>

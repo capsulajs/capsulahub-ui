@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
 import Grid from './grid';
+import { defaultFontFamily } from '../constants';
+import { guid } from '../utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -19,8 +20,17 @@ const Container = styled.div`
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      creatorListId: props.creatorListId,
+      creators: props.creators,
+      layout: {
+        id: guid(),
+        type: 'element'
+      }
+    };
+
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.state = { ...this.props };
   }
 
   handleUpdate(layout) {
