@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
-import { fromEvent, merge } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
 import { getSectorCouple, isSmallSize } from './utils';
 
@@ -25,6 +25,7 @@ const Centre = styled.div`
   width: ${props => props.ratio * 100}%;
   top: ${props => (1 - props.ratio) * 50}%;
   left: ${props => (1 - props.ratio) * 50}%;
+  background: transparent;
 `;
 
 export default class Dropzone extends React.Component {
@@ -40,12 +41,11 @@ export default class Dropzone extends React.Component {
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
 
-    this.setState({ ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO });
+    this.setState({
+      ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO
+    });
 
-    this.onDrag$ = merge(
-      fromEvent(container, 'dragenter').pipe(),
-      fromEvent(container, 'dragover').pipe()
-    ).pipe(
+    this.onDrag$ = fromEvent(container, 'dragover').pipe().pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       throttleTime(50),
@@ -54,6 +54,11 @@ export default class Dropzone extends React.Component {
       map(sectors => sectors.length === 1 ? getSectorCouple(this.state.sectors, sectors[0]) : sectors),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
     ).subscribe(sectors => this.setState({ sectors }));
+
+    this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(
+      map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
+      filter(Boolean)
+    ).subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
 
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(
       map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
@@ -67,6 +72,7 @@ export default class Dropzone extends React.Component {
 
   componentWillUnmount() {
     this.onDrag$.unsubscribe();
+    this.onDragEnter$.unsubscribe();
     this.onDragLeave$.unsubscribe();
     this.onDrop$.unsubscribe();
   }
