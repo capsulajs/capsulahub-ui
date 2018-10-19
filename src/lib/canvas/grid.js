@@ -61,12 +61,12 @@ export default class Grid extends React.Component {
   removeElement(element) {
     const layout = this.props.layout;
 
-    if (element === layout) {
+    if (element.id === layout.id) {
       this.onUpdate({ id: guid(), type: 'element' });
       return;
     }
 
-    if (element === layout.elements[0]) {
+    if (element.id === layout.elements[0].id) {
       this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
     } else {
       this.onUpdate(removeElement(layout, element));
