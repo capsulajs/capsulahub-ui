@@ -1,5 +1,6 @@
 import { excludeById, guid, includes } from '../utils';
-import { SECTORS, SECTORS_REVERSE } from './constants';
+import { SECTORS, SECTORS_REVERSE, SECTORS_NEIGHBORS, SECTORS_MIN_SIZE } from './constants';
+import _ from 'lodash';
 
 const findEmptyContainers = (elements) => {
   const ids = [];
@@ -76,4 +77,15 @@ export const removeElement = (layout, element) => {
     ...layout,
     elements
   }
+};
+
+export const isSmallSize = (container) => {
+  const [w, h] = [container.offsetWidth, container.offsetHeight];
+  return w < SECTORS_MIN_SIZE || h < SECTORS_MIN_SIZE;
+};
+
+export const getSectorCouple = (sectors, sector) => {
+  return sectors.length === 2
+    ? [sector, ..._.intersection(SECTORS_NEIGHBORS[sector], sectors)].sort()
+    : [sector, SECTORS_NEIGHBORS[sector][sector % 2]].sort();
 };

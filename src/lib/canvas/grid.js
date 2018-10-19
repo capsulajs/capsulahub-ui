@@ -7,7 +7,7 @@ import { buildLayout, removeElement } from './utils';
 import { guid } from '../utils';
 import styles from './styles';
 import Dropzone from './dropzone';
-import { SECTORS_ORIENTATION } from './constants';
+import { SECTORS_ORIENTATION, SECTORS_MIN_SIZE, SECTORS_MAX_SIZE } from './constants';
 
 const Container = styled.div`
   width: 100%;
@@ -59,18 +59,18 @@ export default class Grid extends React.Component {
   }
 
   removeElement(element) {
-    const layout = this.props.layout;
+    let layout = { id: guid(), type: 'element' };
 
-    if (element.id === layout.id) {
-      this.onUpdate({ id: guid(), type: 'element' });
-      return;
-    }
-
-    if (element.id === layout.elements[0].id) {
-      this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
+    if (element.id === this.props.layout.elements[0].id) {
+      const elements = excludeById(this.props.layout.elements, element.id);
+      if (elements.length) {
+        layout = { ...this.props.layout, elements }
+      }
     } else {
-      this.onUpdate(removeElement(layout, element));
+      layout = removeElement(this.props.layout, element);
     }
+
+    this.onUpdate(layout);
   }
 
   renderControls(element) {
@@ -83,8 +83,6 @@ export default class Grid extends React.Component {
 
   renderElement(element, key) {
     const { type, value, orientation, elements } = element;
-    const minSize = 200;
-    const maxSize = 1000;
 
     if (type === 'container') {
       return (<ReflexElement key={key} styles={styles.container}>
@@ -93,7 +91,8 @@ export default class Grid extends React.Component {
     }
 
     return (
-      <ReflexElement key={key} style={styles.element[orientation || 'horizontal']} minSize={minSize} maxSize={maxSize}>
+      <ReflexElement key={key} style={styles.element[orientation || 'horizontal']}
+                     minSize={SECTORS_MIN_SIZE} maxSize={SECTORS_MAX_SIZE}>
         {value
           ? <Container>{this.renderControls(element)}{value}</Container>
           : <Dropzone dropzoneId={element.id} onDrop={this.handleOnDrop(element)}/>

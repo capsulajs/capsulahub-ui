@@ -1,16 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import _ from 'lodash';
-import { map, filter, throttleTime, distinct, distinctUntilChanged } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
-import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_NEIGHBORS, SECTORS_REVERSE } from './constants';
-
-const getSectorCouple = (sectors, sector) => {
-  return sectors.length === 2
-    ? [sector, ..._.intersection(SECTORS_NEIGHBORS[sector], sectors)].sort()
-    : [sector, SECTORS_NEIGHBORS[sector][sector % 2]].sort();
-}
+import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
+import { fromEvent, merge } from 'rxjs';
+import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
+import { getSectorCouple, isSmallSize } from './utils';
 
 const Container = styled.div`
   height: 100%;
@@ -27,10 +21,10 @@ const Sector = styled.div`
 
 const Centre = styled.div`
   position: absolute;
-  height: 20%;
-  width: 20%;
-  top: 40%;
-  left: 40%;
+  height: ${props => props.ratio * 100}%;
+  width: ${props => props.ratio * 100}%;
+  top: ${props => (1 - props.ratio) * 50}%;
+  left: ${props => (1 - props.ratio) * 50}%;
 `;
 
 export default class Dropzone extends React.Component {
@@ -38,14 +32,20 @@ export default class Dropzone extends React.Component {
     super(props);
 
     this.state = {
-      sectors: []
+      sectors: [],
+      ratio: SECTORS_CENTER_RATIO
     };
   }
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
 
-    this.onDragOver$ = fromEvent(container, 'dragover').pipe(
+    this.setState({ ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO });
+
+    this.onDrag$ = merge(
+      fromEvent(container, 'dragenter').pipe(),
+      fromEvent(container, 'dragover').pipe()
+    ).pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       throttleTime(50),
@@ -56,18 +56,17 @@ export default class Dropzone extends React.Component {
     ).subscribe(sectors => this.setState({ sectors }));
 
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(
-      map(e => !e.fromElement.classList.value.includes('sector')),
+      map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
       filter(Boolean)
     ).subscribe(_ => this.setState({ sectors: [] }));
 
-    this.onDrop$ = fromEvent(container, 'drop').subscribe(e => this.props.onDrop({
-      creatorId: e.dataTransfer.getData('creatorId'),
-      sectors: this.state.sectors
-    }));
+    this.onDrop$ = fromEvent(container, 'drop').pipe(
+      map(e => e.dataTransfer.getData('creatorId'))
+    ).subscribe(creatorId => this.props.onDrop({ creatorId, sectors: this.state.sectors }));
   }
 
   componentWillUnmount() {
-    this.onDragOver$.unsubscribe();
+    this.onDrag$.unsubscribe();
     this.onDragLeave$.unsubscribe();
     this.onDrop$.unsubscribe();
   }
@@ -79,7 +78,7 @@ export default class Dropzone extends React.Component {
   render() {
     return (
       <Container>
-        <Centre className={`sector-${SECTORS}`}/>
+        <Centre className={`sector-${SECTORS}`} ratio={this.state.ratio}/>
         {SECTORS.map((sector) => <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)}></Sector>)}
       </Container>
     )
