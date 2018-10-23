@@ -40,7 +40,6 @@ export default class Dropzone extends React.Component {
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
-
     this.setState({
       ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO
     });
@@ -56,18 +55,23 @@ export default class Dropzone extends React.Component {
     ).subscribe(sectors => this.setState({ sectors }));
 
     this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(
-      map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
+      map(e => e.preventDefault() || e.fromElement),
+      filter(Boolean),
+      map(element => !element.classList.value.includes('sector')),
       filter(Boolean)
     ).subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
 
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(
       map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
-      filter(Boolean)
+      filter(Boolean),
     ).subscribe(_ => this.setState({ sectors: [] }));
 
     this.onDrop$ = fromEvent(container, 'drop').pipe(
-      map(e => e.dataTransfer.getData('creatorId'))
-    ).subscribe(creatorId => this.props.onDrop({ creatorId, sectors: this.state.sectors }));
+      map(e => e.dataTransfer.getData('creatorId')),
+    ).subscribe(creatorId => creatorId
+      ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
+      : this.setState({ sectors: [] })
+    );
   }
 
   componentWillUnmount() {

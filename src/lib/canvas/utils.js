@@ -72,7 +72,6 @@ export const removeElement = (layout, element) => {
   }
 
   elements = filterEmptyContainers(elements);
-
   return elements.length ? { ...layout, elements } : { id: guid(), type: 'element' };
 };
 
