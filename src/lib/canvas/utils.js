@@ -2,26 +2,35 @@ import { excludeById, guid, includes } from '../utils';
 import { SECTORS, SECTORS_REVERSE, SECTORS_NEIGHBORS, SECTORS_MIN_SIZE } from './constants';
 import _ from 'lodash';
 
-const findEmptyContainers = (elements) => {
+const findEmptyContainers = (layout) => {
   const ids = [];
-  const check = (element) => {
-    if (element.elements && element.elements.length > 0) {
-      element.elements.forEach((element) => check(element));
-    } else if (element.type === 'container') {
-      ids.push(element.id);
+  const check = (el) => {
+    if (el.elements && el.elements.length) {
+      el.elements.forEach(element => element.type === 'container' && check(element));
+    }
+    if (el.type === 'container') {
+      if (el.elements.length === 0 || el.elements.filter(element => element.value).length !== el.elements.length) {
+        ids.push(el.id);
+      }
     }
   };
-  elements.forEach(check);
+  check(layout);
   return ids;
 };
 
-const filterEmptyContainers = (elements) => {
-  const containerIds = findEmptyContainers(elements);
-  return elements.filter((element) => {
+export const filterEmptyContainers = (layout) => {
+  const containerIds = findEmptyContainers(layout);
+  layout.elements = layout.elements.filter((element) => {
     return element.type === 'container'
       ? !containerIds.find(id => element.id === id)
       : true;
   });
+
+  if (layout.elements.filter(el => el.value).length) {
+    return layout;
+  }
+
+  return { id: guid(), type: 'element' };
 };
 
 const getElements = (element, value, sectors) => {
@@ -66,13 +75,14 @@ export const removeElement = (layout, element) => {
 
   let elements = [];
   if (includes(layout.elements, element)) {
+    console.log('CASE 2')
     elements = excludeById(layout.elements, element.id);
   } else {
+    console.log('CASE 3')
     elements = layout.elements.map(curr => removeElement(curr, element));
   }
 
-  elements = filterEmptyContainers(elements);
-  return elements.length ? { ...layout, elements } : { id: guid(), type: 'element' };
+  return filterEmptyContainers({ ...layout, elements });
 };
 
 export const isSmallSize = (container) => {

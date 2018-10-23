@@ -62,8 +62,10 @@ export default class Dropzone extends React.Component {
     ).subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
 
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(
-      map(e => e.preventDefault() || !e.fromElement.classList.value.includes('sector')),
+      map(e => e.preventDefault() || e.fromElement),
       filter(Boolean),
+      map(element => !element.classList.value.includes('sector')),
+      filter(Boolean)
     ).subscribe(_ => this.setState({ sectors: [] }));
 
     this.onDrop$ = fromEvent(container, 'drop').pipe(
