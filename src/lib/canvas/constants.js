@@ -23,6 +23,5 @@ export const SECTORS_ORIENTATION = {
 };
 
 export const SECTORS_MIN_SIZE = 300;
-export const SECTORS_MAX_SIZE = 1000;
 export const SECTORS_CENTER_RATIO = 0.2;
 export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';

@@ -7,7 +7,7 @@ import { buildLayout, removeElement } from './utils';
 import { guid } from '../utils';
 import styles from './styles';
 import Dropzone from './dropzone';
-import { SECTORS_ORIENTATION, SECTORS_MIN_SIZE, SECTORS_MAX_SIZE } from './constants';
+import { SECTORS_ORIENTATION } from './constants';
 
 const Container = styled.div`
   width: 100%;
@@ -89,8 +89,7 @@ export default class Grid extends React.Component {
     }
 
     return (
-      <ReflexElement key={key} style={styles.element[orientation || 'horizontal']}
-                     minSize={SECTORS_MIN_SIZE} maxSize={SECTORS_MAX_SIZE}>
+      <ReflexElement key={key} style={styles.element[orientation || 'horizontal']}>
         {value
           ? <Container>{this.renderControls(element)}{value}</Container>
           : <Dropzone dropzoneId={element.id} onDrop={this.handleOnDrop(element)}/>
