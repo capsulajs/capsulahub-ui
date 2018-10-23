@@ -152,6 +152,7 @@ export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Co
       <Image src={image}/>
       <Title>LOG</Title>
     </FlexRow>
+    <Clear onClick={onClear}>&#10005;</Clear>
   </Header>
   <Content>
     {data ? (
