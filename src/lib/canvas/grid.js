@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
@@ -37,7 +38,7 @@ const Remove = styled.span`
   margin: 5px 8px 5px 5px;
 `;
 
-export default class Grid extends React.Component {
+class Grid extends React.Component {
   constructor(props) {
     super(props);
 
@@ -116,3 +117,9 @@ export default class Grid extends React.Component {
     return <Dropzone onDrop={this.handleOnDrop(this.props.layout)}/>;
   }
 };
+
+Grid.propTypes = {
+  layout: PropTypes.object
+};
+
+export default Grid;

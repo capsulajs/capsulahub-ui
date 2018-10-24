@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
@@ -28,7 +29,7 @@ const Centre = styled.div`
   background: transparent;
 `;
 
-export default class Dropzone extends React.Component {
+class Dropzone extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,6 +37,17 @@ export default class Dropzone extends React.Component {
       sectors: [],
       ratio: SECTORS_CENTER_RATIO
     };
+  }
+  
+  getStyle(sector) {
+    return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
+  }
+  
+  componentWillUnmount() {
+    this.onDrag$.unsubscribe();
+    this.onDragEnter$.unsubscribe();
+    this.onDragLeave$.unsubscribe();
+    this.onDrop$.unsubscribe();
   }
 
   componentDidMount() {
@@ -48,43 +60,30 @@ export default class Dropzone extends React.Component {
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       throttleTime(50),
-      map(point => document.elementFromPoint(...point).classList.value),
-      map(value => value.includes('sector') ? value.match(/\d+/g).map(Number) : []),
-      map(sectors => sectors.length === 1 ? getSectorCouple(this.state.sectors, sectors[0]) : sectors),
+      map(point => {
+        const value = document.elementFromPoint(...point).classList.value;
+        const sectors = value.includes('sector') ? value.match(/\d+/g).map(Number) : [];
+        return sectors.length === 1 ? getSectorCouple(this.state.sectors, sectors[0]) : sectors;
+      }),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
     ).subscribe(sectors => this.setState({ sectors }));
 
-    this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(
+    const pipes = [
       map(e => e.preventDefault() || e.fromElement),
       filter(Boolean),
       map(element => !element.classList.value.includes('sector')),
       filter(Boolean)
-    ).subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
-
-    this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(
-      map(e => e.preventDefault() || e.fromElement),
-      filter(Boolean),
-      map(element => !element.classList.value.includes('sector')),
-      filter(Boolean)
-    ).subscribe(_ => this.setState({ sectors: [] }));
-
+    ];
+    this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(...pipes)
+      .subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
+    this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(...pipes)
+      .subscribe(_ => this.setState({ sectors: [] }));
     this.onDrop$ = fromEvent(container, 'drop').pipe(
       map(e => e.dataTransfer.getData('creatorId')),
     ).subscribe(creatorId => creatorId
       ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
       : this.setState({ sectors: [] })
     );
-  }
-
-  componentWillUnmount() {
-    this.onDrag$.unsubscribe();
-    this.onDragEnter$.unsubscribe();
-    this.onDragLeave$.unsubscribe();
-    this.onDrop$.unsubscribe();
-  }
-
-  getStyle(sector) {
-    return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
   }
 
   render() {
@@ -96,3 +95,9 @@ export default class Dropzone extends React.Component {
     )
   }
 }
+
+Dropzone.propTypes = {
+  onDrop: PropTypes.func
+};
+
+export default Dropzone;

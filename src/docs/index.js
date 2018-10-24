@@ -68,22 +68,10 @@ const FormContaner = styled.form`
   padding: 10px;
 `;
 
-const Logger = () => <Logs data={data}
-                         path="path>path?path"
-                         onClear={() => console.log('Clear all')}
-                         onResend={(item) => console.log('Resend', item)}/>
-
-const Form = () => <FormContaner>
-  <Input onChange={onChange} placeholder="Default Input"/>
-  <Dropdown title="Dropdown" items={items} onChange={onChange}/>
-  <CheckBox label="Checkbox" onChange={onChange}/>
-  <Button theme="active" text="Submit"/>
-</FormContaner>;
-
 const creators = {
-  text: { name: 'Paragraph', element: () => <Paragraph fontSize="2.5rem">Hello, World!</Paragraph> },
-  form: { name: 'Form', element: () => <Form/> },
-  logs: { name: 'Logs', element: () => <Logger/> }
+  text1: { name: 'Paragraph 1', element: () => <Paragraph fontSize="2.5rem">Hello, World 1!</Paragraph> },
+  text2: { name: 'Paragraph 2', element: () => <Paragraph fontSize="2.5rem">Hello, World 2!</Paragraph> },
+  text3: { name: 'Paragraph 3', element: () => <Paragraph fontSize="2.5rem">Hello, World 3!</Paragraph> },
 };
 
 const App = () => (
@@ -108,7 +96,12 @@ const App = () => (
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Form:</Paragraph>
-      <Form/>
+      <FormContaner>
+        <Input onChange={onChange} placeholder="Default Input"/>
+        <Dropdown title="Dropdown" items={items} onChange={onChange}/>
+        <CheckBox label="Checkbox" onChange={onChange}/>
+        <Button theme="active" text="Submit"/>
+      </FormContaner>
     </Block>
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modal:</Paragraph>
@@ -118,7 +111,10 @@ const App = () => (
     <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Logs:</Paragraph>
       <LogsContainer>
-        <Logger/>
+        <Logs data={data}
+              path="path>path?path"
+              onClear={() => console.log('Clear all')}
+              onResend={(item) => console.log('Resend', item)}/>
       </LogsContainer>
     </Block>
     <Block>
