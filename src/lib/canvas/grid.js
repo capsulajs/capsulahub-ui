@@ -52,7 +52,7 @@ export default class Grid extends React.Component {
       
       if (creator && element.type !== 'container') {
         const orientation = SECTORS_ORIENTATION[sectors.toString()];
-        this.onUpdate(buildLayout(this.props.layout, creator.element(), orientation, value, sectors));
+        this.onUpdate(buildLayout(this.props.layout, element, orientation, creator.element(), sectors));
       }
     }
   }
