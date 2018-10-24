@@ -79,20 +79,26 @@ const removeRecursivelyElement = (layout, element) => {
   }
 };
 
-const transform = (container) => {
-  switch(container.elements.length) {
-    case 2:
-      return container;
-    case 1:
-      return { id: guid(), type: 'element', value: container.elements[0].value };
-    default:
-      return { id: guid(), type: 'element' };
+const transform = (el) => {
+  if (el.type === 'container') {
+    switch(el.elements.length) {
+      case 2:
+        return el;
+      case 1:
+        if (el.elements[0].type === 'element') {
+          return el.elements[0];
+        } else {
+          return transform(el.elements[0]);
+        }
+      default:
+        return { id: guid(), type: 'element' };
+    }
   }
+  return el;
 };
 
 export const removeElement = (layout, element) => {
   const newLayout = removeRecursivelyElement(layout, element);
-  newLayout.elements = newLayout.elements.map(el => el.type === 'container' ? transform(el) : el);
   return transform(newLayout);
 };
 
