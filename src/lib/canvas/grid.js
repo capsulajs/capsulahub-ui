@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
-import { excludeById, guid } from '../utils';
 import { buildLayout, removeElement } from './utils';
 import styles from './styles';
 import Dropzone from './dropzone';
@@ -49,39 +48,17 @@ export default class Grid extends React.Component {
 
   handleOnDrop(element) {
     return ({ creatorId, sectors }) => {
-      if (element.type !== 'container') {
+      const creator = this.props.creators[creatorId];
+      
+      if (creator && element.type !== 'container') {
         const orientation = SECTORS_ORIENTATION[sectors.toString()];
-        const value = this.props.creators[creatorId].element();
-        this.onUpdate(buildLayout(this.props.layout, element, orientation, value, sectors));
+        this.onUpdate(buildLayout(this.props.layout, creator.element(), orientation, value, sectors));
       }
     }
   }
 
   removeElement(element) {
-    const layout = this.props.layout;
-    
-    const isInvalidElements = (elements) => (
-      !elements || elements.length === 0 || elements.length === 1 && elements[0].value === undefined
-    );
-    
-    if (isInvalidElements(layout.elements)) {
-      console.log('CASE 0');
-      this.onUpdate({ id: guid(), type: 'element' });
-      return;
-    }
-  
-    // if (element === layout.elements[0]) {
-    //   console.log('CASE 1');
-    //   const elements = excludeById(layout.elements, element.id);
-    //   if (isInvalidElements(elements)) {
-    //     this.onUpdate({ id: guid(), type: 'element' });
-    //   } else {
-    //     this.onUpdate({ ...layout, elements });
-    //   }
-    // } else {
-      console.log('CASE 2')
-      this.onUpdate(removeElement(layout, element));
-    // }
+    this.onUpdate(removeElement(this.props.layout, element));
   }
 
   renderControls(element) {

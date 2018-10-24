@@ -79,7 +79,11 @@ const removeRecursivelyElement = (layout, element) => {
   }
 };
 
-const transform = (el) => {
+const isInvalidElements = (elements) => (
+  !elements || elements.length === 0 || elements.length === 1 && elements[0].value === undefined
+);
+
+const transformElement = (el) => {
   if (el.type === 'container') {
     switch(el.elements.length) {
       case 2:
@@ -88,7 +92,7 @@ const transform = (el) => {
         if (el.elements[0].type === 'element') {
           return el.elements[0];
         } else {
-          return transform(el.elements[0]);
+          return transformElement(el.elements[0]);
         }
       default:
         return { id: guid(), type: 'element' };
@@ -98,7 +102,10 @@ const transform = (el) => {
 };
 
 export const removeElement = (layout, element) => {
-  return transform(removeRecursivelyElement(layout, element));
+  if (isInvalidElements(layout.elements)) {
+    return { id: guid(), type: 'element' };
+  }
+  return transformElement(removeRecursivelyElement(layout, element));
 };
 
 export const isSmallSize = (container) => {
