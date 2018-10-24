@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createRandomObj } from './utils';
 import {
-  Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox, Dropdown, Loader, Canvas } from '../lib';
-import { guid } from '../lib/utils';
+  Paragraph, Logs, Modal, Button, JsonInput, Input, CheckBox,
+  Dropdown, Loader, Canvas
+} from '../lib';
 
+const backgroundColor = 'FAFAFA';
 const data = [];
 for (let i = 0; i < 25; i++) {
   const ratio = Math.random();
@@ -76,26 +78,26 @@ const creators = {
 
 const App = () => (
   <Container>
-    <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor="#FAFAFA">CapsulaJS UI components</Paragraph>
+    <Paragraph fontSize="3rem" color="#3F3F3F" backgroundColor={backgroundColor}>CapsulaJS UI components</Paragraph>
     <Block style={{ height: 500, paddingBottom: 125 }}>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Canvas:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Canvas:</Paragraph>
       <ul id="list" style={{width: 120, height: 80, margin: 10}}>
         {Object.keys(creators).map((key) => <li draggable key={key} id={key}>{creators[key].name}</li>)}
       </ul>
       <Canvas creatorListId="list" creators={creators}/>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Loader:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Loader:</Paragraph>
       <Loader/>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Buttons:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Buttons:</Paragraph>
       <Button theme="active" text="Active" css="margin: 5px"/>
       <Button theme="disabled" text="Disabled" css="margin: 5px"/>
       <Button theme="clicked" text="Clicked" css="margin: 5px"/>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Form:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Form:</Paragraph>
       <FormContaner>
         <Input onChange={onChange} placeholder="Default Input"/>
         <Dropdown title="Dropdown" items={items} onChange={onChange}/>
@@ -104,12 +106,12 @@ const App = () => (
       </FormContaner>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Modal:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Modal:</Paragraph>
       <Button id="modal" text="Toggle modal"/>
       <Modal id="modal" title="Some title...">Some content...</Modal>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Logs:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Logs:</Paragraph>
       <LogsContainer>
         <Logs data={data}
               path="path>path?path"
@@ -118,12 +120,12 @@ const App = () => (
       </LogsContainer>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- JSON Input:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- JSON Input:</Paragraph>
       <JsonInput id="json-input-0" value={JSON.stringify(createRandomObj(3, true), null, 2)}
                  onChange={onChange} width="100%" height="200px"/>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor="#FAFAFA">- Typography:</Paragraph>
+      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Typography:</Paragraph>
       <Paragraph fontSize="2.5rem">Hello, World!</Paragraph>
       <Paragraph fontSize="2rem">Hello, World!</Paragraph>
       <Paragraph fontSize="1.5rem">Hello, World!</Paragraph>
