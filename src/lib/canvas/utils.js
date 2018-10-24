@@ -71,7 +71,7 @@ const removeRecursivelyElement = (layout, element) => {
     elements = layout.elements.map(curr => removeRecursivelyElement(curr, element));
   }
   
-  elements = filterEmptyContainers(elements);
+  // elements = filterEmptyContainers(elements);
   
   return {
     ...layout,
@@ -98,8 +98,7 @@ const transform = (el) => {
 };
 
 export const removeElement = (layout, element) => {
-  const newLayout = removeRecursivelyElement(layout, element);
-  return transform(newLayout);
+  return transform(removeRecursivelyElement(layout, element));
 };
 
 export const isSmallSize = (container) => {
