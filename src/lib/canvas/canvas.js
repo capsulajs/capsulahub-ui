@@ -39,16 +39,16 @@ class Canvas extends React.Component {
   handleDragStart(e) {
     e.dataTransfer.setData('creatorId', e.target.id);
   }
-  
-  componentWillUnmount() {
-    for (const el of document.getElementById(this.props.creatorListId).children) {
-      el.removeEventListener('dragstart', this.handleDragStart);
-    }
-  }
 
   componentDidMount() {
     for (const el of document.getElementById(this.props.creatorListId).children) {
       el.addEventListener('dragstart', this.handleDragStart);
+    }
+  }
+  
+  componentWillUnmount() {
+    for (const el of document.getElementById(this.props.creatorListId).children) {
+      el.removeEventListener('dragstart', this.handleDragStart);
     }
   }
 

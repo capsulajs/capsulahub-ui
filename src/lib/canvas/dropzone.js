@@ -42,13 +42,6 @@ class Dropzone extends React.Component {
   getStyle(sector) {
     return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
   }
-  
-  componentWillUnmount() {
-    this.onDrag$.unsubscribe();
-    this.onDragEnter$.unsubscribe();
-    this.onDragLeave$.unsubscribe();
-    this.onDrop$.unsubscribe();
-  }
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
@@ -56,7 +49,7 @@ class Dropzone extends React.Component {
       ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO
     });
 
-    this.onDrag$ = fromEvent(container, 'dragover').pipe().pipe(
+    this.onDrag$ = fromEvent(container, 'dragover').pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       throttleTime(50),
@@ -84,6 +77,13 @@ class Dropzone extends React.Component {
       ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
       : this.setState({ sectors: [] })
     );
+  }
+  
+  componentWillUnmount() {
+    this.onDrag$.unsubscribe();
+    this.onDragEnter$.unsubscribe();
+    this.onDragLeave$.unsubscribe();
+    this.onDrop$.unsubscribe();
   }
 
   render() {
