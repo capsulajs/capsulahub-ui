@@ -60,21 +60,28 @@ export default class Grid extends React.Component {
   removeElement(element) {
     const layout = this.props.layout;
     
-    if (layout.elements) {
-      if (element === layout.elements[0]) {
-        const elements = excludeById(layout.elements, element.id);
-        
-        if (elements.length === 0 || elements.length === 1 && elements[0].value === undefined) {
-          this.onUpdate({ id: guid(), type: 'element' });
-        } else {
-          this.onUpdate({ ...layout, elements });
-        }
-      } else {
-        this.onUpdate(removeElement(layout, element));
-      }
-    } else {
+    const isInvalidElements = (elements) => (
+      !elements || elements.length === 0 || elements.length === 1 && elements[0].value === undefined
+    );
+    
+    if (isInvalidElements(layout.elements)) {
+      console.log('CASE 0');
       this.onUpdate({ id: guid(), type: 'element' });
+      return;
     }
+  
+    // if (element === layout.elements[0]) {
+    //   console.log('CASE 1');
+    //   const elements = excludeById(layout.elements, element.id);
+    //   if (isInvalidElements(elements)) {
+    //     this.onUpdate({ id: guid(), type: 'element' });
+    //   } else {
+    //     this.onUpdate({ ...layout, elements });
+    //   }
+    // } else {
+      console.log('CASE 2')
+      this.onUpdate(removeElement(layout, element));
+    // }
   }
 
   renderControls(element) {
