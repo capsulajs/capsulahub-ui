@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
 import Grid from './grid';
+import { defaultFontFamily } from '../constants';
+import { guid } from '../utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -19,23 +21,49 @@ const Container = styled.div`
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      layout: {
+        id: guid(),
+        type: 'element'
+      }
+    };
+
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.state = { layout: this.props.layout };
   }
 
   handleUpdate(layout) {
     this.setState({ layout });
   }
+  
+  handleDragStart(e) {
+    e.dataTransfer.setData('creatorId', e.target.id);
+  }
+
+  componentDidMount() {
+    for (const el of document.getElementById(this.props.creatorListId).children) {
+      el.addEventListener('dragstart', this.handleDragStart);
+    }
+  }
+  
+  componentWillUnmount() {
+    for (const el of document.getElementById(this.props.creatorListId).children) {
+      el.removeEventListener('dragstart', this.handleDragStart);
+    }
+  }
 
   render() {
-    const { layout } = this.state;
-
     return (
       <Container>
-        <Grid layout={layout} onUpdate={this.handleUpdate}/>
+        <Grid layout={this.state.layout} creators={this.props.creators} onUpdate={this.handleUpdate}/>
       </Container>
     );
   }
 }
+
+Canvas.propTypes = {
+  creatorListId: PropTypes.string,
+  creators: PropTypes.object
+};
 
 export { Canvas };

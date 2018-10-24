@@ -117,7 +117,7 @@ const Content = styled.div`
 
 const Clear = styled.div`cursor: pointer`;
 const Info = styled.div`color: #2CFF28`;
-                                      
+
 const Row = ({ number, item, onResend }) => {
   let content = <ReactJson src={item.data}
                          name={false}
