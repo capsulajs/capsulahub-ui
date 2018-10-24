@@ -2,42 +2,33 @@ import { excludeById, guid, includes } from '../utils';
 import { SECTORS, SECTORS_REVERSE, SECTORS_NEIGHBORS, SECTORS_MIN_SIZE } from './constants';
 import _ from 'lodash';
 
-const findEmptyContainers = (layout) => {
+const findEmptyContainers = (elements) => {
   const ids = [];
-  const check = (el) => {
-    if (el.elements && el.elements.length) {
-      el.elements.forEach(element => element.type === 'container' && check(element));
-    }
-    if (el.type === 'container') {
-      if (el.elements.length === 0 || el.elements.filter(element => element.value).length !== el.elements.length) {
-        ids.push(el.id);
-      }
+  const check = (element) => {
+    if (element.elements && element.elements.length > 0) {
+      element.elements.forEach((element) => check(element));
+    } else if (element.type === 'container') {
+      ids.push(element.id);
     }
   };
-  check(layout);
+  elements.forEach(check);
   return ids;
 };
 
-export const filterEmptyContainers = (layout) => {
-  const containerIds = findEmptyContainers(layout);
-  layout.elements = layout.elements.filter((element) => {
+const filterEmptyContainers = (elements) => {
+  const containerIds = findEmptyContainers(elements);
+  return elements.filter((element) => {
     return element.type === 'container'
       ? !containerIds.find(id => element.id === id)
       : true;
   });
-
-  if (layout.elements.filter(el => el.value).length) {
-    return layout;
-  }
-
-  return { id: guid(), type: 'element' };
 };
 
 const getElements = (element, value, sectors) => {
   return (elements => reverse => reverse ? elements.reverse() : elements)
     ([{ ...element, value }, { type: 'element', id: guid() }])
     (SECTORS_REVERSE[sectors.toString()]);
-}
+};
 
 export const buildLayout = (layout, element, orientation, value, sectors) => {
   switch (true) {
@@ -68,21 +59,41 @@ export const buildLayout = (layout, element, orientation, value, sectors) => {
   }
 };
 
-export const removeElement = (layout, element) => {
+const removeRecursivelyElement = (layout, element) => {
   if (layout.type === 'element') {
     return layout;
   }
-
+  
   let elements = [];
   if (includes(layout.elements, element)) {
-    console.log('CASE 2')
     elements = excludeById(layout.elements, element.id);
   } else {
-    console.log('CASE 3')
-    elements = layout.elements.map(curr => removeElement(curr, element));
+    elements = layout.elements.map(curr => removeRecursivelyElement(curr, element));
   }
+  
+  elements = filterEmptyContainers(elements);
+  
+  return {
+    ...layout,
+    elements
+  }
+};
 
-  return filterEmptyContainers({ ...layout, elements });
+const transform = (container) => {
+  switch(container.elements.length) {
+    case 2:
+      return container;
+    case 1:
+      return { id: guid(), type: 'element', value: container.elements[0].value };
+    default:
+      return { id: guid(), type: 'element' };
+  }
+};
+
+export const removeElement = (layout, element) => {
+  const newLayout = removeRecursivelyElement(layout, element);
+  newLayout.elements = newLayout.elements.map(el => el.type === 'container' ? transform(el) : el);
+  return transform(newLayout);
 };
 
 export const isSmallSize = (container) => {

@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import 'react-reflex/styles.css';
-import { excludeById, includes } from '../utils';
-import { buildLayout, removeElement, filterEmptyContainers } from './utils';
+import { excludeById, guid } from '../utils';
+import { buildLayout, removeElement } from './utils';
 import styles from './styles';
 import Dropzone from './dropzone';
 import { SECTORS_ORIENTATION } from './constants';
@@ -59,15 +59,15 @@ export default class Grid extends React.Component {
 
   removeElement(element) {
     const layout = this.props.layout;
-
-    if (layout.id === element.id) {
-      this.onUpdate({ id: guid(), type: 'element' });
-    }
-
-    if (includes(layout.elements, element)) {
-      this.onUpdate(filterEmptyContainers({ ...layout, elements: excludeById(layout.elements, element.id) }));
+    
+    if (layout.elements) {
+      if (element === layout.elements[0]) {
+        this.onUpdate({ ...layout, elements: excludeById(layout.elements, element.id) });
+      } else {
+        this.onUpdate(removeElement(layout, element));
+      }
     } else {
-      this.onUpdate(removeElement(layout, element));
+      this.onUpdate({ id: guid(), type: 'element' });
     }
   }
 
@@ -113,9 +113,9 @@ export default class Grid extends React.Component {
   }
 
   render() {
-    const { type, value, orientation, elements } = this.props.layout;
+    const { value, orientation, elements } = this.props.layout;
 
-    console.log('render -> grid', this.props.layout)
+    console.log('render', this.props.layout);
 
     if (elements && elements.length) {
       return this.renderContainer(orientation, elements);
