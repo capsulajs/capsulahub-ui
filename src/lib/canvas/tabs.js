@@ -72,7 +72,7 @@ class Tabs extends React.Component {
   }
   
   renderDraggable(tab, index) {
-    const { tabs, activeIndex, onRemove } = this.props;
+    const { tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
     const { hoverIndex, editIndex } = this.state;
     
     const isActive = activeIndex === index;
@@ -87,13 +87,14 @@ class Tabs extends React.Component {
                style={getTabStyle(provided.draggableProps.style, isActive)}
                onMouseEnter={() => this.hover(index)}
                onMouseLeave={() => this.hover(-1)}>
-            <Tab name={tab.name}
+            <Tab id={tab.id}
+                 name={tab.name}
                  isEditing={isEditing}
                  isActive={isActive}
-                 onSelect={() => this.onSelectTab(index)}
+                 onSelect={() => onSelect(index)}
                  onEditStart={() => this.edit(index)}
                  onEditEnd={() => this.edit(-1)}
-                 onUpdate={name => this.onUpdateTab(name)}/>
+                 onUpdate={onUpdate}/>
             {isRemovable &&
             <Close onClick={e => e.preventDefault() || onRemove(tab.id)}
                    style={getTabCloseStyle(isHover)}>&#10005;</Close>}
@@ -125,7 +126,9 @@ Tabs.propTypes = {
   id: PropTypes.string,
   tabs: PropTypes.array,
   activeIndex: PropTypes.number,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  onSelect: PropTypes.func,
+  onUpdate: PropTypes.func
 };
 
 export default Tabs;

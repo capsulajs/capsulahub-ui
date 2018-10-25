@@ -15,15 +15,25 @@ class Content extends React.Component {
     this.state = {
       activeIndex: 0
     };
+    
+    this.handleOnSelect = this.handleOnSelect.bind(this);
+  }
+  
+  handleOnSelect(activeIndex) {
+    this.setState({ activeIndex });
   }
   
   render() {
     const { activeIndex } = this.state;
-    const { id, tabs, onRemove }= this.props;
-
+    const { id, tabs, onRemove, onUpdate } = this.props;
+    
     if (tabs) {
       return <Container>
-        <Tabs id={id} tabs={tabs} activeIndex={activeIndex} onRemove={onRemove}/>{tabs[activeIndex].value}
+        <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
+              onRemove={onRemove}
+              onSelect={this.handleOnSelect}
+              onUpdate={onUpdate}
+        />{tabs[activeIndex].value}
       </Container>;
     }
     
@@ -34,7 +44,8 @@ class Content extends React.Component {
 Content.propTypes = {
   id: PropTypes.string,
   tabs: PropTypes.array,
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  onUpdate: PropTypes.func
 };
 
 export default Content;

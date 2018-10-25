@@ -3,9 +3,9 @@ import { SECTORS, SECTORS_REVERSE } from '../../constants';
 
 const tabs = (creator) => ([{ id: guid(), name: creator.name, value: creator.element() }]);
 const couple = (element, creator, sectors) => {
-  const el = { ...element, tabs: tabs(creator) };
-  const emptyEl = { id: guid(), type: 'element', tabs: [] };
-  return SECTORS_REVERSE[sectors.toString()] ? [emptyEl, el] : [el, emptyEl];
+  return SECTORS_REVERSE[sectors.toString()]
+    ? [{ id: guid(), type: 'element', tabs: [] }, { ...element, tabs: tabs(creator) }]
+    : [{ ...element, tabs: tabs(creator) }, { id: guid(), type: 'element', tabs: [] }];
 };
 
 const update = (layout, element, orientation, creator, sectors) => {

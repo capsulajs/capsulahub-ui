@@ -29,14 +29,11 @@ const removeRecursivelyElement = (layout, element, tabId) => {
   }
   
   let elements = _.cloneDeep(layout.elements);
-  if (Boolean(elements.find(el => el.id === element.id))) {
+  if (elements.find(el => el.id === element.id)) {
     elements = elements.map(el => {
       el.tabs = (el.tabs || []).filter(tab => tab.id !== tabId);
       return el;
     }).filter(el => el.id !== element.id && el.tabs.length > 0);
-    
-    console.log('IN', elements);
-    
   } else {
     elements = elements.map(curr => removeRecursivelyElement(curr, element, tabId));
   }
@@ -50,7 +47,7 @@ const removeRecursivelyElement = (layout, element, tabId) => {
 };
 
 const isInvalidElements = (elements) => (
-  !elements || elements.length === 0 || elements.length === 1 && elements[0].tabs.length === 0
+  !elements || elements.length === 0 || elements.length === 1 && elements[0].tabs && elements[0].tabs.length === 0
 );
 
 const transformElement = (el) => {
@@ -72,18 +69,10 @@ const transformElement = (el) => {
 };
 
 const remove = (layout, element, tabId) => {
-  console.log('START', layout, tabId);
-  
   if (isInvalidElements(layout.elements)) {
-    console.log('INVALID');
     return { id: guid(), type: 'element', tabs: [] };
   }
-  
-  const a = removeRecursivelyElement(layout, element, tabId);
-  
-  console.log(a, 'kjvnsvsnvivvnsnvisinvi')
-  
-  return transformElement(a);
+  return removeRecursivelyElement(layout, element, tabId);
 };
 
 export default remove;

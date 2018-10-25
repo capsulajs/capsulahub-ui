@@ -16,6 +16,7 @@ class Grid extends React.Component {
     
     this.handleOnDrop = this.handleOnDrop.bind(this);
     this.handleOnRemove = this.handleOnRemove.bind(this);
+    this.handleOnUpdate = this.handleOnUpdate.bind(this);
   }
 
   handleOnDrop(element) {
@@ -32,6 +33,14 @@ class Grid extends React.Component {
   handleOnRemove(element) {
     return tabId => this.props.onUpdate(remove(this.props.layout, element, tabId));
   }
+  
+  handleOnUpdate(element) {
+    return ({ id, name }) => {
+      const tab = element.tabs.find(tab => tab.id === id);
+      tab.name = name;
+      this.props.onUpdate(this.props.layout);
+    }
+  }
 
   renderElement(element, key) {
     const { type, tabs, orientation, elements } = element;
@@ -45,7 +54,9 @@ class Grid extends React.Component {
     return (
       <ReflexElement key={key} style={styles.element[orientation || 'horizontal']}>
         {tabs.length
-          ? <Content id={element.id} tabs={tabs} onRemove={this.handleOnRemove(element)}/>
+          ? <Content id={element.id} tabs={tabs}
+                     onRemove={this.handleOnRemove(element)}
+                     onUpdate={this.handleOnUpdate(element)}/>
           : <Dropzone onDrop={this.handleOnDrop(element)}/>
         }
       </ReflexElement>
@@ -76,7 +87,9 @@ class Grid extends React.Component {
     }
     
     if (tabs.length) {
-      return <Content id={id} tabs={tabs} onRemove={this.handleOnRemove(layout)}/>;
+      return <Content id={id} tabs={tabs}
+                      onRemove={this.handleOnRemove(layout)}
+                      onUpdate={this.handleOnUpdate(layout)}/>;
     }
 
     return <Dropzone onDrop={this.handleOnDrop(layout)}/>;

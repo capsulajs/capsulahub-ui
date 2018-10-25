@@ -34,11 +34,6 @@ class Tab extends React.Component {
   constructor(props) {
     super(props);
     
-    this.onSelect = this.props.onSelect.bind(this);
-    this.onEditStart = this.props.onEditStart.bind(this);
-    this.onEditEnd = this.props.onEditEnd.bind(this);
-    this.onUpdate = this.props.onUpdate.bind(this);
-    
     this.change = this.change.bind(this);
     this.save = this.save.bind(this);
     this.keyDown = this.keyDown.bind(this);
@@ -53,16 +48,16 @@ class Tab extends React.Component {
   }
   
   save() {
-    const name = this.state.value.trim();
+    const name = this.state.name.trim();
     
     if (name && name.length > MIN_TAB_NAME_LENGTH) {
-      this.onUpdate(name);
-      this.onEditEnd();
+      this.props.onUpdate({ id: this.props.id, name });
+      this.props.onEditEnd();
     }
   }
   
   keyDown (event) {
-    (event.which === ESCAPE_KEY || event.which === ENTER_KEY) && this.handleSave();
+    (event.which === ESCAPE_KEY || event.which === ENTER_KEY) && this.save();
   }
   
   render() {
@@ -71,12 +66,18 @@ class Tab extends React.Component {
     
     return isEditing
       ? <Input value={name} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown}/>
-      : <Title style={getStyle(isActive)} onClick={this.onSelect} onDoubleClick={this.onEditStart}>{name}</Title>;
+      : <Title style={getStyle(isActive)}
+               onClick={this.props.onSelect}
+               onDoubleClick={this.props.onEditStart}>{name}</Title>;
   }
 }
 
 Tab.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  onSelect: PropTypes.func,
+  onEditStart: PropTypes.func,
+  onEditEnd: PropTypes.func,
+  onUpdate: PropTypes.func
 };
 
 export default Tab;
