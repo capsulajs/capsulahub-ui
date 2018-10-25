@@ -25,7 +25,8 @@ class Canvas extends React.Component {
     this.state = {
       layout: {
         id: guid(),
-        type: 'element'
+        type: 'element',
+        tabs: []
       }
     };
 

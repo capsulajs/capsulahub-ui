@@ -25,7 +25,3 @@ export const guid = (n = 6) => {
   }
   return text;
 };
-
-export const findById = (elements, id) => elements.find(element => element.id === id);
-export const excludeById = (elements, id) => elements.filter(element => element.id !== id);
-export const includes = (elements, element) => !!findById(elements, element.id);

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
-import { getSectorCouple, isSmallSize } from './utils';
+import { getSectorCouple, isSmallSize } from './utils/dropzone';
 
 const Container = styled.div`
   height: 100%;
@@ -67,12 +67,13 @@ class Dropzone extends React.Component {
       map(element => !element.classList.value.includes('sector')),
       filter(Boolean)
     ];
+    
     this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(...pipes)
       .subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(...pipes)
       .subscribe(_ => this.setState({ sectors: [] }));
     this.onDrop$ = fromEvent(container, 'drop').pipe(
-      map(e => e.dataTransfer.getData('creatorId')),
+      map(e => e.dataTransfer.getData('creatorId'))
     ).subscribe(creatorId => creatorId
       ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
       : this.setState({ sectors: [] })
@@ -90,7 +91,7 @@ class Dropzone extends React.Component {
     return (
       <Container>
         <Centre className={`sector-${SECTORS}`} ratio={this.state.ratio}/>
-        {SECTORS.map((sector) => <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)}></Sector>)}
+        {SECTORS.map(sector => <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)}/>)}
       </Container>
     )
   }
