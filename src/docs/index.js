@@ -71,8 +71,8 @@ const FormContaner = styled.form`
 `;
 
 const creators = {
-  text: { name: 'Paragraph', element: () => <Paragraph fontSize="2.5rem">Welcome to the Canvas!</Paragraph> },
-  logs: { name: 'Logs', element: () => <Logs data={data} path="path>path?path"/>},
+  text: { name: 'Greeting', element: () => <Paragraph fontSize="2.5rem">Welcome to the Canvas!</Paragraph> },
+  logs: { name: 'Logs', element: () => <Logs data={data} path="path>path?path"/> },
   button: { name: 'Button', element: () => <Button theme="active" text="Active" css="margin: 5px"/> }
 };
 
