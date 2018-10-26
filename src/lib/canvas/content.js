@@ -8,6 +8,11 @@ const Container = styled.div`
   height: 100%;
 `;
 
+const TabContent = styled.div`
+  width: 100%;
+  height: calc(100% - 23px);
+`;
+
 class Content extends React.Component {
   constructor(props) {
     super(props);
@@ -32,8 +37,8 @@ class Content extends React.Component {
         <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
               onRemove={onRemove}
               onSelect={this.handleOnSelect}
-              onUpdate={onUpdate}
-        />{tabs[activeIndex].value}
+              onUpdate={onUpdate}/>
+        <TabContent>{tabs[activeIndex].value}</TabContent>
       </Container>;
     }
     

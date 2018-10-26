@@ -152,14 +152,14 @@ export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Co
       <Image src={image}/>
       <Title>LOG</Title>
     </FlexRow>
-    <Clear onClick={onClear}>&#10005;</Clear>
+    {onClear &&<Clear onClick={onClear}>&#10005;</Clear>}
   </Header>
   <Content>
     {data ? (
       data.map((item, index) => <Row key={index} number={index + 1} item={item}
                                      onDelete={onDelete || false}
                                      onEdit={onEdit || false}
-                                     onResend={() => onResend(item)}/>
+                                     onResend={() => onResend && onResend(item)}/>
       )
     ) : (<div>No Data..</div>)}
   </Content>
