@@ -86,7 +86,7 @@ class Grid extends React.Component {
       return this.renderContainer(orientation, elements);
     }
     
-    if (tabs.length) {
+    if (tabs && tabs.length) {
       return <Content id={id} tabs={tabs}
                       onRemove={this.handleOnRemove(layout)}
                       onUpdate={this.handleOnUpdate(layout)}/>;
