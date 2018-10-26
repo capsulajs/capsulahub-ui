@@ -72,7 +72,13 @@ const remove = (layout, element, tabId) => {
   if (isInvalidElements(layout.elements)) {
     return { id: guid(), type: 'element', tabs: [] };
   }
-  return removeRecursivelyElement(layout, element, tabId);
+  
+  const newLayout = removeRecursivelyElement(layout, element, tabId);
+  if (isInvalidElements(newLayout.elements)) {
+    return { id: guid(), type: 'element', tabs: [] };
+  }
+  
+  return newLayout;
 };
 
 export default remove;
