@@ -39,19 +39,18 @@ class Tab extends React.Component {
     this.keyDown = this.keyDown.bind(this);
     
     this.state = {
-      name: this.props.name
+      value: this.props.name
     };
   }
   
   change(e) {
-    this.setState({ name: e.target.value });
+    this.setState({ value: e.target.value.trim() });
   }
   
   save() {
-    const name = this.state.name.trim();
-    
-    if (name && name.length > MIN_TAB_NAME_LENGTH) {
-      this.props.onUpdate({ id: this.props.id, name });
+    const value = this.state.value;
+    if (value && value.length > MIN_TAB_NAME_LENGTH) {
+      this.props.onUpdate({ id: this.props.id, name: value });
       this.props.onEditEnd();
     }
   }
@@ -64,7 +63,7 @@ class Tab extends React.Component {
     const { isEditing, isActive, name } = this.props;
     
     return isEditing
-      ? <Input value={this.state.name} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown}/>
+      ? <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown}/>
       : <Title style={getStyle(isActive)}
                onClick={this.props.onSelect}
                onDoubleClick={this.props.onEditStart}>{name}</Title>;
@@ -72,11 +71,11 @@ class Tab extends React.Component {
 }
 
 Tab.propTypes = {
-  name: PropTypes.string,
-  onSelect: PropTypes.func,
-  onEditStart: PropTypes.func,
-  onEditEnd: PropTypes.func,
-  onUpdate: PropTypes.func
+  name: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onEditStart: PropTypes.func.isRequired,
+  onEditEnd: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 export default Tab;

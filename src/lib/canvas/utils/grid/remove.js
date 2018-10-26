@@ -5,7 +5,7 @@ const findEmptyContainers = (elements) => {
   const ids = [];
   const check = (element) => {
     if (element.elements && element.elements.length > 0) {
-      element.elements.forEach((element) => check(element));
+      element.elements.forEach(check);
     } else if (element.type === 'container') {
       ids.push(element.id);
     }

@@ -97,7 +97,7 @@ class Tabs extends React.Component {
                  onUpdate={onUpdate}/>
             {isRemovable &&
             <Close onClick={e => e.preventDefault() || onRemove(tab.id)}
-                   style={getTabCloseStyle(isHover)}>&#10005;</Close>}
+                   style={getTabCloseStyle(isHover)}>✕</Close>}
           </div>
         )}
       </Draggable>
@@ -123,12 +123,12 @@ class Tabs extends React.Component {
 }
 
 Tabs.propTypes = {
-  id: PropTypes.string,
-  tabs: PropTypes.array,
-  activeIndex: PropTypes.number,
-  onRemove: PropTypes.func,
-  onSelect: PropTypes.func,
-  onUpdate: PropTypes.func
+  id: PropTypes.string.isRequired,
+  tabs: PropTypes.array.isRequired,
+  activeIndex: PropTypes.number.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 export default Tabs;

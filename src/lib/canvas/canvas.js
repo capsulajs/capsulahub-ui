@@ -63,8 +63,8 @@ class Canvas extends React.Component {
 }
 
 Canvas.propTypes = {
-  creatorListId: PropTypes.string,
-  creators: PropTypes.object
+  creatorListId: PropTypes.string.isRequired,
+  creators: PropTypes.object.isRequired
 };
 
 export { Canvas };

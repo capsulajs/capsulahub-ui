@@ -5,12 +5,11 @@ import Tabs from './tabs';
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 23px);
 `;
 
-const TabContent = styled.div`
-  width: 100%;
-  height: calc(100% - 23px);
+const TabContainer = styled.div`
+  height: 100%;
 `;
 
 class Content extends React.Component {
@@ -38,7 +37,7 @@ class Content extends React.Component {
               onRemove={onRemove}
               onSelect={this.handleOnSelect}
               onUpdate={onUpdate}/>
-        <TabContent>{tabs[activeIndex].value}</TabContent>
+        <TabContainer>{tabs[activeIndex].value}</TabContainer>
       </Container>;
     }
     
@@ -47,10 +46,10 @@ class Content extends React.Component {
 }
 
 Content.propTypes = {
-  id: PropTypes.string,
-  tabs: PropTypes.array,
-  onRemove: PropTypes.func,
-  onUpdate: PropTypes.func
+  id: PropTypes.string.isRequired,
+  tabs: PropTypes.array.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired
 };
 
 export default Content;

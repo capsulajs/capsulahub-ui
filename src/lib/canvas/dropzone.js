@@ -45,9 +45,9 @@ class Dropzone extends React.Component {
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
+  
+    isSmall(container) && this.setState({ ratio: 1 });
     
-    this.setState({ ratio: isSmall(container) ? 1 : SECTORS_CENTER_RATIO });
-
     this.onDrag$ = fromEvent(container, 'dragover').pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
@@ -97,7 +97,7 @@ class Dropzone extends React.Component {
 }
 
 Dropzone.propTypes = {
-  onDrop: PropTypes.func
+  onDrop: PropTypes.func.isRequired
 };
 
 export default Dropzone;

@@ -94,7 +94,7 @@ class Grid extends React.Component {
 };
 
 Grid.propTypes = {
-  layout: PropTypes.object
+  layout: PropTypes.object.isRequired
 };
 
 export default Grid;
