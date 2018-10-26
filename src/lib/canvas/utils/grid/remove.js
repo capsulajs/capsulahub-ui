@@ -23,7 +23,7 @@ const filterEmptyContainers = (elements) => {
   });
 };
 
-const removeRecursivelyElement = (layout, element, tabId) => {
+const remove = (layout, element, tabId) => {
   if (layout.type === 'element') {
     return layout;
   }
@@ -32,10 +32,10 @@ const removeRecursivelyElement = (layout, element, tabId) => {
   if (elements.find(el => el.id === element.id)) {
     elements = elements.map(el => {
       el.tabs = (el.tabs || []).filter(tab => tab.id !== tabId);
-      return el;
+      return transform(el);
     }).filter(el => el.id !== element.id && el.tabs.length > 0);
   } else {
-    elements = elements.map(curr => removeRecursivelyElement(curr, element, tabId));
+    elements = elements.map(curr => remove(curr, element, tabId));
   }
   
   elements = filterEmptyContainers(elements);
@@ -46,11 +46,13 @@ const removeRecursivelyElement = (layout, element, tabId) => {
   }
 };
 
-const isInvalidElements = (elements) => (
-  !elements || elements.length === 0 || elements.length === 1 && elements[0].tabs && elements[0].tabs.length === 0
+const isInvalid = (elements) => (
+  !elements
+    || elements.length === 0
+    || elements.length === 1 && elements[0].tabs && elements[0].tabs.length === 0
 );
 
-const transformElement = (el) => {
+const transform = (el) => {
   if (el.type === 'container') {
     switch(el.elements.length) {
       case 2:
@@ -59,7 +61,7 @@ const transformElement = (el) => {
         if (el.elements[0].type === 'element') {
           return el.elements[0];
         } else {
-          return transformElement(el.elements[0]);
+          return transform(el.elements[0]);
         }
       default:
         return { id: guid(), type: 'element', tabs: [] };
@@ -68,17 +70,10 @@ const transformElement = (el) => {
   return el;
 };
 
-const remove = (layout, element, tabId) => {
-  if (isInvalidElements(layout.elements)) {
+export default (layout, element, tabId) => {
+  const newLayout = remove(layout, element, tabId);
+  if (isInvalid(newLayout.elements)) {
     return { id: guid(), type: 'element', tabs: [] };
   }
-  
-  const newLayout = removeRecursivelyElement(layout, element, tabId);
-  if (isInvalidElements(newLayout.elements)) {
-    return { id: guid(), type: 'element', tabs: [] };
-  }
-  
   return newLayout;
 };
-
-export default remove;

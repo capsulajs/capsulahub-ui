@@ -80,6 +80,7 @@ class Grid extends React.Component {
   render() {
     const layout = this.props.layout;
     const { id, tabs, orientation, elements } = layout;
+    
     console.log('render -> Grid', layout);
     
     if (elements && elements.length) {
