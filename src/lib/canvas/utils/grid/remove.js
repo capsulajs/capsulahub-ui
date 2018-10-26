@@ -30,8 +30,6 @@ const remove = (layout, element, tabId) => {
   
   let elements = _.cloneDeep(layout.elements);
   if (elements.find(el => el.id === element.id)) {
-    console.log('IN', layout.elements, element.id, tabId);
-    
     elements = elements.map(el => {
       if (el.type === 'element') {
         el.tabs = el.tabs.filter(tab => tab.id !== tabId);
