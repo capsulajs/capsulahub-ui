@@ -30,13 +30,20 @@ const remove = (layout, element, tabId) => {
   
   let elements = _.cloneDeep(layout.elements);
   if (elements.find(el => el.id === element.id)) {
+    console.log('IN', layout.elements, element.id, tabId);
+    
     elements = elements.map(el => {
-      el.tabs = (el.tabs || []).filter(tab => tab.id !== tabId);
-      return transform(el);
-    }).filter(el => el.id !== element.id && el.tabs.length > 0);
+      if (el.type === 'element') {
+        el.tabs = el.tabs.filter(tab => tab.id !== tabId);
+      }
+      return el;
+    }).filter(el => el.type === 'element' ? el.id !== element.id && el.tabs.length > 0 : true)
+      .map(el => transform(el));
   } else {
     elements = elements.map(curr => remove(curr, element, tabId));
   }
+  
+  console.log('elements', elements);
   
   elements = filterEmptyContainers(elements);
   
