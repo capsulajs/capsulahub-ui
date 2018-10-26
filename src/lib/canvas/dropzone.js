@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
-import { getSectorCouple, isSmallSize } from './utils/dropzone';
+import { couple, isSmall } from './utils/dropzone';
 
 const Container = styled.div`
   height: 100%;
@@ -45,9 +45,8 @@ class Dropzone extends React.Component {
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
-    this.setState({
-      ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO
-    });
+    
+    this.setState({ ratio: isSmall(container) ? 1 : SECTORS_CENTER_RATIO });
 
     this.onDrag$ = fromEvent(container, 'dragover').pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
@@ -56,7 +55,7 @@ class Dropzone extends React.Component {
       map(point => {
         const value = document.elementFromPoint(...point).classList.value;
         const sectors = value.includes('sector') ? value.match(/\d+/g).map(Number) : [];
-        return sectors.length === 1 ? getSectorCouple(this.state.sectors, sectors[0]) : sectors;
+        return sectors.length === 1 ? couple(this.state.sectors, sectors[0]) : sectors;
       }),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
     ).subscribe(sectors => this.setState({ sectors }));

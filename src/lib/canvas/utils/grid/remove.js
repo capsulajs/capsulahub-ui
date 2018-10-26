@@ -41,8 +41,6 @@ const remove = (layout, element, tabId) => {
     elements = elements.map(curr => remove(curr, element, tabId));
   }
   
-  console.log('elements', elements);
-  
   elements = filterEmptyContainers(elements);
   
   return {
