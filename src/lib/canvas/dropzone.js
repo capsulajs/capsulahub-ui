@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
-import { getSectorCouple, isSmallSize } from './utils';
+import { couple, isSmall } from './utils/dropzone';
 
 const Container = styled.div`
   height: 100%;
@@ -45,10 +45,9 @@ class Dropzone extends React.Component {
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
-    this.setState({
-      ratio: isSmallSize(container) ? 1 : SECTORS_CENTER_RATIO
-    });
-
+  
+    isSmall(container) && this.setState({ ratio: 1 });
+    
     this.onDrag$ = fromEvent(container, 'dragover').pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
@@ -56,7 +55,7 @@ class Dropzone extends React.Component {
       map(point => {
         const value = document.elementFromPoint(...point).classList.value;
         const sectors = value.includes('sector') ? value.match(/\d+/g).map(Number) : [];
-        return sectors.length === 1 ? getSectorCouple(this.state.sectors, sectors[0]) : sectors;
+        return sectors.length === 1 ? couple(this.state.sectors, sectors[0]) : sectors;
       }),
       distinctUntilChanged((a, b) => a.toString() === b.toString())
     ).subscribe(sectors => this.setState({ sectors }));
@@ -67,12 +66,13 @@ class Dropzone extends React.Component {
       map(element => !element.classList.value.includes('sector')),
       filter(Boolean)
     ];
+    
     this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(...pipes)
       .subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(...pipes)
       .subscribe(_ => this.setState({ sectors: [] }));
     this.onDrop$ = fromEvent(container, 'drop').pipe(
-      map(e => e.dataTransfer.getData('creatorId')),
+      map(e => e.dataTransfer.getData('creatorId'))
     ).subscribe(creatorId => creatorId
       ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
       : this.setState({ sectors: [] })
@@ -90,14 +90,14 @@ class Dropzone extends React.Component {
     return (
       <Container>
         <Centre className={`sector-${SECTORS}`} ratio={this.state.ratio}/>
-        {SECTORS.map((sector) => <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)}></Sector>)}
+        {SECTORS.map(sector => <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)}/>)}
       </Container>
     )
   }
 }
 
 Dropzone.propTypes = {
-  onDrop: PropTypes.func
+  onDrop: PropTypes.func.isRequired
 };
 
 export default Dropzone;

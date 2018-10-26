@@ -25,3 +25,33 @@ export const SECTORS_ORIENTATION = {
 export const SECTORS_MIN_SIZE = 350;
 export const SECTORS_CENTER_RATIO = 0.2;
 export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
+
+export const ESCAPE_KEY = 27;
+export const ENTER_KEY = 13;
+export const MIN_TAB_NAME_LENGTH = 3;
+export const STYLES = {
+  container: {
+    background: '#414141',
+    overflow: 'hidden',
+  },
+  element: {
+    horizontal: {},
+    vertical: {
+      overflow: 'visible'
+    }
+  },
+  splitter: {
+    horizontal: {
+      background: '#515151',
+      border: 'none',
+      width: '100%',
+      height: '8px'
+    },
+    vertical: {
+      background: '#515151',
+      border: 'none',
+      width: '8px',
+      height: '100%'
+    }
+  }
+};

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
+    "lodash": "^4.17.11",
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
     "react-ace": "^6.1.4",
     "react-beautiful-dnd": "^9.0.2",
