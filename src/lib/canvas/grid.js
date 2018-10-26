@@ -1,13 +1,12 @@
+import 'react-reflex/styles.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
-import 'react-reflex/styles.css';
-import update from './utils/grid/update';
-import remove from './utils/grid/remove';
-import { SECTORS_ORIENTATION } from './constants';
-import { STYLES } from './constants';
 import Dropzone from './dropzone';
 import Content from './content';
+import { STYLES, SECTORS_ORIENTATION } from './constants';
+import update from './utils/grid/update';
+import remove from './utils/grid/remove';
 
 class Grid extends React.Component {
   constructor(props) {
