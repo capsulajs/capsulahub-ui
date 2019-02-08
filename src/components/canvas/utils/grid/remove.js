@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { guid } from '../../../utils';
+import { guid } from 'src/utils';
 
 const findEmptyContainers = (elements) => {
   const ids = [];

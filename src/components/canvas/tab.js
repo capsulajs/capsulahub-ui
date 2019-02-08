@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
+import { defaultFontFamily } from 'src/constants';
 import { ESCAPE_KEY, ENTER_KEY, MIN_TAB_NAME_LENGTH } from './constants';
 
 const Title = styled.div`

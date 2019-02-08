@@ -1,4 +1,4 @@
-import { guid } from '../../../utils';
+import { guid } from 'src/utils';
 import { SECTORS, SECTORS_REVERSE } from '../../constants';
 
 const tabs = (creator) => ([{ id: guid(), name: creator.name, value: creator.element() }]);

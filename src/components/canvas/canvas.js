@@ -6,13 +6,13 @@ import { defaultFontFamily } from 'src/constants';
 import { guid } from 'src/utils';
 
 const Container = styled.div`
+  width: ${props => props.width};
+  height: ${props => props.height};
   font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 13px;
   background: #515151;
   color: #A9A9A9;
-  width: 100%;
-  height: 100%;
   min-width: 500px;
   min-height: 100px;
   padding 8px;
@@ -55,7 +55,7 @@ class Canvas extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container width={this.props.width} height={this.props.height}>
         <Grid layout={this.state.layout} creators={this.props.creators} onUpdate={this.handleUpdate}/>
       </Container>
     );

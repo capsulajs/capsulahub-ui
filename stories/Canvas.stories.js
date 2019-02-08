@@ -1,0 +1,31 @@
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import Canvas from 'src/components/canvas/canvas';
+
+export const props = {
+  creatorListId: 'list',
+  creators: {
+    e1: { name: 'Element 1', element: () => 'Element 1' },
+    e2: { name: 'Element 2', element: () => 'Element 2' },
+    e3: { name: 'Element 3', element: () => 'Element 3' }
+  },
+  width: 'calc(100% - 20px)',
+  height: '500px'
+};
+
+export const actions = {
+  onClick: action('onClick')
+};
+
+storiesOf('Canvas', module)
+  .addDecorator(story => <div>
+    <ul id="list">
+      <li draggable id="e1">Element 1</li>
+      <li draggable id="e2">Element 2</li>
+      <li draggable id="e3">Element 3</li>
+    </ul>
+    {story()}
+    </div>
+  )
+  .add('default', () => <Canvas {...props} {...actions}/>);
