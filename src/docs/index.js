@@ -102,15 +102,6 @@ const App = () => (
       <Modal id="modal" title="Some title...">Some content...</Modal>
     </Block>
     <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Logs:</Paragraph>
-      <LogsContainer>
-        <Logs data={data}
-              path="path>path?path"
-              onClear={() => console.log('Clear all')}
-              onResend={(item) => console.log('Resend', item)}/>
-      </LogsContainer>
-    </Block>
-    <Block>
       <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- JSON Input:</Paragraph>
       <JsonInput id="json-input-0" value={JSON.stringify(createRandomObj(3, true), null, 2)}
                  onChange={onChange} width="100%" height="200px"/>

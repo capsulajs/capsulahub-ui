@@ -19,7 +19,7 @@ export const createRandomObject = (fieldCount, allowNested) => {
         generatedObjField = null;
         break;
       case 5:
-        generatedObjField = createRandomObj(fieldCount, allowNested);
+        generatedObjField = createRandomObject(fieldCount, allowNested);
         break;
     }
     generatedObj[randomString(8)] = generatedObjField;
@@ -35,4 +35,33 @@ export const randomString = (size) => {
     generatedString += alphaChars[randomInt(alphaChars.length)];
   }
   return generatedString;
+};
+
+export const getRandomLogs = () => {
+  const data = [];
+  for (let i = 0; i < 25; i++) {
+    const ratio = Math.random();
+    if (0 <= ratio && ratio <= 1 / 3) {
+      data.push({
+        status: 'fail',
+        data: { message: 'Not Found' },
+        timestamp: new Date(),
+      });
+    }
+    if (1 / 3 <= ratio && ratio <= 2 / 3) {
+      data.push({
+        status: 'success',
+        data: createRandomObject(Math.ceil(Math.random() * 5), true),
+        timestamp: new Date()
+      })
+    }
+    if (2 / 3 <= ratio && ratio <= 1) {
+      data.push({
+        status: 'info',
+        data: ['connected', 'disconnected'][Math.floor(Math.random() * 2)],
+        timestamp: new Date()
+      })
+    }
+  }
+  return data;
 };
