@@ -114,9 +114,9 @@ export class Dropdown extends React.Component {
         {isOpen ? <ArrowUp/> : <ArrowDown/>}
       </Header>
       {isOpen &&
-        <List>
-          {items.map((item, index) => (<Item key={index} onClick={() => this.select(index)}>{item.label}</Item>))}
-        </List>
+      <List>
+        {items.map((item, index) => (<Item key={index} onClick={() => this.select(index)}>{item.label}</Item>))}
+      </List>
       }
     </Container>);
   }

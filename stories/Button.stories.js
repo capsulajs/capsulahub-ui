@@ -4,7 +4,8 @@ import { action } from '@storybook/addon-actions';
 import Button from 'src/components/Button';
 
 export const props = {
-  text: 'Example of button'
+  text: 'Example of button',
+  css: 'margin: 5px'
 };
 
 export const actions = {
