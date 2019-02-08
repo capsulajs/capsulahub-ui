@@ -1,34 +1,3 @@
-
-import { createRandomObj } from './utils';
-
-
-const backgroundColor = 'FAFAFA';
-const data = [];
-for (let i = 0; i < 25; i++) {
-  const ratio = Math.random();
-  if (0 <= ratio && ratio <= 1 / 3) {
-    data.push({
-      status: 'fail',
-      data: { message: 'Not Found' },
-      timestamp: new Date(),
-    });
-  }
-  if (1 / 3 <= ratio && ratio <= 2 / 3) {
-    data.push({
-      status: 'success',
-      data: createRandomObj(Math.ceil(Math.random() * 5), true),
-      timestamp: new Date()
-    })
-  }
-  if (2 / 3 <= ratio && ratio <= 1) {
-    data.push({
-      status: 'info',
-      data: ['connected', 'disconnected'][Math.floor(Math.random() * 2)],
-      timestamp: new Date()
-    })
-  }
-}
-
 const items = [
   { label: 'one' },
   { label: 'two' },
@@ -38,32 +7,6 @@ const items = [
 const onChange = (newValue) => {
   console.log('change', newValue);
 };
-
-const Container = styled.div`
-  padding-top: 50px;
-  padding-left: 10%;
-  padding-right: 10%;
-`;
-
-const Block = styled.div`
-  width: 100%;
-  padding-top: 25px;
-`;
-
-const LogsContainer = styled.div`
-  height: 500px;
-  padding-bottom: 10px;
-`;
-
-const FormContaner = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #525252;
-  width: 300px;
-  height: 150px;
-  padding: 10px;
-`;
 
 const creators = {
   text: { name: 'Greeting', element: () => <Paragraph fontSize="2.5rem">Welcome to the Canvas!</Paragraph> },
@@ -96,17 +39,5 @@ const App = () => (
         <Button theme="active" text="Submit"/>
       </FormContaner>
     </Block>
-    <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- Modal:</Paragraph>
-      <Button id="modal" text="Toggle modal"/>
-      <Modal id="modal" title="Some title...">Some content...</Modal>
-    </Block>
-    <Block>
-      <Paragraph fontSize="1.5rem" color="#3F3F3F" backgroundColor={backgroundColor}>- JSON Input:</Paragraph>
-      <JsonInput id="json-input-0" value={JSON.stringify(createRandomObj(3, true), null, 2)}
-                 onChange={onChange} width="100%" height="200px"/>
-    </Block>
   </Container>
 );
-
-// ReactDOM.render(<App/>, document.getElementById('root'));
