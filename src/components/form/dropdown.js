@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
-import { defaultFontFamily } from '../constants';
+import { defaultFontFamily } from 'src/constants';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -75,7 +75,7 @@ const Item = styled.li`
   }
 `;
 
-export class D extends React.Component {
+export class Dropdown extends React.Component {
   constructor(props){
     super(props);
     
@@ -122,4 +122,4 @@ export class D extends React.Component {
   }
 }
 
-export const Dropdown = enhanceWithClickOutside(D);
+export default enhanceWithClickOutside(Dropdown);

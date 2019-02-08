@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
+import { defaultFontFamily } from 'src/constants';
 
 const CInput = styled.input`
   font-family: ${defaultFontFamily};
@@ -23,5 +23,5 @@ const CInput = styled.input`
   }
 `;
 
-export const Input = ({ onChange, placeholder }) => <CInput placeholder={placeholder}
-                                                     onChange={(e) => onChange(e.target.value)}/>;
+export default ({ onChange, placeholder }) => <CInput
+  placeholder={placeholder} onChange={(e) => onChange(e.target.value)}/>;

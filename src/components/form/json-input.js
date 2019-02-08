@@ -4,11 +4,11 @@ import {
   defaultFontFamily,
   defaultFomtSize,
   defaultFontWeight
-} from '../constants';
-import image from '../../assets/settings.png';
+} from 'src/constants';
+import image from 'src/assets/settings.png';
 import AceEditor from 'react-ace';
 import 'brace/mode/json';
-import '../theme';
+import 'src/theme';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -33,7 +33,7 @@ const Image = styled.img`
 
 const Title = styled.div`text-transform: uppercase`;
 
-const JsonInput = ({ id, value, width, height, onChange }) => <Container style={{ width, height }}>
+export default ({ id, value, width, height, onChange }) => <Container style={{ width, height }}>
   <Header>
     <Image src={image}/>
     <Title>JSON Input</Title>
@@ -52,5 +52,3 @@ const JsonInput = ({ id, value, width, height, onChange }) => <Container style={
     width={width}
     height={`calc(${height} - 39px)`}/>
 </Container>;
-
-export { JsonInput };

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
-import { defaultFontFamily } from '../constants';
-import { guid } from '../utils';
+import { defaultFontFamily } from 'src/constants';
+import { guid } from 'src/utils';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -67,4 +67,4 @@ Canvas.propTypes = {
   creators: PropTypes.object.isRequired
 };
 
-export { Canvas };
+export default Canvas;

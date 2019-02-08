@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
+import { defaultFontFamily } from 'src/constants';
 
 const Container = styled.label`
   font-family: ${defaultFontFamily};
@@ -47,10 +47,8 @@ const CheckMark = styled.span`
   }
 `;
 
-const CheckBox = ({ label, onChange }) => <Container>
+export default ({ label, onChange }) => <Container>
   {label}
   <Input type="checkbox" onChange={(e) => onChange(e.target.checked)}/>
   <CheckMark/>
 </Container>;
-
-export { CheckBox };

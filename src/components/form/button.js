@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   defaultFontFamily,
   defaultFomtSize
-} from '../constants';
+} from 'src/constants';
 
 const CButton = styled.button`
   font-family: ${defaultFontFamily};
@@ -31,8 +31,5 @@ const themes = {
   clicked: { bg: '#fff', hoverBg: '#fff', color: '#57D7FF', border: '#57D7FF' }
 };
 
-const Button = ({ id, text, theme, onClick, css}) => {
-  return <CButton id={id} theme={themes[theme]|| themes['active']} onClick={onClick} css={css}>{text}</CButton>;
-};
-
-export { Button };
+export default ({ id, text, theme, onClick, css}) => <CButton
+  id={id} theme={themes[theme]|| themes['active']} onClick={onClick} css={css}>{text}</CButton>;

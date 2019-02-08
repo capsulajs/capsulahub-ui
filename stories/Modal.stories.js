@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Logs from './Logs';
+import Modal from 'src/components/Modal';
 
 export const props = {
   isOpened: true,
@@ -12,5 +12,5 @@ export const actions = {
   toggle: action('toggle')
 };
 
-storiesOf('Logs', module)
-  .add('default', () => <Logs {...props} {...actions}>Example of modal content</Logs>);
+storiesOf('Modal', module)
+  .add('default', () => <Modal {...props} {...actions}>Example of modal content</Modal>);

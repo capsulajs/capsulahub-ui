@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Paragraph from './Paragraph';
+import Paragraph from 'src/components/Paragraph';
 
 export const props = {
   fontSize: 48,
