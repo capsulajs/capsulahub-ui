@@ -5,8 +5,8 @@ import Grid from './grid';
 import { guid, isAnyNodeWithTabs, isAllNodesWithTabs } from './utils';
 
 const Container = styled.div`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   font-style: regular;
   font-size: 13px;
   background: #515151;
@@ -40,29 +40,35 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    for (const el of document.getElementById(this.props.creatorListId).children) {
-      el.addEventListener('dragstart', this.handleDragStart);
+    const list = document.getElementById(this.props.buildersListId)
+    if (list) {
+      for (const el of list.children) {
+        el.addEventListener('dragstart', this.handleDragStart);
+      }
     }
   }
 
   componentWillUnmount() {
-    for (const el of document.getElementById(this.props.creatorListId).children) {
-      el.removeEventListener('dragstart', this.handleDragStart);
+    const list = document.getElementById(this.props.buildersListId);
+    if (list) {
+      for (const el of list.children) {
+        el.removeEventListener('dragstart', this.handleDragStart);
+      }
     }
   }
 
   render() {
-    return (
-      <Container width={this.props.width} height={this.props.height}>
-        <Grid layout={this.state.layout} creators={this.props.creators} onUpdate={this.handleUpdate}/>
-      </Container>
-    );
+    const { width, height, builders } = this.props;
+
+    return <Container width={width} height={height}>
+      <Grid layout={this.state.layout} builders={builders} onUpdate={this.handleUpdate}/>
+    </Container>;
   }
 }
 
 Canvas.propTypes = {
-  creatorListId: PropTypes.string.isRequired,
-  creators: PropTypes.object.isRequired
+  buildersListId: PropTypes.string.isRequired,
+  builders: PropTypes.object.isRequired
 };
 
 export default Canvas;

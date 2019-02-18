@@ -55,6 +55,7 @@ class Grid extends React.Component {
   }
 
   renderNode(node, key) {
+    const { builders } = this.props;
     const { type, tabs, orientation, nodes } = node;
 
     if (type === 'container') {
@@ -66,7 +67,9 @@ class Grid extends React.Component {
     return (
       <ReflexElement key={key} style={STYLES.element[orientation || 'horizontal']}>
         {tabs.length
-          ? <Content id={node.id} tabs={tabs}
+          ? <Content id={node.id}
+                     tabs={tabs}
+                     builders={builders}
                      onRemove={this.handleOnRemove(node)}
                      onUpdate={this.handleOnUpdate(node)}/>
           : <Dropzone onDrop={this.handleOnDrop(node)}/>
@@ -88,7 +91,7 @@ class Grid extends React.Component {
   }
 
   render() {
-    const layout = this.props.layout;
+    const { layout, builders } = this.props;
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
@@ -98,7 +101,9 @@ class Grid extends React.Component {
     }
 
     if (tabs && tabs.length) {
-      return <Content id={id} tabs={tabs}
+      return <Content id={id}
+                      tabs={tabs}
+                      builders={builders}
                       onRemove={this.handleOnRemove(layout)}
                       onUpdate={this.handleOnUpdate(layout)}/>;
     }
@@ -108,7 +113,8 @@ class Grid extends React.Component {
 };
 
 Grid.propTypes = {
-  layout: PropTypes.object.isRequired
+  layout: PropTypes.object.isRequired,
+  builders: PropTypes.object.isRequired
 };
 
 export default Grid;
