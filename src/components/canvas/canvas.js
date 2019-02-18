@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
-import { defaultFontFamily } from 'src/constants';
-import { guid } from 'src/utils';
+import { guid, isAnyNodeWithTabs, isAllNodesWithTabs } from './utils';
 
 const Container = styled.div`
   width: ${props => props.width};
   height: ${props => props.height};
-  font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 13px;
   background: #515151;
@@ -36,7 +34,7 @@ class Canvas extends React.Component {
   handleUpdate(layout) {
     this.setState({ layout });
   }
-  
+
   handleDragStart(e) {
     e.dataTransfer.setData('creatorId', e.target.id);
   }
@@ -46,7 +44,7 @@ class Canvas extends React.Component {
       el.addEventListener('dragstart', this.handleDragStart);
     }
   }
-  
+
   componentWillUnmount() {
     for (const el of document.getElementById(this.props.creatorListId).children) {
       el.removeEventListener('dragstart', this.handleDragStart);
