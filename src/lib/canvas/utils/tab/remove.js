@@ -46,10 +46,20 @@ const remove = (layout, nodeId, tabId) => {
     nodes = nodes.map(curr => remove(curr, nodeId, tabId));
   }
 
-  return {
+  const newLayout = {
     ...layout,
     nodes: nodes.filter(isNodeValid)
   }
+
+  if (newLayout.type === 'container' && newLayout.nodes.length === 0) {
+    return {
+      id: guid(),
+      type: 'element',
+      tabs: []
+    };
+  }
+
+  return newLayout;
 };
 
 export default remove;
