@@ -29,8 +29,13 @@ const isNodeValid = ({ type, nodes, tabs }) => {
   }
 };
 
+const defaultLayout = () => ({ id: guid(), type: 'element', tabs: [] });
 const remove = (layout, nodeId, tabId) => {
   if (layout.type === 'element') {
+    if (layout.id === nodeId) {
+      return defaultLayout();
+    }
+
     return layout;
   }
 
@@ -52,11 +57,7 @@ const remove = (layout, nodeId, tabId) => {
   }
 
   if (newLayout.type === 'container' && newLayout.nodes.length === 0) {
-    return {
-      id: guid(),
-      type: 'element',
-      tabs: []
-    };
+    return defaultLayout();
   }
 
   return newLayout;
