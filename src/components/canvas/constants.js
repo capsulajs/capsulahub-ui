@@ -45,13 +45,13 @@ export const STYLES = {
   },
   splitter: {
     horizontal: {
-      background: '#fff',
+      background: '#515151',
       border: 'none',
       width: '100%',
       height: '8px'
     },
     vertical: {
-      background: '#fff',
+      background: '#515151',
       border: 'none',
       width: '8px',
       height: '100%'
