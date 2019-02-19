@@ -19,6 +19,7 @@ class Grid extends React.Component {
     this.handleOnDrop = this.handleOnDrop.bind(this);
     this.handleOnRemove = this.handleOnRemove.bind(this);
     this.handleOnUpdate = this.handleOnUpdate.bind(this);
+    this.handleTabDragEnd = this.handleTabDragEnd.bind(this);
   }
 
   handleOnDrop(node) {

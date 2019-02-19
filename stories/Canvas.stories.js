@@ -10,8 +10,8 @@ export const props = {
     e2: () => 'Element 2',
     e3: () => 'Element 3'
   },
-  width: 600,
-  height: 400
+  width: 1000,
+  height: 500
 };
 
 export const actions = {

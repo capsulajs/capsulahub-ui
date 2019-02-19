@@ -22,7 +22,7 @@ export const SECTORS_ORIENTATION = {
   '1,2,3,4': 'center'
 };
 
-export const SECTORS_MIN_SIZE = 350;
+export const SECTORS_MIN_SIZE = 250;
 export const SECTORS_CENTER_RATIO = 0.2;
 export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
 
@@ -35,20 +35,23 @@ export const STYLES = {
     overflow: 'hidden',
   },
   element: {
-    horizontal: {},
+    horizontal: {
+      height: '100%'
+    },
     vertical: {
-      overflow: 'visible'
+      overflow: 'visible',
+      height: '100%'
     }
   },
   splitter: {
     horizontal: {
-      background: '#515151',
+      background: '#fff',
       border: 'none',
       width: '100%',
       height: '8px'
     },
     vertical: {
-      background: '#515151',
+      background: '#fff',
       border: 'none',
       width: '8px',
       height: '100%'
