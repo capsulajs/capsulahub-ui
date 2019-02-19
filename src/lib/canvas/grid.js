@@ -102,11 +102,13 @@ class Grid extends React.Component {
     }
 
     if (tabs && tabs.length) {
-      return <Content id={id}
-                      tabs={tabs}
-                      builders={builders}
-                      onRemove={this.handleOnRemove(layout)}
-                      onUpdate={this.handleOnUpdate(layout)}/>;
+      return <DragDropContext onDragEnd={this.handleTabDragEnd}>
+        <Content id={id}
+                 tabs={tabs}
+                 builders={builders}
+                 onRemove={this.handleOnRemove(layout)}
+                 onUpdate={this.handleOnUpdate(layout)}/>
+      </DragDropContext>;
     }
 
     return <Dropzone onDrop={this.handleOnDrop(layout)}/>;

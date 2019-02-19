@@ -31,8 +31,12 @@ export default class CanvasExample extends React.Component {
         <li draggable id="text2">Text 2</li>
         <li draggable id="text3">Text 3</li>
       </ul>
-      <Canvas buildersListId="list" builders={builders}
-              layout={this.state.layout} onUpdate={this.onUpdate} width={1000} height={500}/>
+      <Canvas buildersListId="list"
+              builders={builders}
+              layout={this.state.layout}
+              onUpdate={this.onUpdate}
+              width={1000}
+              height={500}/>
     </React.Fragment>
   }
 }
