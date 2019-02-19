@@ -1,6 +1,7 @@
 import { flatten, cloneDeep } from 'lodash';
 
 export const guid = () => Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+export const emptyNode = () => ({ id: guid(), type: 'element', tabs: [] });
 export const decamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
 

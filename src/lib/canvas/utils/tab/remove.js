@@ -1,27 +1,10 @@
 import { cloneDeep } from 'lodash';
-import { guid } from '..';
-
-const extendNode = (node) => {
-  if (node.type === 'container') {
-    switch(node.nodes.length) {
-      case 2:
-        return node;
-      case 1:
-        return node.nodes[0].type === 'element'
-          ? node.nodes[0]
-          : extendNode(node.nodes[0]);
-      default:
-        return { id: guid(), type: 'element', tabs: [] };
-    }
-  }
-  return node;
-};
+import { guid, emptyNode, getNodeTabs, updateNodeTabs } from '..';
 
 const isNodeValid = ({ type, nodes, tabs }) => {
   if (type === 'element') {
     return tabs.length > 0;
   }
-
   switch (nodes.length) {
     case 1: return isNodeValid(nodes[0]);
     case 2: return isNodeValid(nodes[0]) || isNodeValid(nodes[1]);
@@ -29,38 +12,24 @@ const isNodeValid = ({ type, nodes, tabs }) => {
   }
 };
 
-const defaultLayout = () => ({ id: guid(), type: 'element', tabs: [] });
-const remove = (layout, nodeId, tabId) => {
-  if (layout.type === 'element') {
-    if (layout.id === nodeId) {
-      return defaultLayout();
-    }
+const removeTab = (layout, nodeId, tabId) => {
+  const newTabs = getNodeTabs(layout, nodeId).filter(tab => tab.id !== tabId);
+  const newLayout = updateNodeTabs(layout, nodeId, newTabs);
 
-    return layout;
-  }
-
-  let nodes = cloneDeep(layout.nodes);
-  if (nodes.find(node => node.id === nodeId)) {
-    nodes = nodes.map((node) => {
-      if (node.type === 'element') {
-        node.tabs = node.tabs.filter(tab => tab.id !== tabId);
+  switch (newLayout.nodes.filter(isNodeValid).length) {
+    case 0: return emptyNode();
+    case 1: {
+      if (newLayout.nodes[1].nodes.filter(isNodeValid).length === 0) {
+        return { ...newLayout, nodes: [newLayout.nodes[0], emptyNode()] };
       }
-      return node;
-    }).map(extendNode);
-  } else {
-    nodes = nodes.map(curr => remove(curr, nodeId, tabId));
+      return newLayout;
+    };
+    default: return newLayout;
   }
+}
 
-  const newLayout = {
-    ...layout,
-    nodes: nodes.filter(isNodeValid)
-  }
-
-  if (newLayout.type === 'container' && newLayout.nodes.length === 0) {
-    return defaultLayout();
-  }
-
-  return newLayout;
-};
+const remove = (layout, nodeId, tabId) => layout.id === nodeId
+  ? emptyNode()
+  : removeTab(cloneDeep(layout), nodeId, tabId);
 
 export default remove;

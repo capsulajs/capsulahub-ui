@@ -28,19 +28,16 @@ export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
 
 export const ESCAPE_KEY = 27;
 export const ENTER_KEY = 13;
-export const MIN_TAB_NAME_LENGTH = 3;
+export const MIN_TAB_NAME_LENGTH = 2;
 export const STYLES = {
   container: {
     background: '#414141',
     overflow: 'hidden',
   },
   element: {
-    horizontal: {
-      height: '100%'
-    },
+    horizontal: {},
     vertical: {
-      overflow: 'visible',
-      height: '100%'
+      overflow: 'visible'
     }
   },
   splitter: {

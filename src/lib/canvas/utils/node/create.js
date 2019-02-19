@@ -1,4 +1,4 @@
-import { guid, decamelize } from '..';
+import { guid, decamelize, emptyNode } from '..';
 import { SECTORS, SECTORS_REVERSE } from '../../constants';
 
 const nodeTabs = (builderId) => ([{
@@ -10,8 +10,8 @@ const nodeTabs = (builderId) => ([{
 
 const nodeCouple = (node, builderId, sectors) => {
   return SECTORS_REVERSE[sectors.toString()]
-    ? [{ id: guid(), type: 'element', tabs: [] }, { ...node, tabs: nodeTabs(builderId) }]
-    : [{ ...node, tabs: nodeTabs(builderId) }, { id: guid(), type: 'element', tabs: [] }];
+    ? [emptyNode(), { ...node, tabs: nodeTabs(builderId) }]
+    : [{ ...node, tabs: nodeTabs(builderId) }, emptyNode()];
 };
 
 const update = (layout, node, orientation, builderId, sectors) => {
