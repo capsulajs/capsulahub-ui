@@ -31,7 +31,7 @@ class Content extends React.Component {
     const { activeIndex } = this.state;
     const { id, tabs, builders, onRemove, onUpdate } = this.props;
 
-    if (tabs) {
+    if (tabs && tabs[activeIndex]) {
       const { builderId, metadata } = tabs[activeIndex];
       const builder = builders[builderId];
 
