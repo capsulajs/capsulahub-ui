@@ -2,89 +2,109 @@ import 'react-reflex/styles.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Dropzone from './dropzone';
 import Content from './content';
 import { STYLES, SECTORS_ORIENTATION } from './constants';
-import update from './utils/grid/update';
-import remove from './utils/grid/remove';
+import createNode from './utils/node/create';
+import removeTab from './utils/tab/remove';
+import moveTab from './utils/tab/move';
+import reorderTab from './utils/tab/reorder';
+import { updateNodeTab } from './utils';
 
 class Grid extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.handleOnDrop = this.handleOnDrop.bind(this);
     this.handleOnRemove = this.handleOnRemove.bind(this);
     this.handleOnUpdate = this.handleOnUpdate.bind(this);
+    this.handleTabDragEnd = this.handleTabDragEnd.bind(this);
   }
 
-  handleOnDrop(element) {
+  handleOnDrop(node) {
     return ({ creatorId, sectors }) => {
       const orientation = SECTORS_ORIENTATION[sectors.toString()];
-      const creator = this.props.creators[creatorId];
-      
-      if (creator && element.type !== 'container') {
-        this.props.onUpdate(update(this.props.layout, element, orientation, creator, sectors));
+
+      if (node.type !== 'container') {
+        this.props.onUpdate(createNode(this.props.layout, node, orientation, creatorId, sectors));
       }
     }
   }
-  
-  handleOnRemove(element) {
-    return tabId => this.props.onUpdate(remove(this.props.layout, element, tabId));
+
+  handleOnRemove(node) {
+    return tabId => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
   }
-  
-  handleOnUpdate(element) {
-    return ({ id, name }) => {
-      const tab = element.tabs.find(tab => tab.id === id);
-      tab.name = name;
-      this.props.onUpdate(this.props.layout);
+
+  handleOnUpdate(node) {
+    return ({ id, ...updates }) => {
+      this.props.onUpdate(updateNodeTab(this.props.layout, node.id, id, updates));
     }
   }
 
-  renderElement(element, key) {
-    const { type, tabs, orientation, elements } = element;
+  handleTabDragEnd(result) {
+    const { source, destination } = result;
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      this.props.onUpdate(reorderTab(this.props.layout, source, destination));
+    } else {
+      this.props.onUpdate(moveTab(this.props.layout, source, destination));
+    }
+  }
+
+  renderNode(node, key) {
+    const { builders } = this.props;
+    const { type, tabs, orientation, nodes } = node;
 
     if (type === 'container') {
       return (<ReflexElement key={key} styles={STYLES.container}>
-        {this.renderContainer(orientation, elements)}
+        {this.renderNodes(nodes, orientation)}
       </ReflexElement>);
     }
-    
+
     return (
       <ReflexElement key={key} style={STYLES.element[orientation || 'horizontal']}>
         {tabs.length
-          ? <Content id={element.id} tabs={tabs}
-                     onRemove={this.handleOnRemove(element)}
-                     onUpdate={this.handleOnUpdate(element)}/>
-          : <Dropzone onDrop={this.handleOnDrop(element)}/>
+          ? <Content id={node.id}
+                     tabs={tabs}
+                     builders={builders}
+                     onRemove={this.handleOnRemove(node)}
+                     onUpdate={this.handleOnUpdate(node)}/>
+          : <Dropzone onDrop={this.handleOnDrop(node)}/>
         }
       </ReflexElement>
     );
   }
 
-  renderContainer(orientation, elements) {
-    const reduce = (acc, element, idx) => {
+  renderNodes(nodes, orientation) {
+    const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={STYLES.splitter[orientation || 'horizontal']}/>;
-      const el = this.renderElement(element, 'E' + idx);
-      return idx > 0 ? [...acc, splitter, el] : [...acc, el]
+      const n = this.renderNode(node, 'N' + idx);
+      return idx > 0 ? [...acc, splitter, n] : [...acc, n]
     };
 
-    return (
-      <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
-        {elements.reduce(reduce, [])}
-      </ReflexContainer>
-    );
+    return <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
+      {nodes.reduce(reduce, [])}
+    </ReflexContainer>;
   }
 
   render() {
-    const layout = this.props.layout;
-    const { id, tabs, orientation, elements } = layout;
-    
-    if (elements && elements.length) {
-      return this.renderContainer(orientation, elements);
+    const { layout, builders } = this.props;
+    const { id, tabs, orientation, nodes } = layout;
+
+    if (nodes && nodes.length) {
+      return <DragDropContext onDragEnd={this.handleTabDragEnd}>
+        {this.renderNodes(nodes, orientation)}
+      </DragDropContext>;
     }
-    
+
     if (tabs && tabs.length) {
-      return <Content id={id} tabs={tabs}
+      return <Content id={id}
+                      tabs={tabs}
+                      builders={builders}
                       onRemove={this.handleOnRemove(layout)}
                       onUpdate={this.handleOnUpdate(layout)}/>;
     }
@@ -94,7 +114,8 @@ class Grid extends React.Component {
 };
 
 Grid.propTypes = {
-  layout: PropTypes.object.isRequired
+  layout: PropTypes.object.isRequired,
+  builders: PropTypes.object.isRequired
 };
 
 export default Grid;

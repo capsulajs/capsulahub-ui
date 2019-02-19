@@ -1,6 +1,6 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Tab from './tab';
 
@@ -12,7 +12,7 @@ const Container = styled.div`
   color: #A9A9A9;
   width: 100%;
   overflow: hidden;
-  
+
   overflow-x: scroll;
   ::-webkit-scrollbar {
     background: #515151;
@@ -56,32 +56,32 @@ const getTabCloseStyle = (isHover) => (isHover ? {} : { color: '#515151' });
 class Tabs extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       hoverIndex: -1,
       editIndex: -1
     };
   }
-  
+
   hover(hoverIndex) {
     this.setState({ hoverIndex });
   }
-  
+
   edit(editIndex) {
     this.setState({ editIndex });
   }
-  
+
   renderDraggable(tab, index) {
     const { tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
     const { hoverIndex, editIndex } = this.state;
-    
+
     const isActive = activeIndex === index;
     const isHover = hoverIndex === index;
     const isEditing = editIndex === index;
     const isRemovable = !isEditing && tabs.length;
-    
+
     return (
-      <Draggable key={activeIndex} draggableId={activeIndex} index={index}>
+      <Draggable key={index} draggableId={tab.id} index={index}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
                style={getTabStyle(provided.draggableProps.style, isActive)}
@@ -103,20 +103,18 @@ class Tabs extends React.Component {
       </Draggable>
     );
   }
-  
+
   render() {
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragTab}>
-          <Droppable droppableId={this.props.id} direction="horizontal">
-            {provided => (
-              <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
-                {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <Droppable droppableId={this.props.id} direction="horizontal">
+          {provided => (
+            <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+              {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </Container>
     );
   }
