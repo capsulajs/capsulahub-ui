@@ -35,13 +35,15 @@ class Content extends React.Component {
       const { builderId, metadata } = tabs[activeIndex];
       const builder = builders[builderId];
 
-      return <Container>
-        <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
-              onRemove={onRemove}
-              onSelect={this.handleOnSelect}
-              onUpdate={onUpdate}/>
-        <TabContainer>{builder(metadata)}</TabContainer>
-      </Container>;
+      if (builder) {
+        return <Container>
+          <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
+                onRemove={onRemove}
+                onSelect={this.handleOnSelect}
+                onUpdate={onUpdate}/>
+          <TabContainer>{builder(metadata)}</TabContainer>
+        </Container>;
+      }
     }
 
     return 'No content..';
