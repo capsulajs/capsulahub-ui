@@ -44,14 +44,14 @@ const filterTabs = (node) => {
   }
 }
 
-const removeTab = (layout, nodeId, tabId) => {
+const removeTab = ({ layout, nodeId, tabId }) => {
   const newTabs = getNodeTabs(layout, nodeId).filter(tab => tab.id !== tabId);
   const newLayout = updateNodeTabs(layout, nodeId, newTabs);
   return filterTabs(newLayout);
 }
 
-const remove = (layout, nodeId, tabId) => layout.id === nodeId
+const remove = ({ layout, nodeId, tabId }) => layout.id === nodeId
   ? emptyNode()
-  : removeTab(cloneDeep(layout), nodeId, tabId);
+  : removeTab({ layout, nodeId, tabId });
 
 export default remove;

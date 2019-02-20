@@ -27,13 +27,17 @@ class Grid extends React.Component {
       const orientation = SECTORS_ORIENTATION[sectors.toString()];
 
       if (node.type !== 'container') {
-        this.props.onUpdate(createNode(this.props.layout, node, orientation, builderId, sectors));
+        this.props.onUpdate(createNode({
+          layout: this.props.layout, node, orientation, builderId, sectors
+        }));
       }
     }
   }
 
   handleOnRemove(node) {
-    return tabId => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+    return tabId => this.props.onUpdate(removeTab({
+      layout: this.props.layout, nodeId: node.id, tabId
+    }));
   }
 
   handleOnUpdate(node) {

@@ -8,37 +8,26 @@ const nodeTabs = (builderId) => ([{
   metadata: {}
 }]);
 
-const nodeCouple = (node, builderId, sectors) => {
+const multiplyNode = (node, builderId, sectors) => {
   return SECTORS_REVERSE[sectors.toString()]
     ? [emptyNode(), { ...node, tabs: nodeTabs(builderId) }]
     : [{ ...node, tabs: nodeTabs(builderId) }, emptyNode()];
 };
 
-const update = (layout, node, orientation, builderId, sectors) => {
+const create = ({ layout, node, orientation, builderId, sectors }) => {
   switch (true) {
     case layout.id === node.id:
-      if (sectors.toString() === SECTORS.toString()) {
-        return {
-          id: guid(),
-          type: 'element',
-          tabs: nodeTabs(builderId)
-        }
-      } else {
-        return {
-          id: guid(),
-          type: 'container',
-          nodes: nodeCouple(node, builderId, sectors),
-          orientation
-        };
-      }
+      return sectors.toString() === SECTORS.toString()
+        ? { id: guid(), type: 'element', tabs: nodeTabs(builderId) }
+        : { id: guid(), type: 'container', nodes: multiplyNode(node, builderId, sectors), orientation };
     case layout.type === 'element': return layout;
     default: return {
       id: guid(),
       type: 'container',
-      nodes: layout.nodes.map(curr => update(curr, node, orientation, builderId, sectors)),
+      nodes: layout.nodes.map(l => create({ layout: l, node, orientation, builderId, sectors })),
       orientation: layout.orientation
     }
   }
 };
 
-export default update;
+export default create;
