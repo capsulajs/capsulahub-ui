@@ -19,7 +19,8 @@ const removeTab = (layout, nodeId, tabId) => {
   switch (newLayout.nodes.filter(isNodeValid).length) {
     case 0: return emptyNode();
     case 1: {
-      if (newLayout.nodes[1].nodes.filter(isNodeValid).length === 0) {
+      const node = newLayout.nodes[1];
+      if (node.type === 'container' && node.nodes.filter(isNodeValid).length === 0) {
         return { ...newLayout, nodes: [newLayout.nodes[0], emptyNode()] };
       }
       return newLayout;
