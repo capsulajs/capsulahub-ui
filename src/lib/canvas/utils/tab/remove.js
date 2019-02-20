@@ -12,34 +12,42 @@ const isNodeValid = (node) => {
   }
 };
 
-const removeTab = (layout, nodeId, tabId) => {
-  const newTabs = getNodeTabs(layout, nodeId).filter(tab => tab.id !== tabId);
-  const newLayout = updateNodeTabs(layout, nodeId, newTabs);
+const filterTabs = (node) => {
+  if (node.tabs) {
+    return node;
+  }
 
-  switch (newLayout.nodes.filter(isNodeValid).length) {
+  switch (node.nodes.filter(isNodeValid).length) {
     case 0: return emptyNode();
     case 1: {
-      const [node1, node2] = newLayout.nodes;
+      const [node1, node2] = node.nodes;
 
       if (node1.nodes && node1.nodes.filter(isNodeValid).length === 0) {
-        return { ...newLayout, nodes: [emptyNode(), node2] };
+        return { ...node, nodes: [emptyNode(), node2] };
       }
 
       if (node2.nodes) {
         switch (node2.nodes.filter(isNodeValid).length) {
-          case 0: return { ...newLayout, nodes: [node1, emptyNode()] };
+          case 0: return { ...node, nodes: [node1, emptyNode()] };
           case 1: {
             const [node12, node22] = node2.nodes;
             if (!isNodeValid(node12) && isNodeValid(node22)) {
-              return { ...newLayout, nodes: [node1, node22] }
+              return { ...node, nodes: [node1, node22] };
             }
           };
-          default: return newLayout;
+          default: return node;
         }
       }
     };
-    default: return newLayout;
+    case 2: return { ...node, nodes: node.nodes.map(filterTabs) };
+    default: return node;
   }
+}
+
+const removeTab = (layout, nodeId, tabId) => {
+  const newTabs = getNodeTabs(layout, nodeId).filter(tab => tab.id !== tabId);
+  const newLayout = updateNodeTabs(layout, nodeId, newTabs);
+  return filterTabs(newLayout);
 }
 
 const remove = (layout, nodeId, tabId) => layout.id === nodeId
