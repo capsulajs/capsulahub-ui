@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import Grid from './grid';
 import { defaultFontFamily } from '../constants';
 import {
-  mountOnDragstartEventHandler,
-  unmountOnDragstartEventHandler
+  onDragstartEventHandler
 } from './utils/canvas';
 
 const Container = styled.div`
@@ -28,11 +27,11 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    mountOnDragstartEventHandler(this.props.buildersListId, this.handleDragStart);
+    onDragstartEventHandler('add', this.props.buildersListId, this.handleDragStart);
   }
 
   componentWillUnmount() {
-    unmountOnDragstartEventHandler(this.props.buildersListId, this.handleDragStart);
+    onDragstartEventHandler('remove', this.props.buildersListId, this.handleDragStart);
   }
 
   render() {

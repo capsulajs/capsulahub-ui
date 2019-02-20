@@ -44,7 +44,7 @@ export const updateNodeTabs = (layout, nodeId, tabs) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      node.tabs = tabs.map(tab => ({ ...tab }));
+      node.tabs = tabs;
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
