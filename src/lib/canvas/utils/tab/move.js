@@ -17,6 +17,6 @@ export default (layout, source, destination) => {
   const tabs = move(sourceTabs, destinationTabs, source, destination);
   let newLayout = cloneDeep(layout);
   newLayout = updateNodeTabs(newLayout, destination.droppableId, tabs);
-  newLayout = removeTab(cloneDeep(newLayout), source.droppableId, sourceTabs[source.index].id);
+  newLayout = removeTab({ layout: newLayout, nodeId: source.droppableId, tabId: sourceTabs[source.index].id });
   return reorderTab(cloneDeep(newLayout), source, destination);
 };
