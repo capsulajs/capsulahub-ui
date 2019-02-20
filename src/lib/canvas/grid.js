@@ -23,11 +23,11 @@ class Grid extends React.Component {
   }
 
   handleOnDrop(node) {
-    return ({ creatorId, sectors }) => {
+    return ({ builderId, sectors }) => {
       const orientation = SECTORS_ORIENTATION[sectors.toString()];
 
       if (node.type !== 'container') {
-        this.props.onUpdate(createNode(this.props.layout, node, orientation, creatorId, sectors));
+        this.props.onUpdate(createNode(this.props.layout, node, orientation, builderId, sectors));
       }
     }
   }

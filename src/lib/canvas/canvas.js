@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
 import { defaultFontFamily } from '../constants';
-import { guid, isAnyNodeWithTabs, isAllNodesWithTabs } from './utils';
+import {
+  mountOnDragstartEventHandler,
+  unmountOnDragstartEventHandler
+} from './utils/canvas';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -21,25 +24,15 @@ const Container = styled.div`
 
 class Canvas extends React.Component {
   handleDragStart(e) {
-    e.dataTransfer.setData('creatorId', e.target.id);
+    e.dataTransfer.setData('builderId', e.target.getAttribute('builderId'));
   }
 
   componentDidMount() {
-    const list = document.getElementById(this.props.buildersListId)
-    if (list) {
-      for (const el of list.children) {
-        el.addEventListener('dragstart', this.handleDragStart);
-      }
-    }
+    mountOnDragstartEventHandler(this.props.buildersListId, this.handleDragStart);
   }
 
   componentWillUnmount() {
-    const list = document.getElementById(this.props.buildersListId);
-    if (list) {
-      for (const el of list.children) {
-        el.removeEventListener('dragstart', this.handleDragStart);
-      }
-    }
+    unmountOnDragstartEventHandler(this.props.buildersListId, this.handleDragStart);
   }
 
   render() {

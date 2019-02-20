@@ -27,9 +27,7 @@ export default class CanvasExample extends React.Component {
   render() {
     return <React.Fragment>
       <ul id="list" style={{width: 120, height: 80, margin: 10}}>
-        <li draggable id="text1">Text 1</li>
-        <li draggable id="text2">Text 2</li>
-        <li draggable id="text3">Text 3</li>
+        {Object.keys(builders).map(key => (<li draggable builderId={key} key={key}>{key}</li>))}
       </ul>
       <Canvas buildersListId="list"
               builders={builders}

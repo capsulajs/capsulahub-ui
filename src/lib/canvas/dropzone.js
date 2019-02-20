@@ -38,16 +38,16 @@ class Dropzone extends React.Component {
       ratio: SECTORS_CENTER_RATIO
     };
   }
-  
+
   getStyle(sector) {
     return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
   }
 
   componentDidMount() {
     const container = ReactDOM.findDOMNode(this);
-  
+
     isSmall(container) && this.setState({ ratio: 1 });
-    
+
     this.onDrag$ = fromEvent(container, 'dragover').pipe(
       map(e => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
@@ -66,19 +66,19 @@ class Dropzone extends React.Component {
       map(element => !element.classList.value.includes('sector')),
       filter(Boolean)
     ];
-    
+
     this.onDragEnter$ = fromEvent(container, 'dragenter').pipe(...pipes)
       .subscribe(_ => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
     this.onDragLeave$ = fromEvent(container, 'dragleave').pipe(...pipes)
       .subscribe(_ => this.setState({ sectors: [] }));
     this.onDrop$ = fromEvent(container, 'drop').pipe(
-      map(e => e.dataTransfer.getData('creatorId'))
-    ).subscribe(creatorId => creatorId
-      ? this.props.onDrop({ creatorId, sectors: this.state.sectors })
+      map(e => e.dataTransfer.getData('builderId'))
+    ).subscribe(builderId => builderId
+      ? this.props.onDrop({ builderId, sectors: this.state.sectors })
       : this.setState({ sectors: [] })
     );
   }
-  
+
   componentWillUnmount() {
     this.onDrag$.unsubscribe();
     this.onDragEnter$.unsubscribe();
