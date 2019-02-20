@@ -24,7 +24,7 @@ const Container = styled.div`
 
 class Canvas extends React.Component {
   handleDragStart(e) {
-    e.dataTransfer.setData('builderId', e.target.getAttribute('builderId'));
+    e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
   }
 
   componentDidMount() {

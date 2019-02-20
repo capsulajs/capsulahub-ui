@@ -44,7 +44,7 @@ export const updateNodeTabs = (layout, nodeId, tabs) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      node.tabs = tabs.map(tab => ({ ...tab, id: guid() }));
+      node.tabs = tabs.map(tab => ({ ...tab }));
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
@@ -57,7 +57,7 @@ export const updateNodeTab = (layout, nodeId, tabId, updates) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      node.tabs = node.tabs.map(tab => (tab.id === tabId ? { ...tab, ...updates, id: guid() }  : tab));
+      node.tabs = node.tabs.map(tab => (tab.id === tabId ? { ...tab, ...updates }  : tab));
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }

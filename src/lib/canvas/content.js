@@ -17,36 +17,44 @@ class Content extends React.Component {
     super(props);
 
     this.state = {
-      activeIndex: 0
+      index: 0
     };
 
+    this.handleOnRemove = this.handleOnRemove.bind(this);
     this.handleOnSelect = this.handleOnSelect.bind(this);
   }
 
-  handleOnSelect(activeIndex) {
-    this.setState({ activeIndex });
+  handleOnSelect(index) {
+    this.setState({ index });
+  }
+
+  handleOnRemove(id) {
+    this.setState({ index: 0 });
+    this.props.onRemove(id);
   }
 
   render() {
-    const { activeIndex } = this.state;
+    const { index } = this.state;
     const { id, tabs, builders, onRemove, onUpdate } = this.props;
 
-    if (tabs && tabs[activeIndex]) {
-      const { builderId, metadata } = tabs[activeIndex];
+    if (tabs && tabs[index]) {
+      const { builderId, metadata } = tabs[index];
       const builder = builders[builderId];
 
       if (builder) {
         return <Container>
-          <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
-                onRemove={onRemove}
+          <Tabs id={id} tabs={tabs} activeIndex={index}
+                onRemove={this.handleOnRemove}
                 onSelect={this.handleOnSelect}
                 onUpdate={onUpdate}/>
           <TabContainer>{builder(metadata)}</TabContainer>
         </Container>;
       }
+
+      return 'No builder...'
     }
 
-    return 'No content..';
+    return 'No tabs..';
   }
 }
 
