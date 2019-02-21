@@ -15,39 +15,53 @@ const TabContainer = styled.div`
 class Content extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      activeIndex: 0
+      index: 0
     };
-    
+
+    this.handleOnRemove = this.handleOnRemove.bind(this);
     this.handleOnSelect = this.handleOnSelect.bind(this);
   }
-  
-  handleOnSelect(activeIndex) {
-    this.setState({ activeIndex });
+
+  handleOnSelect(index) {
+    this.setState({ index });
   }
-  
+
+  handleOnRemove(id) {
+    this.setState({ index: 0 });
+    this.props.onRemove(id);
+  }
+
   render() {
-    const { activeIndex } = this.state;
-    const { id, tabs, onRemove, onUpdate } = this.props;
-    
-    if (tabs) {
-      return <Container>
-        <Tabs id={id} tabs={tabs} activeIndex={activeIndex}
-              onRemove={onRemove}
-              onSelect={this.handleOnSelect}
-              onUpdate={onUpdate}/>
-        <TabContainer>{tabs[activeIndex].value}</TabContainer>
-      </Container>;
+    const { index } = this.state;
+    const { id, tabs, builders, onRemove, onUpdate } = this.props;
+
+    if (tabs && tabs[index]) {
+      const { builderId, metadata } = tabs[index];
+      const builder = builders[builderId];
+
+      if (builder) {
+        return <Container>
+          <Tabs id={id} tabs={tabs} activeIndex={index}
+                onRemove={this.handleOnRemove}
+                onSelect={this.handleOnSelect}
+                onUpdate={onUpdate}/>
+          <TabContainer>{builder(metadata)}</TabContainer>
+        </Container>;
+      }
+
+      return 'No builder...'
     }
-    
-    return 'No content..';
+
+    return 'No tabs..';
   }
 }
 
 Content.propTypes = {
   id: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
+  builders: PropTypes.object.isRequired,
   onRemove: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired
 };

@@ -22,13 +22,13 @@ export const SECTORS_ORIENTATION = {
   '1,2,3,4': 'center'
 };
 
-export const SECTORS_MIN_SIZE = 350;
+export const SECTORS_MIN_SIZE = 250;
 export const SECTORS_CENTER_RATIO = 0.2;
 export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
 
 export const ESCAPE_KEY = 27;
 export const ENTER_KEY = 13;
-export const MIN_TAB_NAME_LENGTH = 3;
+export const MIN_TAB_NAME_LENGTH = 2;
 export const STYLES = {
   container: {
     background: '#414141',
