@@ -22,8 +22,17 @@ const filterTabs = (node) => {
     case 1: {
       const [node1, node2] = node.nodes;
 
-      if (node1.nodes && node1.nodes.filter(isNodeValid).length === 0) {
-        return { ...node, nodes: [emptyNode(), node2] };
+      if (node1.nodes) {
+        switch (node1.nodes.filter(isNodeValid).length) {
+          case 0: return { ...node, nodes: [emptyNode(), node2] };
+          case 1: {
+            const [node11, node21] = node1.nodes;
+            if (isNodeValid(node11) && !isNodeValid(node21)) {
+              return { ...node, nodes: [node11, node2] };
+            }
+          };
+          default: return node;
+        };
       }
 
       if (node2.nodes) {
@@ -38,6 +47,7 @@ const filterTabs = (node) => {
           default: return node;
         }
       }
+
     };
     case 2: return { ...node, nodes: node.nodes.map(filterTabs) };
     default: return node;
