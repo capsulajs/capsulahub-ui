@@ -1,6 +1,12 @@
 import { flatten, cloneDeep } from 'lodash';
 
-export const guid = () => Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+export const guid = () =>
+  Math.random()
+    .toString(36)
+    .substring(2, 5) +
+  Math.random()
+    .toString(36)
+    .substring(2, 5);
 export const emptyNode = () => ({ id: guid(), type: 'element', tabs: [] });
 export const decamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
@@ -11,9 +17,7 @@ export const decamelize = (str, separator) => {
     .toLowerCase();
 };
 
-export const isAnyNodeWithTabs = (node) => node.type === 'element'
-  ? node.tabs.length > 0
-  : node.nodes.length > 0;
+export const isAnyNodeWithTabs = (node) => (node.type === 'element' ? node.tabs.length > 0 : node.nodes.length > 0);
 
 export const isAllNodesWithTabs = (layout) => {
   let statement = true;
@@ -25,7 +29,7 @@ export const isAllNodesWithTabs = (layout) => {
     } else {
       node.nodes.forEach(check);
     }
-  }
+  };
   check(layout);
   return statement;
 };
@@ -35,7 +39,7 @@ export const getNodeTabs = (node, nodeId) => {
     return node.tabs;
   }
   if (node.nodes) {
-    return flatten(node.nodes.map(node => getNodeTabs(node, nodeId)));
+    return flatten(node.nodes.map((node) => getNodeTabs(node, nodeId)));
   }
   return [];
 };
@@ -48,7 +52,7 @@ export const updateNodeTabs = (layout, nodeId, tabs) => {
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
-  }
+  };
   update(clonedLayout);
   return clonedLayout;
 };
@@ -57,11 +61,11 @@ export const updateNodeTab = (layout, nodeId, tabId, updates) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      node.tabs = node.tabs.map(tab => (tab.id === tabId ? { ...tab, ...updates }  : tab));
+      node.tabs = node.tabs.map((tab) => (tab.id === tabId ? { ...tab, ...updates } : tab));
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
-  }
+  };
   update(clonedLayout);
   return clonedLayout;
 };

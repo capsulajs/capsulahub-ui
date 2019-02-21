@@ -1,7 +1,7 @@
 sudo: true
 language: node_js
 node_js:
-  - "8"
+  - '10'
 
 branches:
   only:
@@ -9,10 +9,13 @@ branches:
 
 install:
   - yarn install --production=false
-  # - yarn test
 
 script:
-  - yarn build
+  - yarn lint
+  #  - yarn build
+  - yarn test
+  # - yarn doc
+  # - bash scripts/publish.sh
 
 notifications:
   email:

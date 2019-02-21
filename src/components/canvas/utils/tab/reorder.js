@@ -8,10 +8,6 @@ const reorder = (tabs, startIndex, endIndex) => {
 };
 
 export default (layout, source, destination) => {
-  const tabs = reorder(
-    getNodeTabs(layout, destination.droppableId),
-    source.index,
-    destination.index
-  );
-  return updateNodeTabs(layout, destination.droppableId, tabs)
-}
+  const tabs = reorder(getNodeTabs(layout, destination.droppableId), source.index, destination.index);
+  return updateNodeTabs(layout, destination.droppableId, tabs);
+};

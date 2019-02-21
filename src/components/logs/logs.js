@@ -23,14 +23,14 @@ export const theme = {
   base0C: '#57D7FF',
   base0D: '#DEDEDE',
   base0E: '#DEDEDE',
-  base0F: '#DEDEDE'
+  base0F: '#DEDEDE',
 };
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 13px;
-  background: #3F3F3F;
+  background: #3f3f3f;
   width: 100%;
   height: 100%;
   min-height: 200px;
@@ -76,23 +76,29 @@ const RowPoint = styled.div`
   display: flex;
   align-items: center;
 `;
-const RowNumber = styled.div`width: 30px;`;
-const RowTimestamp = styled.div`width: 50px;`;
+const RowNumber = styled.div`
+  width: 30px;
+`;
+const RowTimestamp = styled.div`
+  width: 50px;
+`;
 const RowContent = styled.div`
   width: calc(100% - 120px);
   padding-left: 12px;
 `;
 
 const Point = styled.div`
-  background: #FF505A;
+  background: #ff505a;
   width: 4px;
   height: 4px;
   border-radius: 2px;
 `;
 
-const Timestamp = styled.div`color: #DEDEDE`;
+const Timestamp = styled.div`
+  color: #dedede;
+`;
 const Button = styled.div`
-  color: #2CFF28;
+  color: #2cff28;
   text-decoration: underline;
   cursor: pointer;
 `;
@@ -104,64 +110,85 @@ const Content = styled.div`
   margin-right: 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
-    background: #3F3F3F;
+    background: #3f3f3f;
     width: 2px;
   }
   ::-webkit-scrollbar-corner {
-    background: #3F3F3F;
+    background: #3f3f3f;
   }
   ::-webkit-scrollbar-thumb {
     background: #797979;
   }
 `;
 
-const Clear = styled.div`cursor: pointer`;
-const Info = styled.div`color: #2CFF28`;
+const Clear = styled.div`
+  cursor: pointer;
+`;
+const Info = styled.div`
+  color: #2cff28;
+`;
 
 const Row = ({ number, item, onResend }) => {
-  let content = <ReactJson src={item.data}
-                         name={false}
-                         iconStyle={'circle'}
-                         theme={theme}
-                         displayDataTypes={false}
-                         displayObjectSize={false}
-                         enableClipboard={true}
-                         shouldCollapse={(field) => {
-                           return Object.keys(field.src).length > 3;
-                         }}/>;
+  let content = (
+    <ReactJson
+      src={item.data}
+      name={false}
+      iconStyle={'circle'}
+      theme={theme}
+      displayDataTypes={false}
+      displayObjectSize={false}
+      enableClipboard={true}
+      shouldCollapse={(field) => {
+        return Object.keys(field.src).length > 3;
+      }}
+    />
+  );
   if (item.status === 'fail') {
-    content = <FlexRow>
-      <Timestamp>{decorate(item.timestamp) + ' | '}</Timestamp>
-      <Button onClick={onResend}> Resend</Button>
-    </FlexRow>;
+    content = (
+      <FlexRow>
+        <Timestamp>{decorate(item.timestamp) + ' | '}</Timestamp>
+        <Button onClick={onResend}> Resend</Button>
+      </FlexRow>
+    );
   }
   if (item.status === 'info') {
-    content = <Info>{item.data}</Info>
+    content = <Info>{item.data}</Info>;
   }
-  return (<FlexRow>
-    <RowPoint>{item.status === 'fail' &&<Point></Point>}</RowPoint>
-    <RowNumber>{number}</RowNumber>
-    <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
-    <RowContent>{content}</RowContent>
-  </FlexRow>)
+  return (
+    <FlexRow>
+      <RowPoint>{item.status === 'fail' && <Point />}</RowPoint>
+      <RowNumber>{number}</RowNumber>
+      <RowTimestamp>{decorate(item.timestamp)}</RowTimestamp>
+      <RowContent>{content}</RowContent>
+    </FlexRow>
+  );
 };
 
-export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => <Container>
-  <Header>
-    <FlexRow>
-      <Image src={image}/>
-      <Title>LOG</Title>
-    </FlexRow>
-    {onClear &&<Clear onClick={onClear}>&#10005;</Clear>}
-  </Header>
-  <Content>
-    {data ? (
-      data.map((item, index) => <Row key={index} number={index + 1} item={item}
-                                     onDelete={onDelete || false}
-                                     onEdit={onEdit || false}
-                                     onResend={() => onResend && onResend(item)}/>
-      )
-    ) : (<div>No Data..</div>)}
-  </Content>
-  <Footer>{path}</Footer>
-</Container>;
+export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => (
+  <Container>
+    <Header>
+      <FlexRow>
+        <Image src={image} />
+        <Title>LOG</Title>
+      </FlexRow>
+      {onClear && <Clear onClick={onClear}>&#10005;</Clear>}
+    </Header>
+    <Content>
+      {data ? (
+        data.map((item, index) => (
+          <Row
+            key={index}
+            number={index + 1}
+            item={item}
+            onDelete={onDelete || false}
+            onEdit={onEdit || false}
+            onResend={() => onResend && onResend(item)}
+          />
+        ))
+      ) : (
+        <div>No Data..</div>
+      )}
+    </Content>
+    <Footer>{path}</Footer>
+  </Container>
+);

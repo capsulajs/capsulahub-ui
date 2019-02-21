@@ -7,6 +7,6 @@ const LoaderImg = styled.img`
   height: 20px;
 `;
 
-const Loader = () => <LoaderImg src={image}></LoaderImg>
+const Loader = () => <LoaderImg src={image} />;
 
 export { Loader };

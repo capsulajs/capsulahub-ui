@@ -14,7 +14,7 @@ const Input = styled.input`
   padding-left: 10px;
   padding-right: 10px;
   background: #737373;
-  color: #B1B1B1;
+  color: #b1b1b1;
   border: none;
 
   &:focus {
@@ -22,7 +22,7 @@ const Input = styled.input`
   }
 
   ::placeholder {
-    color: #B1B1B1;
+    color: #b1b1b1;
   }
 `;
 
@@ -37,7 +37,7 @@ class Tab extends React.Component {
     this.keyDown = this.keyDown.bind(this);
 
     this.state = {
-      value: this.props.name
+      value: this.props.name,
     };
   }
 
@@ -53,18 +53,20 @@ class Tab extends React.Component {
     }
   }
 
-  keyDown (event) {
+  keyDown(event) {
     (event.which === ESCAPE_KEY || event.which === ENTER_KEY) && this.save();
   }
 
   render() {
     const { isEditing, isActive, name } = this.props;
 
-    return isEditing
-      ? <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown}/>
-      : <Title style={getStyle(isActive)}
-               onClick={this.props.onSelect}
-               onDoubleClick={this.props.onEditStart}>{name}</Title>;
+    return isEditing ? (
+      <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />
+    ) : (
+      <Title style={getStyle(isActive)} onClick={this.props.onSelect} onDoubleClick={this.props.onEditStart}>
+        {name}
+      </Title>
+    );
   }
 }
 
@@ -73,7 +75,7 @@ Tab.propTypes = {
   onSelect: PropTypes.func.isRequired,
   onEditStart: PropTypes.func.isRequired,
   onEditEnd: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Tab;

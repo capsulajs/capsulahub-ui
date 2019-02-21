@@ -1,7 +1,12 @@
-ace.define('ace/theme/capsula-js',['require','exports','module','ace/lib/dom'], function(acequire, exports, module) {
+ace.define('ace/theme/capsula-js', ['require', 'exports', 'module', 'ace/lib/dom'], function(
+  acequire,
+  exports,
+  module
+) {
   exports.isDark = true;
   exports.cssClass = 'ace-capsula-js';
-  exports.cssText = "\
+  exports.cssText =
+    '\
   \
 .ace-capsula-js .ace_gutter {\
   background: #3F3F3F;\
@@ -32,7 +37,7 @@ ace.define('ace/theme/capsula-js',['require','exports','module','ace/lib/dom'], 
 }\
 .ace-capsula-js .ace_variable.ace_language {\
   color: #DEDEDE\
-}";
+}';
   const dom = acequire('../lib/dom');
   dom.importCssString(exports.cssText, exports.cssClass);
 });

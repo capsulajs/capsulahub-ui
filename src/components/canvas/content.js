@@ -17,7 +17,7 @@ class Content extends React.Component {
     super(props);
 
     this.state = {
-      index: 0
+      index: 0,
     };
 
     this.handleOnRemove = this.handleOnRemove.bind(this);
@@ -42,16 +42,22 @@ class Content extends React.Component {
       const builder = builders[builderId];
 
       if (builder) {
-        return <Container>
-          <Tabs id={id} tabs={tabs} activeIndex={index}
-                onRemove={this.handleOnRemove}
-                onSelect={this.handleOnSelect}
-                onUpdate={onUpdate}/>
-          <TabContainer>{builder(metadata)}</TabContainer>
-        </Container>;
+        return (
+          <Container>
+            <Tabs
+              id={id}
+              tabs={tabs}
+              activeIndex={index}
+              onRemove={this.handleOnRemove}
+              onSelect={this.handleOnSelect}
+              onUpdate={onUpdate}
+            />
+            <TabContainer>{builder(metadata)}</TabContainer>
+          </Container>
+        );
       }
 
-      return 'No builder...'
+      return 'No builder...';
     }
 
     return 'No tabs..';
@@ -63,7 +69,7 @@ Content.propTypes = {
   tabs: PropTypes.array.isRequired,
   builders: PropTypes.object.isRequired,
   onRemove: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Content;

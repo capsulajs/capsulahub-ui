@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { defaultFontFamily } from '../constants';
 
@@ -11,17 +11,18 @@ const CInput = styled.input`
   padding-left: 10px;
   padding-right: 10px;
   background: #737373;
-  color: #B1B1B1;
+  color: #b1b1b1;
   border: none;
-  
+
   &:focus {
     outline: none;
   }
-  
+
   ::placeholder {
-    color: #B1B1B1;
+    color: #b1b1b1;
   }
 `;
 
-export const Input = ({ onChange, placeholder }) => <CInput placeholder={placeholder}
-                                                     onChange={(e) => onChange(e.target.value)}/>;
+export const Input = ({ onChange, placeholder }) => (
+  <CInput placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
+);

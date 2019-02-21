@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
 import { defaultFontFamily } from '../constants';
-import {
-  onDragstartEventHandler
-} from './utils/canvas';
+import { onDragstartEventHandler } from './utils/canvas';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   font-style: regular;
   font-size: 13px;
   background: #515151;
@@ -37,9 +35,11 @@ class Canvas extends React.Component {
   render() {
     const { width, height, builders, layout, onUpdate } = this.props;
 
-    return <Container width={width} height={height}>
-      <Grid layout={layout} builders={builders} onUpdate={onUpdate}/>
-    </Container>;
+    return (
+      <Container width={width} height={height}>
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} />
+      </Container>
+    );
   }
 }
 
@@ -49,7 +49,7 @@ Canvas.propTypes = {
   layout: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired
+  height: PropTypes.number.isRequired,
 };
 
 export default Canvas;
