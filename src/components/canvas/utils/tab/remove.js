@@ -26,8 +26,8 @@ const filterTabs = (node) => {
         switch (node1.nodes.filter(isNodeValid).length) {
           case 0: return { ...node, nodes: [emptyNode(), node2] };
           case 1: {
-            const [node11, node21] = node1.nodes;
-            if (isNodeValid(node11) && !isNodeValid(node21)) {
+            const [node11, node12] = node1.nodes;
+            if (isNodeValid(node11) && !isNodeValid(node12)) {
               return { ...node, nodes: [node11, node2] };
             }
           };
@@ -39,15 +39,14 @@ const filterTabs = (node) => {
         switch (node2.nodes.filter(isNodeValid).length) {
           case 0: return { ...node, nodes: [node1, emptyNode()] };
           case 1: {
-            const [node12, node22] = node2.nodes;
-            if (!isNodeValid(node12) && isNodeValid(node22)) {
+            const [node21, node22] = node2.nodes;
+            if (!isNodeValid(node21) && isNodeValid(node22)) {
               return { ...node, nodes: [node1, node22] };
             }
           };
           default: return node;
         }
       }
-
     };
     case 2: return { ...node, nodes: node.nodes.map(filterTabs) };
     default: return node;
