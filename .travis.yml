@@ -1,0 +1,22 @@
+sudo: true
+language: node_js
+node_js:
+  - '10'
+
+branches:
+  only:
+    - /.*/
+
+install:
+  - yarn install --production=false
+
+script:
+  - yarn lint
+  #  - yarn build
+  # - yarn test
+  # - yarn doc
+  - bash scripts/publish.sh
+
+notifications:
+  email:
+    on_failure: always

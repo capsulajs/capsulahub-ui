@@ -6,7 +6,7 @@ import {
   Paragraph, Logs, Modal, Button,
   JsonInput, Input, CheckBox,
   Dropdown, Loader
-} from '../lib';
+} from '../components';
 import CanvasExample from './canvas';
 
 const backgroundColor = 'FAFAFA';

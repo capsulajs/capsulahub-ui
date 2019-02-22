@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paragraph, Canvas } from '../lib';
+import { Paragraph, Canvas } from '../components';
 
 const builders = {
   text1: () => <Paragraph fontSize="2.5rem">Text 1</Paragraph>,
