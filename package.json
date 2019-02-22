@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "CapsulaJS UI component library",
   "main": "./lib/index.js",
+  "private": false,
   "scripts": {
     "start": "parcel src/docs/index.html",
     "rm:lib": "rimraf lib",
