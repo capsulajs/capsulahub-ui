@@ -19,7 +19,7 @@ const Header = styled.li`
   cursor: pointer;
   &:hover {
     background: #545454;
-    color: #E2E2E2;
+    color: #e2e2e2;
   }
 `;
 
@@ -48,7 +48,7 @@ const Item = styled.li`
   cursor: pointer;
   &:hover {
     background: #545454;
-    color: #E2E2E2;
+    color: #e2e2e2;
   }
 `;
 
@@ -66,7 +66,7 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpened: false
+      isOpened: false,
     };
     this.toggle = this.toggle.bind(this);
     this.renderItems = this.renderItems.bind(this);
@@ -81,16 +81,14 @@ class List extends React.Component {
 
     return items.map((item, i) => {
       if (item.children) {
-        return <List key={i}
-                     name={item.name}
-                     items={item.children}
-                     onSelect={onSelect}
-                     level={level + 1}/>;
+        return <List key={i} name={item.name} items={item.children} onSelect={onSelect} level={level + 1} />;
       }
 
-      return <Item key={i} level={level} onClick={() => onSelect(item)}>
-        {item.name}
-      </Item>;
+      return (
+        <Item key={i} level={level} onClick={() => onSelect(item)}>
+          {item.name}
+        </Item>
+      );
     });
   }
 
