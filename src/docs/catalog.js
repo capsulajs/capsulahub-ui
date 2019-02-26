@@ -18,7 +18,8 @@ const menu = [
               {
                 id: 20,
                 name: 'API 1',
-              }, {
+              },
+              {
                 id: 24,
                 name: 'API 2',
               },
@@ -42,10 +43,12 @@ const menu = [
       {
         id: 10,
         name: 'Richard Grayson',
-        children: [{
-        id: 8,
-        name: 'Tim Drake',
-      }]
+        children: [
+          {
+            id: 8,
+            name: 'Tim Drake',
+          },
+        ],
       },
     ],
   },
