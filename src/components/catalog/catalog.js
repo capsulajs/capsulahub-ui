@@ -21,7 +21,7 @@ class Catalog extends React.Component {
     return (
       <Container>
         {menu.map(({ name, children }) => (
-          <List name={name} items={children} onSelect={onSelect} />
+          <List key={name} name={name} items={children} onSelect={onSelect} />
         ))}
       </Container>
     );

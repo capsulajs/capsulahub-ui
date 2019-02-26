@@ -17,6 +17,10 @@ const Header = styled.li`
   flex-direction: row;
   border-top: 1px solid #797979;
   cursor: pointer;
+  &:hover {
+    background: #545454;
+    color: #e2e2e2;
+  }
 `;
 
 const Title = styled.div`
@@ -31,6 +35,21 @@ const ArrowDown = styled.div`
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+`;
+
+const Item = styled.li`
+  list-style-type: none;
+  height: 26px;
+  line-height: 26px;
+  padding-left: ${(props) => props.level * 28}px;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #797979;
+  cursor: pointer;
+  &:hover {
+    background: #545454;
+    color: #e2e2e2;
+  }
 `;
 
 const ArrowUp = styled.div`
@@ -50,17 +69,32 @@ class List extends React.Component {
       isOpened: false,
     };
     this.toggle = this.toggle.bind(this);
+    this.renderItems = this.renderItems.bind(this);
   }
 
   toggle() {
     this.setState({ isOpened: !this.state.isOpened });
   }
 
+  renderItems(items) {
+    const { level, onSelect } = this.props;
+
+    return items.map((item, i) => {
+      if (item.children) {
+        return <List key={i} name={item.name} items={item.children} onSelect={onSelect} level={level + 1} />;
+      }
+
+      return (
+        <Item key={i} level={level} onClick={() => onSelect(item)}>
+          {item.name}
+        </Item>
+      );
+    });
+  }
+
   render() {
     const { isOpened } = this.state;
-    const { name, items, onSelect, level } = this.props;
-
-    console.log(items);
+    const { name, items, level } = this.props;
 
     return (
       <Container>
@@ -68,7 +102,7 @@ class List extends React.Component {
           {isOpened ? <ArrowDown /> : <ArrowUp />}
           <Title>{name}</Title>
         </Header>
-        {isOpened && 'lols'}
+        {isOpened && this.renderItems(items)}
       </Container>
     );
   }
