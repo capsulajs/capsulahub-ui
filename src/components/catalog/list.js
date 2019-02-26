@@ -12,7 +12,7 @@ const Header = styled.li`
   list-style-type: none;
   height: 26px;
   line-height: 26px;
-  padding-left: ${(props) => props.level * 10}px;
+  padding-left: ${({ level }) => 10 + level * 10}px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #797979;
@@ -41,7 +41,7 @@ const Item = styled.li`
   list-style-type: none;
   height: 26px;
   line-height: 26px;
-  padding-left: ${(props) => props.level * 28}px;
+  padding-left: ${({ level }) => 28 + level * 10}px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #797979;
@@ -109,7 +109,7 @@ class List extends React.Component {
 }
 
 List.defaultProps = {
-  level: 1,
+  level: 0,
 };
 
 List.propTypes = {
