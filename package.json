@@ -4,10 +4,9 @@
   "description": "CapsulaJS UI component library",
   "main": "lib/index.js",
   "scripts": {
-    "start": "parcel src/docs/index.html",
-    "rm:lib": "rimraf lib",
-    "build:commonjs": "parcel build src/components/index.js --target commonjs --out-dir lib",
-    "build": "yarn rm:lib && yarn build:commonjs",
+    "start": "start-storybook -p 6006",
+    "build": "rimraf lib && cross-env BABEL_ENV=commonjs babel src/components --out-dir lib",
+    "build-storybook": "build-storybook",
     "lint": "eslint src/components/**/**",
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier --write '{src,tests}/**/*.{js,jsx}'"
