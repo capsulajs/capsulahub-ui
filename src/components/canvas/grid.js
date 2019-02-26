@@ -23,23 +23,38 @@ class Grid extends React.Component {
   }
 
   handleOnDrop(node) {
-    return ({ creatorId, sectors }) => {
+    return ({ builderId, sectors }) => {
       const orientation = SECTORS_ORIENTATION[sectors.toString()];
 
       if (node.type !== 'container') {
-        this.props.onUpdate(createNode(this.props.layout, node, orientation, creatorId, sectors));
+        this.props.onUpdate(
+          createNode({
+            layout: this.props.layout,
+            node,
+            orientation,
+            builderId,
+            sectors,
+          })
+        );
       }
-    }
+    };
   }
 
   handleOnRemove(node) {
-    return tabId => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+    return (tabId) =>
+      this.props.onUpdate(
+        removeTab({
+          layout: this.props.layout,
+          nodeId: node.id,
+          tabId,
+        })
+      );
   }
 
   handleOnUpdate(node) {
     return ({ id, ...updates }) => {
       this.props.onUpdate(updateNodeTab(this.props.layout, node.id, id, updates));
-    }
+    };
   }
 
   handleTabDragEnd(result) {
@@ -60,35 +75,42 @@ class Grid extends React.Component {
     const { type, tabs, orientation, nodes } = node;
 
     if (type === 'container') {
-      return (<ReflexElement key={key} styles={STYLES.container}>
-        {this.renderNodes(nodes, orientation)}
-      </ReflexElement>);
+      return (
+        <ReflexElement key={key} styles={STYLES.container}>
+          {this.renderNodes(nodes, orientation)}
+        </ReflexElement>
+      );
     }
 
     return (
       <ReflexElement key={key} style={STYLES.element[orientation || 'horizontal']}>
-        {tabs.length
-          ? <Content id={node.id}
-                     tabs={tabs}
-                     builders={builders}
-                     onRemove={this.handleOnRemove(node)}
-                     onUpdate={this.handleOnUpdate(node)}/>
-          : <Dropzone onDrop={this.handleOnDrop(node)}/>
-        }
+        {tabs.length ? (
+          <Content
+            id={node.id}
+            tabs={tabs}
+            builders={builders}
+            onRemove={this.handleOnRemove(node)}
+            onUpdate={this.handleOnUpdate(node)}
+          />
+        ) : (
+          <Dropzone onDrop={this.handleOnDrop(node)} />
+        )}
       </ReflexElement>
     );
   }
 
   renderNodes(nodes, orientation) {
     const reduce = (acc, node, idx) => {
-      const splitter = <ReflexSplitter key={'S' + idx} style={STYLES.splitter[orientation || 'horizontal']}/>;
+      const splitter = <ReflexSplitter key={'S' + idx} style={STYLES.splitter[orientation || 'horizontal']} />;
       const n = this.renderNode(node, 'N' + idx);
-      return idx > 0 ? [...acc, splitter, n] : [...acc, n]
+      return idx > 0 ? [...acc, splitter, n] : [...acc, n];
     };
 
-    return <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
-      {nodes.reduce(reduce, [])}
-    </ReflexContainer>;
+    return (
+      <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
+        {nodes.reduce(reduce, [])}
+      </ReflexContainer>
+    );
   }
 
   render() {
@@ -96,26 +118,32 @@ class Grid extends React.Component {
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
-      return <DragDropContext onDragEnd={this.handleTabDragEnd}>
-        {this.renderNodes(nodes, orientation)}
-      </DragDropContext>;
+      return (
+        <DragDropContext onDragEnd={this.handleTabDragEnd}>{this.renderNodes(nodes, orientation)}</DragDropContext>
+      );
     }
 
     if (tabs && tabs.length) {
-      return <Content id={id}
-                      tabs={tabs}
-                      builders={builders}
-                      onRemove={this.handleOnRemove(layout)}
-                      onUpdate={this.handleOnUpdate(layout)}/>;
+      return (
+        <DragDropContext onDragEnd={this.handleTabDragEnd}>
+          <Content
+            id={id}
+            tabs={tabs}
+            builders={builders}
+            onRemove={this.handleOnRemove(layout)}
+            onUpdate={this.handleOnUpdate(layout)}
+          />
+        </DragDropContext>
+      );
     }
 
-    return <Dropzone onDrop={this.handleOnDrop(layout)}/>;
+    return <Dropzone onDrop={this.handleOnDrop(layout)} />;
   }
-};
+}
 
 Grid.propTypes = {
   layout: PropTypes.object.isRequired,
-  builders: PropTypes.object.isRequired
+  builders: PropTypes.object.isRequired,
 };
 
 export default Grid;

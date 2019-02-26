@@ -1,12 +1,15 @@
+import 'typeface-montserrat';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
-import { guid, isAnyNodeWithTabs, isAllNodesWithTabs } from './utils';
+import { defaultFontFamily } from '../constants';
+import { onDragstartEventHandler } from './utils/canvas';
 
 const Container = styled.div`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  font-family: ${defaultFontFamily};
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   font-style: regular;
   font-size: 13px;
   background: #515151;
@@ -17,58 +20,36 @@ const Container = styled.div`
 `;
 
 class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      layout: {
-        id: guid(),
-        type: 'element',
-        tabs: []
-      }
-    };
-
-    this.handleUpdate = this.handleUpdate.bind(this);
-  }
-
-  handleUpdate(layout) {
-    this.setState({ layout });
-  }
-
   handleDragStart(e) {
-    e.dataTransfer.setData('creatorId', e.target.id);
+    e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
   }
 
   componentDidMount() {
-    const list = document.getElementById(this.props.buildersListId)
-    if (list) {
-      for (const el of list.children) {
-        el.addEventListener('dragstart', this.handleDragStart);
-      }
-    }
+    onDragstartEventHandler('add', this.props.buildersListId, this.handleDragStart);
   }
 
   componentWillUnmount() {
-    const list = document.getElementById(this.props.buildersListId);
-    if (list) {
-      for (const el of list.children) {
-        el.removeEventListener('dragstart', this.handleDragStart);
-      }
-    }
+    onDragstartEventHandler('remove', this.props.buildersListId, this.handleDragStart);
   }
 
   render() {
-    const { width, height, builders } = this.props;
+    const { width, height, builders, layout, onUpdate } = this.props;
 
-    return <Container width={width} height={height}>
-      <Grid layout={this.state.layout} builders={builders} onUpdate={this.handleUpdate}/>
-    </Container>;
+    return (
+      <Container width={width} height={height}>
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} />
+      </Container>
+    );
   }
 }
 
 Canvas.propTypes = {
   buildersListId: PropTypes.string.isRequired,
-  builders: PropTypes.object.isRequired
+  builders: PropTypes.object.isRequired,
+  layout: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 export default Canvas;

@@ -1,6 +1,6 @@
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Tab from './tab';
 
@@ -9,17 +9,17 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   background: #515151;
-  color: #A9A9A9;
+  color: #a9a9a9;
   width: 100%;
   overflow: hidden;
-  
+
   overflow-x: scroll;
   ::-webkit-scrollbar {
     background: #515151;
     height: 2px;
   }
   ::-webkit-scrollbar-corner {
-    background: #3F3F3F;
+    background: #3f3f3f;
   }
   ::-webkit-scrollbar-thumb {
     background: #797979;
@@ -35,7 +35,7 @@ const Close = styled.span`
 
 const getListStyle = () => ({
   background: '#515151',
-  display: 'flex'
+  display: 'flex',
 });
 
 const getTabStyle = (draggableStyle, isActive) => ({
@@ -56,67 +56,73 @@ const getTabCloseStyle = (isHover) => (isHover ? {} : { color: '#515151' });
 class Tabs extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       hoverIndex: -1,
-      editIndex: -1
+      editIndex: -1,
     };
   }
-  
+
   hover(hoverIndex) {
     this.setState({ hoverIndex });
   }
-  
+
   edit(editIndex) {
     this.setState({ editIndex });
   }
-  
+
   renderDraggable(tab, index) {
     const { tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
     const { hoverIndex, editIndex } = this.state;
-    
+
     const isActive = activeIndex === index;
     const isHover = hoverIndex === index;
     const isEditing = editIndex === index;
     const isRemovable = !isEditing && tabs.length;
-    
+
     return (
-      <Draggable key={activeIndex} draggableId={activeIndex} index={index}>
+      <Draggable key={index} draggableId={tab.id} index={index}>
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-               style={getTabStyle(provided.draggableProps.style, isActive)}
-               onMouseEnter={() => this.hover(index)}
-               onMouseLeave={() => this.hover(-1)}>
-            <Tab id={tab.id}
-                 name={tab.name}
-                 isEditing={isEditing}
-                 isActive={isActive}
-                 onSelect={() => onSelect(index)}
-                 onEditStart={() => this.edit(index)}
-                 onEditEnd={() => this.edit(-1)}
-                 onUpdate={onUpdate}/>
-            {isRemovable &&
-            <Close onClick={e => e.preventDefault() || onRemove(tab.id)}
-                   style={getTabCloseStyle(isHover)}>✕</Close>}
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getTabStyle(provided.draggableProps.style, isActive)}
+            onMouseEnter={() => this.hover(index)}
+            onMouseLeave={() => this.hover(-1)}
+          >
+            <Tab
+              id={tab.id}
+              name={tab.name}
+              isEditing={isEditing}
+              isActive={isActive}
+              onSelect={() => onSelect(index)}
+              onEditStart={() => this.edit(index)}
+              onEditEnd={() => this.edit(-1)}
+              onUpdate={onUpdate}
+            />
+            {isRemovable && (
+              <Close onClick={(e) => e.preventDefault() || onRemove(tab.id)} style={getTabCloseStyle(isHover)}>
+                ✕
+              </Close>
+            )}
           </div>
         )}
       </Draggable>
     );
   }
-  
+
   render() {
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragTab}>
-          <Droppable droppableId={this.props.id} direction="horizontal">
-            {provided => (
-              <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
-                {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <Droppable droppableId={this.props.id} direction="horizontal">
+          {(provided) => (
+            <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+              {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </Container>
     );
   }
@@ -128,7 +134,7 @@ Tabs.propTypes = {
   activeIndex: PropTypes.number.isRequired,
   onRemove: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Tabs;

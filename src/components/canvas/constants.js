@@ -3,7 +3,7 @@ export const SECTORS_NEIGHBORS = {
   1: [2, 3],
   2: [1, 4],
   3: [1, 4],
-  4: [2, 3]
+  4: [2, 3],
 };
 
 export const SECTORS_REVERSE = {
@@ -11,7 +11,7 @@ export const SECTORS_REVERSE = {
   '3,4': true,
   '1,3': false,
   '2,4': true,
-  '1,2,3,4': false
+  '1,2,3,4': false,
 };
 
 export const SECTORS_ORIENTATION = {
@@ -19,7 +19,7 @@ export const SECTORS_ORIENTATION = {
   '3,4': 'horizontal',
   '1,3': 'vertical',
   '2,4': 'vertical',
-  '1,2,3,4': 'center'
+  '1,2,3,4': 'center',
 };
 
 export const SECTORS_MIN_SIZE = 250;
@@ -28,33 +28,30 @@ export const SECTORS_HIGHLIGHT_COLOR = '#C9DADF';
 
 export const ESCAPE_KEY = 27;
 export const ENTER_KEY = 13;
-export const MIN_TAB_NAME_LENGTH = 3;
+export const MIN_TAB_NAME_LENGTH = 2;
 export const STYLES = {
   container: {
     background: '#414141',
     overflow: 'hidden',
   },
   element: {
-    horizontal: {
-      height: '100%'
-    },
+    horizontal: {},
     vertical: {
       overflow: 'visible',
-      height: '100%'
-    }
+    },
   },
   splitter: {
     horizontal: {
       background: '#515151',
       border: 'none',
       width: '100%',
-      height: '8px'
+      height: '8px',
     },
     vertical: {
       background: '#515151',
       border: 'none',
       width: '8px',
-      height: '100%'
-    }
-  }
+      height: '100%',
+    },
+  },
 };

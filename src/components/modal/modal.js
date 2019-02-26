@@ -11,13 +11,15 @@ const Container = styled.div`
   top: 15%;
   left: calc(50% - 274px);
   background: #525252;
-  color: #A9A9A9;
+  color: #a9a9a9;
   padding: 19px;
   width: 548px;
   height: 361px;
   z-index: 9999;
 `;
-const Close = styled.div`cursor: pointer`;
+const Close = styled.div`
+  cursor: pointer;
+`;
 const Header = styled.div`
   display: flex;
   flex-direction: row;
@@ -25,36 +27,40 @@ const Header = styled.div`
   font-size: 10px;
 `;
 
-class Modal extends React.Component {
+class M extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      isOpened: !!this.props.isOpened
+      isOpened: false,
     };
   }
-  
+
   handleClickOutside(e) {
     e.target.id === this.props.id ? this.toggle() : this.setState({ isOpened: false });
   }
-  
+
   toggle() {
     this.setState({ isOpened: !this.state.isOpened });
   }
-  
+
   render() {
     if (!this.state.isOpened) {
       return null;
     }
-    
-    return <Container>
-      <Header>
-        <div>{this.props.title}</div>
-        <Close onClick={() => this.toggle()}>&#10005;</Close>
-      </Header>
-      {this.props.children}
-    </Container>;
+
+    return (
+      <Container>
+        <Header>
+          <div>{this.props.title}</div>
+          <Close onClick={() => this.toggle()}>&#10005;</Close>
+        </Header>
+        {this.props.children}
+      </Container>
+    );
   }
 }
 
-export default enhanceWithClickOutside(Modal);
+const Modal = enhanceWithClickOutside(M);
+
+export { Modal };

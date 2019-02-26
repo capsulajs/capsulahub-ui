@@ -1,6 +1,6 @@
-import React  from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { defaultFontFamily } from 'src/constants';
+import { defaultFontFamily } from '../constants';
 
 const Container = styled.label`
   font-family: ${defaultFontFamily};
@@ -21,12 +21,12 @@ const Input = styled.input`
   position: absolute;
   opacity: 0;
   cursor: pointer;
- 
+
   &:checked ~ span {
-    background-color: #57D7FF;
-    border: 1px solid #57D7FF;
+    background-color: #57d7ff;
+    border: 1px solid #57d7ff;
   }
-  
+
   &:checked ~ span:after {
     display: block;
   }
@@ -39,16 +39,20 @@ const CheckMark = styled.span`
   width: 16px;
   height: 15px;
   border: 1px solid #737373;
-  
+
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }
 `;
 
-export default ({ label, onChange }) => <Container>
-  {label}
-  <Input type="checkbox" onChange={(e) => onChange(e.target.checked)}/>
-  <CheckMark/>
-</Container>;
+const CheckBox = ({ label, onChange }) => (
+  <Container>
+    {label}
+    <Input type="checkbox" onChange={(e) => onChange(e.target.checked)} />
+    <CheckMark />
+  </Container>
+);
+
+export { CheckBox };
