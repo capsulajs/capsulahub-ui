@@ -26,6 +26,7 @@
     "react-click-outside": "^3.0.1",
     "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0",
     "react-json-view": "^1.19.1",
+    "react-nested-menu": "^1.0.7",
     "react-reflex": "^2.2.9",
     "rxjs": "^6.3.3",
     "styled-components": "^3.4.5",
