@@ -12,7 +12,7 @@ const Header = styled.li`
   list-style-type: none;
   height: 26px;
   line-height: 26px;
-  padding-left: ${({ level }) => 10 + level * 10}px;
+  padding-left: ${({ padding }) => padding}px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #797979;
@@ -41,7 +41,7 @@ const Item = styled.li`
   list-style-type: none;
   height: 26px;
   line-height: 26px;
-  padding-left: ${({ level }) => 28 + level * 10}px;
+  padding-left: ${({ padding }) => padding}px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #797979;
@@ -77,15 +77,15 @@ class List extends React.Component {
   }
 
   renderItems(items) {
-    const { level, onSelect } = this.props;
+    const { padding, onSelect } = this.props;
 
     return items.map((item, i) => {
       if (item.children) {
-        return <List key={i} name={item.name} items={item.children} onSelect={onSelect} level={level + 1} />;
+        return <List key={i} name={item.name} items={item.children} onSelect={onSelect} padding={padding + 16} />;
       }
 
       return (
-        <Item key={i} level={level} onClick={() => onSelect(item)}>
+        <Item key={i} padding={padding + 16} onClick={() => onSelect(item)}>
           {item.name}
         </Item>
       );
@@ -94,11 +94,11 @@ class List extends React.Component {
 
   render() {
     const { isOpened } = this.state;
-    const { name, items, level } = this.props;
+    const { name, items, padding } = this.props;
 
     return (
       <Container>
-        <Header level={level} onClick={this.toggle}>
+        <Header padding={padding} onClick={this.toggle}>
           {isOpened ? <ArrowDown /> : <ArrowUp />}
           <Title>{name}</Title>
         </Header>
@@ -109,14 +109,14 @@ class List extends React.Component {
 }
 
 List.defaultProps = {
-  level: 0,
+  padding: 10,
 };
 
 List.propTypes = {
   name: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
-  level: PropTypes.number.isRequired,
+  padding: PropTypes.number.isRequired,
 };
 
 export default List;
