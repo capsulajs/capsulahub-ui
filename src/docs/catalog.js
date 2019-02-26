@@ -5,7 +5,7 @@ const onSelect = (tab) => console.log('Select: ', tab);
 const menu = [
   {
     id: 0,
-    name: 'Enviroment',
+    name: 'Environment',
     children: [
       {
         id: 92,
