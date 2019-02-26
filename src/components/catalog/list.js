@@ -12,7 +12,7 @@ const Header = styled.li`
   list-style-type: none;
   height: 26px;
   line-height: 26px;
-  padding-left: ${(props) => props.level * 10}px;
+  padding-left: ${props => props.level * 10}px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #797979;
@@ -47,7 +47,7 @@ class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpened: false,
+      isOpened: false
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -62,27 +62,28 @@ class List extends React.Component {
 
     console.log(items);
 
-    return (
-      <Container>
-        <Header level={level} onClick={this.toggle}>
-          {isOpened ? <ArrowDown /> : <ArrowUp />}
-          <Title>{name}</Title>
-        </Header>
-        {isOpened && 'lols'}
-      </Container>
-    );
+
+    return <Container>
+      <Header level={level} onClick={this.toggle}>
+        {isOpened ? <ArrowDown/> : <ArrowUp/>}
+        <Title>{name}</Title>
+      </Header>
+      {isOpened &&
+        'lols'
+      }
+    </Container>;
   }
 }
 
 List.defaultProps = {
-  level: 1,
-};
+  level: 1
+}
 
 List.propTypes = {
   name: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
-  level: PropTypes.number.isRequired,
+  level: PropTypes.number.isRequired
 };
 
 export default List;

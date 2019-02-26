@@ -10,4 +10,8 @@ import { Dropdown } from './form/dropdown';
 import Canvas from './canvas/canvas';
 import Catalog from './catalog/catalog';
 
-export { Button, Input, CheckBox, JsonInput, Dropdown, Loader, Modal, Logs, Paragraph, Canvas, Catalog };
+export {
+  Button, Input, CheckBox, JsonInput,
+  Dropdown, Loader, Modal, Logs,
+  Paragraph, Canvas, Catalog
+};
