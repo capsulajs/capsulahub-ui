@@ -2,11 +2,13 @@
   "name": "@capsulajs/capsulahub-ui",
   "version": "0.0.1",
   "description": "CapsulaJS UI component library",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "private": false,
   "scripts": {
-    "start": "start-storybook -p 6006",
-    "build": "rimraf lib && cross-env BABEL_ENV=commonjs babel src/components --out-dir lib",
-    "build-storybook": "build-storybook",
+    "start": "parcel src/docs/index.html",
+    "rm:lib": "rimraf lib",
+    "build:commonjs": "parcel build src/components/index.js --target commonjs --out-dir lib",
+    "build": "yarn rm:lib && yarn build:commonjs",
     "lint": "eslint src/components/**/**",
     "lint:fix": "yarn lint --fix",
     "prettier": "prettier --write '{src,tests}/**/*.{js,jsx}'"
@@ -25,12 +27,13 @@
     "react-json-view": "^1.19.1",
     "react-reflex": "^2.2.9",
     "rxjs": "^6.3.3",
-    "styled-components": "^3.4.5"
+    "styled-components": "^3.4.5",
+    "typeface-montserrat": "^0.0.54"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "codacy-coverage": "^3.4.0",
@@ -42,12 +45,6 @@
     "parcel-bundler": "^1.11.0",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
-    "rimraf": "^2.6.3",
-    "@storybook/addon-actions": "^4.1.11",
-    "@storybook/addon-links": "^4.1.11",
-    "@storybook/addons": "^4.1.11",
-    "@storybook/react": "^4.1.11",
-    "babel-loader": "^8.0.5",
-    "cross-env": "^5.2.0"
+    "rimraf": "^2.6.3"
   }
 }
