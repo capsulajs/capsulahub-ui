@@ -1,11 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Paragraph from 'src/components/Paragraph';
+import { Paragraph } from 'src';
 
 export const props = {
   fontSize: 48,
   backgroundColor: '#fff',
-  color: '#222'
+  color: '#222',
 };
 
 storiesOf('Paragraph', module)
