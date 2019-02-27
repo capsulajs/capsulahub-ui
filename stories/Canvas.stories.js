@@ -8,31 +8,24 @@ export const props = {
   builders: {
     e1: () => 'Element 1',
     e2: () => 'Element 2',
-    e3: () => 'Element 3',
+    e3: () => 'Element 3'
   },
   width: 1000,
-  height: 500,
+  height: 500
 };
 
 export const actions = {
-  onClick: action('onClick'),
+  onClick: action('onClick')
 };
 
 storiesOf('Canvas', module)
-  .addDecorator((story) => (
-    <div>
-      <ul id="list">
-        <li draggable id="e1">
-          Element 1
-        </li>
-        <li draggable id="e2">
-          Element 2
-        </li>
-        <li draggable id="e3">
-          Element 3
-        </li>
-      </ul>
-      {story()}
+  .addDecorator(story => <div>
+    <ul id="list">
+      <li draggable id="e1">Element 1</li>
+      <li draggable id="e2">Element 2</li>
+      <li draggable id="e3">Element 3</li>
+    </ul>
+    {story()}
     </div>
-  ))
-  .add('default', () => <Canvas {...props} {...actions} />);
+  )
+  .add('default', () => <Canvas {...props} {...actions}/>);

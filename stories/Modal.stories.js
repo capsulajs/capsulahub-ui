@@ -5,15 +5,12 @@ import { Modal } from 'src';
 
 export const props = {
   isOpened: true,
-  title: 'Example of title',
+  title: 'Example of title'
 };
 
 export const actions = {
-  toggle: action('toggle'),
+  toggle: action('toggle')
 };
 
-storiesOf('Modal', module).add('default', () => (
-  <Modal {...props} {...actions}>
-    Example of modal content
-  </Modal>
-));
+storiesOf('Modal', module)
+  .add('default', () => <Modal {...props} {...actions}>Example of modal content</Modal>);

@@ -5,14 +5,14 @@ import { Logs } from 'src';
 import { getRandomLogs } from './utils';
 
 export const props = {
-  path: 'path>path?path',
+  path: 'path>path?path'
 };
 
 export const actions = {
   onClear: action('onClear'),
-  onResend: action('onResend'),
+  onResend: action('onResend')
 };
 
 storiesOf('Logs', module)
-  .add('default', () => <Logs {...props} {...actions} />)
-  .add('data', () => <Logs data={getRandomLogs()} {...props} {...actions} />);
+  .add('default', () => <Logs {...props} {...actions}/>)
+  .add('data', () => <Logs data={getRandomLogs()} {...props} {...actions}/>);
