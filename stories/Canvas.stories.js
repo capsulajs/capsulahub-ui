@@ -6,7 +6,7 @@ import { Canvas } from 'src';
 const builders = {
   text1: () => 'Text 1',
   text2: () => 'Text 2',
-  text3: () => 'Text 3'
+  text3: () => 'Text 3',
 };
 
 export default class CanvasExample extends React.Component {
@@ -16,8 +16,8 @@ export default class CanvasExample extends React.Component {
       layout: {
         id: 'tklj94',
         type: 'element',
-        tabs: []
-      }
+        tabs: [],
+      },
     };
     this.onUpdate = this.onUpdate.bind(this);
   }
@@ -27,19 +27,26 @@ export default class CanvasExample extends React.Component {
   }
 
   render() {
-    return <React.Fragment>
-      <ul id="list" style={{width: 120, height: 60, margin: 10}}>
-        {Object.keys(builders).map(key => (<li draggable builder-id={key} key={key}>{key}</li>))}
-      </ul>
-      <Canvas buildersListId="list"
-              builders={builders}
-              layout={this.state.layout}
-              onUpdate={this.onUpdate}
-              width={1000}
-              height={500}/>
-    </React.Fragment>
+    return (
+      <React.Fragment>
+        <ul id="list" style={{ width: 120, height: 60, margin: 10 }}>
+          {Object.keys(builders).map((key) => (
+            <li draggable builder-id={key} key={key}>
+              {key}
+            </li>
+          ))}
+        </ul>
+        <Canvas
+          buildersListId="list"
+          builders={builders}
+          layout={this.state.layout}
+          onUpdate={this.onUpdate}
+          width={1000}
+          height={500}
+        />
+      </React.Fragment>
+    );
   }
 }
 
-storiesOf('Canvas', module)
-  .add('default', () => <CanvasExample />);
+storiesOf('Canvas', module).add('default', () => <CanvasExample />);
