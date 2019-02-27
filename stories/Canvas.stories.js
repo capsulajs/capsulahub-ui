@@ -1,38 +1,52 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import Canvas from 'src';
+import { Canvas } from 'src';
 
-export const props = {
-  buildersListId: 'list',
-  builders: {
-    e1: () => 'Element 1',
-    e2: () => 'Element 2',
-    e3: () => 'Element 3',
-  },
-  width: 1000,
-  height: 500,
+const builders = {
+  text1: () => 'Text 1',
+  text2: () => 'Text 2',
+  text3: () => 'Text 3',
 };
 
-export const actions = {
-  onClick: action('onClick'),
-};
+export default class CanvasExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      layout: {
+        id: 'tklj94',
+        type: 'element',
+        tabs: [],
+      },
+    };
+    this.onUpdate = this.onUpdate.bind(this);
+  }
 
-storiesOf('Canvas', module)
-  .addDecorator((story) => (
-    <div>
-      <ul id="list">
-        <li draggable id="e1">
-          Element 1
-        </li>
-        <li draggable id="e2">
-          Element 2
-        </li>
-        <li draggable id="e3">
-          Element 3
-        </li>
-      </ul>
-      {story()}
-    </div>
-  ))
-  .add('default', () => <Canvas {...props} {...actions} />);
+  onUpdate(layout) {
+    this.setState({ layout });
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ul id="list" style={{ width: 120, height: 60, margin: 10 }}>
+          {Object.keys(builders).map((key) => (
+            <li draggable builder-id={key} key={key}>
+              {key}
+            </li>
+          ))}
+        </ul>
+        <Canvas
+          buildersListId="list"
+          builders={builders}
+          layout={this.state.layout}
+          onUpdate={this.onUpdate}
+          width={1000}
+          height={500}
+        />
+      </React.Fragment>
+    );
+  }
+}
+
+storiesOf('Canvas', module).add('default', () => <CanvasExample />);
