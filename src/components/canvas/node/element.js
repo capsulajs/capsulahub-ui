@@ -12,30 +12,35 @@ class Element extends React.Component {
     const { id, type, tabs, orientation, nodes } = node;
 
     if (type === 'container') {
-      return <ReflexElement key={id} styles={STYLES.container} minSize={SECTORS_MIN_SIZE}>
-        <Container
-          builders={builders}
-          nodes={nodes}
-          orientation={orientation}
-          onDrop={onDrop}
-          onUpdate={onUpdate}
-          onRemove={onRemove}/>
-      </ReflexElement>;
+      return (
+        <ReflexElement key={id} styles={STYLES.container} minSize={SECTORS_MIN_SIZE}>
+          <Container
+            builders={builders}
+            nodes={nodes}
+            orientation={orientation}
+            onDrop={onDrop}
+            onUpdate={onUpdate}
+            onRemove={onRemove}
+          />
+        </ReflexElement>
+      );
     }
 
-    return <ReflexElement key={id} style={STYLES.element[orientation || 'horizontal']} minSize={SECTORS_MIN_SIZE}>
-      {tabs.length ? (
-        <Content
-          id={node.id}
-          tabs={tabs}
-          builders={builders}
-          onRemove={() => onRemove(node)}
-          onUpdate={() => onUpdate(node)}
-        />
-      ) : (
-        <Dropzone onDrop={onDrop(node)} />
-      )}
-    </ReflexElement>;
+    return (
+      <ReflexElement key={id} style={STYLES.element[orientation || 'horizontal']} minSize={SECTORS_MIN_SIZE}>
+        {tabs.length ? (
+          <Content
+            id={node.id}
+            tabs={tabs}
+            builders={builders}
+            onRemove={() => onRemove(node)}
+            onUpdate={() => onUpdate(node)}
+          />
+        ) : (
+          <Dropzone onDrop={onDrop(node)} />
+        )}
+      </ReflexElement>
+    );
   }
 }
 

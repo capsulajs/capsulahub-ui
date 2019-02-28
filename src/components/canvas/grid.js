@@ -75,27 +75,32 @@ class Grid extends React.Component {
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
-      return <DragDropContext onDragEnd={this.handleTabDragEnd}>
-        <Container
-          builders={builders}
-          nodes={nodes}
-          orientation={orientation}
-          onDrop={this.onDrop}
-          onUpdate={this.handleOnUpdate}
-          onRemove={this.handleOnRemove}/>
-      </DragDropContext>;
+      return (
+        <DragDropContext onDragEnd={this.handleTabDragEnd}>
+          <Container
+            builders={builders}
+            nodes={nodes}
+            orientation={orientation}
+            onDrop={this.onDrop}
+            onUpdate={this.handleOnUpdate}
+            onRemove={this.handleOnRemove}
+          />
+        </DragDropContext>
+      );
     }
 
     if (tabs && tabs.length) {
-      return <DragDropContext onDragEnd={this.handleTabDragEnd}>
-        <Content
-          id={id}
-          tabs={tabs}
-          builders={builders}
-          onRemove={this.handleOnRemove(layout)}
-          onUpdate={this.handleOnUpdate(layout)}
-        />
-      </DragDropContext>;
+      return (
+        <DragDropContext onDragEnd={this.handleTabDragEnd}>
+          <Content
+            id={id}
+            tabs={tabs}
+            builders={builders}
+            onRemove={this.handleOnRemove(layout)}
+            onUpdate={this.handleOnUpdate(layout)}
+          />
+        </DragDropContext>
+      );
     }
 
     return <Dropzone onDrop={this.onDrop(layout)} />;
@@ -105,7 +110,7 @@ class Grid extends React.Component {
 Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default Grid;

@@ -9,19 +9,24 @@ class Container extends React.Component {
     const { builders, nodes, orientation, onDrop, onUpdate, onRemove } = this.props;
     const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={STYLES.splitter[orientation || 'horizontal']} />;
-      const n = <Element
-        builders={builders}
-        node={node}
-        key={'N' + idx}
-        onDrop={onDrop}
-        onUpdate={onUpdate}
-        onRemove={onRemove}/>
+      const n = (
+        <Element
+          builders={builders}
+          node={node}
+          key={'N' + idx}
+          onDrop={onDrop}
+          onUpdate={onUpdate}
+          onRemove={onRemove}
+        />
+      );
       return idx > 0 ? [...acc, splitter, n] : [...acc, n];
     };
 
-    return <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
-      {nodes.reduce(reduce, [])}
-    </ReflexContainer>;
+    return (
+      <ReflexContainer orientation={orientation || 'horizontal'} style={STYLES.container}>
+        {nodes.reduce(reduce, [])}
+      </ReflexContainer>
+    );
   }
 }
 
@@ -31,7 +36,7 @@ Container.propTypes = {
   orientation: PropTypes.string.isRequired,
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default Container;
