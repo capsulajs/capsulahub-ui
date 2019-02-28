@@ -8,7 +8,7 @@ export const props = {
 };
 
 export const actions = {
-  onClick: action('onClick'),
+  onChange: action('onChange'),
 };
 
 storiesOf('CheckBox', module).add('default', () => <CheckBox {...props} {...actions} />);

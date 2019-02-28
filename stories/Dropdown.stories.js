@@ -9,7 +9,7 @@ export const props = {
 };
 
 export const actions = {
-  onClick: action('onClick'),
+  onChange: action('onChange'),
 };
 
 storiesOf('Dropdown', module).add('default', () => <Dropdown {...props} {...actions} />);
