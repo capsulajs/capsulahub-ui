@@ -42,7 +42,7 @@ export default class CanvasExample extends React.Component {
           layout={this.state.layout}
           onUpdate={this.onUpdate}
           width={1000}
-          height={500}
+          height={350}
         />
       </React.Fragment>
     );

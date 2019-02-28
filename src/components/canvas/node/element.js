@@ -18,9 +18,9 @@ class Element extends React.Component {
             builders={builders}
             nodes={nodes}
             orientation={orientation}
-            onDrop={onDrop}
-            onUpdate={onUpdate}
-            onRemove={onRemove}
+            onDrop={onDrop(node)}
+            onUpdate={onUpdate(node)}
+            onRemove={onRemove(node)}
           />
         </ReflexElement>
       );
@@ -29,13 +29,7 @@ class Element extends React.Component {
     return (
       <ReflexElement key={id} style={STYLES.element[orientation || 'horizontal']} minSize={SECTORS_MIN_SIZE}>
         {tabs.length ? (
-          <Content
-            id={node.id}
-            tabs={tabs}
-            builders={builders}
-            onRemove={() => onRemove(node)}
-            onUpdate={() => onUpdate(node)}
-          />
+          <Content id={node.id} tabs={tabs} builders={builders} onRemove={onRemove(node)} onUpdate={onUpdate(node)} />
         ) : (
           <Dropzone onDrop={onDrop(node)} />
         )}

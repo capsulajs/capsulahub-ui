@@ -19,9 +19,9 @@ class Grid extends React.Component {
     super(props);
 
     this.onDrop = this.onDrop.bind(this);
-    this.handleOnRemove = this.handleOnRemove.bind(this);
-    this.handleOnUpdate = this.handleOnUpdate.bind(this);
-    this.handleTabDragEnd = this.handleTabDragEnd.bind(this);
+    this.onRemove = this.onRemove.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   onDrop(node) {
@@ -42,7 +42,7 @@ class Grid extends React.Component {
     };
   }
 
-  handleOnRemove(node) {
+  onRemove(node) {
     return (tabId) =>
       this.props.onUpdate(
         removeTab({
@@ -53,13 +53,13 @@ class Grid extends React.Component {
       );
   }
 
-  handleOnUpdate(node) {
+  onUpdate(node) {
     return ({ id, ...updates }) => {
       this.props.onUpdate(updateNodeTab(this.props.layout, node.id, id, updates));
     };
   }
 
-  handleTabDragEnd(result) {
+  onDragEnd(result) {
     const { source, destination } = result;
     if (!destination) {
       return;
@@ -76,14 +76,14 @@ class Grid extends React.Component {
 
     if (nodes && nodes.length) {
       return (
-        <DragDropContext onDragEnd={this.handleTabDragEnd}>
+        <DragDropContext onDragEnd={this.onDragEnd}>
           <Container
             builders={builders}
             nodes={nodes}
             orientation={orientation}
             onDrop={this.onDrop}
-            onUpdate={this.handleOnUpdate}
-            onRemove={this.handleOnRemove}
+            onUpdate={this.onUpdate}
+            onRemove={this.onRemove}
           />
         </DragDropContext>
       );
@@ -91,13 +91,13 @@ class Grid extends React.Component {
 
     if (tabs && tabs.length) {
       return (
-        <DragDropContext onDragEnd={this.handleTabDragEnd}>
+        <DragDropContext onDragEnd={this.onDragEnd}>
           <Content
             id={id}
             tabs={tabs}
             builders={builders}
-            onRemove={this.handleOnRemove(layout)}
-            onUpdate={this.handleOnUpdate(layout)}
+            onRemove={this.onRemove(layout)}
+            onUpdate={this.onUpdate(layout)}
           />
         </DragDropContext>
       );
