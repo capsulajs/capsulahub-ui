@@ -50,7 +50,7 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {isDragginOn ? <Dropzone isFullView onDrop={onDrop} /> : builder(metadata)}
+            {isDragginOn ? <Dropzone isFullView onDrop={onDrop}/> : builder(metadata)}
           </Container>
         );
       }

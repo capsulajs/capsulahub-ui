@@ -33,18 +33,15 @@ class Canvas extends React.Component {
 
     if (list) {
       const elements = [...Array.from(list.children)];
-      const toObs = (elements, event) => merge(...elements.map((el) => fromEvent(el, event)));
-      const injectBuilderId = (e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
+      const toObs = (elements, event) => merge(...elements.map(el => fromEvent(el, event)));
+      const injectBuilderId = e => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
 
       this.onDrag$ = merge(
-        toObs(elements, 'dragstart').pipe(
-          tap(injectBuilderId),
-          mapTo(true)
-        ),
+        toObs(elements, 'dragstart').pipe(tap(injectBuilderId), mapTo(true)),
         toObs(elements, 'dragend').pipe(mapTo(false))
-      )
-        .pipe(distinctUntilChanged((a, b) => a === b))
-        .subscribe((isDragginOn) => this.setState({ isDragginOn }));
+      ).pipe(
+        distinctUntilChanged((a, b) => a === b)
+      ).subscribe(isDragginOn => this.setState({ isDragginOn }));
     }
   }
 
