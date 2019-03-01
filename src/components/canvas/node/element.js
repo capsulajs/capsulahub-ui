@@ -29,7 +29,7 @@ class Element extends React.Component {
 
     return (
       <ReflexElement key={id} style={STYLES.element[orientation || 'horizontal']} minSize={SECTORS_MIN_SIZE}>
-        {tabs.length ?
+        {tabs.length ? (
           <Content
             id={node.id}
             tabs={tabs}
@@ -37,9 +37,11 @@ class Element extends React.Component {
             isDragginOn={isDragginOn}
             onDrop={onDrop(node)}
             onUpdate={onUpdate(node)}
-            onRemove={onRemove(node)}/>
-          : <Dropzone onDrop={onDrop(node)} />
-        }
+            onRemove={onRemove(node)}
+          />
+        ) : (
+          <Dropzone onDrop={onDrop(node)} />
+        )}
       </ReflexElement>
     );
   }
