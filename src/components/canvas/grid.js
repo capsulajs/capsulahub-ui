@@ -2,6 +2,8 @@ import 'react-reflex/styles.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
+import Container from './node/container';
+import Element from './node/element';
 import Dropzone from './dropzone';
 import Content from './content';
 import { STYLES, SECTORS_ORIENTATION } from './constants';
@@ -10,9 +12,6 @@ import removeTab from './utils/tab/remove';
 import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
 import { updateNodeTab } from './utils';
-
-import Container from './node/container';
-import Element from './node/element';
 
 class Grid extends React.Component {
   constructor(props) {
@@ -71,7 +70,7 @@ class Grid extends React.Component {
   }
 
   render() {
-    const { layout, builders } = this.props;
+    const { layout, builders, isDragginOn } = this.props;
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
@@ -79,6 +78,7 @@ class Grid extends React.Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Container
             builders={builders}
+            isDragginOn={isDragginOn}
             nodes={nodes}
             orientation={orientation}
             onDrop={this.onDrop}
@@ -96,6 +96,8 @@ class Grid extends React.Component {
             id={id}
             tabs={tabs}
             builders={builders}
+            isDragginOn={isDragginOn}
+            onDrop={this.onDrop}
             onRemove={this.onRemove(layout)}
             onUpdate={this.onUpdate(layout)}
           />
@@ -110,6 +112,7 @@ class Grid extends React.Component {
 Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
+  isDragginOn: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
 

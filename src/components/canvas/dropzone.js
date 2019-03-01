@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
@@ -44,9 +44,12 @@ class Dropzone extends React.Component {
   }
 
   componentDidMount() {
+    const { isFullView, onDrop, onLeave } = this.props;
     const container = ReactDOM.findDOMNode(this);
 
-    isSmall(container) && this.setState({ ratio: 1 });
+    if (isFullView || isSmall(container)) {
+      this.setState({ ratio: 1 });
+    }
 
     this.onDrag$ = fromEvent(container, 'dragover')
       .pipe(
@@ -74,11 +77,11 @@ class Dropzone extends React.Component {
       .subscribe((_) => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
     this.onDragLeave$ = fromEvent(container, 'dragleave')
       .pipe(...pipes)
-      .subscribe((_) => this.setState({ sectors: [] }));
+      .subscribe((_) => this.setState({ sectors: [] }) || (onLeave && onLeave()));
     this.onDrop$ = fromEvent(container, 'drop')
       .pipe(map((e) => e.dataTransfer.getData('builderId')))
       .subscribe((builderId) =>
-        builderId ? this.props.onDrop({ builderId, sectors: this.state.sectors }) : this.setState({ sectors: [] })
+        builderId ? onDrop({ builderId, sectors: this.state.sectors }) : this.setState({ sectors: [] })
       );
   }
 
@@ -103,6 +106,8 @@ class Dropzone extends React.Component {
 
 Dropzone.propTypes = {
   onDrop: PropTypes.func.isRequired,
+  onLeave: PropTypes.func,
+  isFullView: PropTypes.bool,
 };
 
 export default Dropzone;

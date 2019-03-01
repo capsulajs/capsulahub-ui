@@ -2,9 +2,10 @@ import 'typeface-montserrat';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { map, mapTo, tap, distinctUntilChanged } from 'rxjs/operators';
+import { fromEvent, merge } from 'rxjs';
 import Grid from './grid';
 import { defaultFontFamily } from '../constants';
-import { onDragstartEventHandler } from './utils/canvas';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -20,24 +21,44 @@ const Container = styled.div`
 `;
 
 class Canvas extends React.Component {
-  handleDragStart(e) {
-    e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDragginOn: false,
+    };
   }
 
   componentDidMount() {
-    onDragstartEventHandler('add', this.props.buildersListId, this.handleDragStart);
+    const list = document.getElementById(this.props.buildersListId);
+
+    if (list) {
+      const elements = [...Array.from(list.children)];
+      const toObs = (elements, event) => merge(...elements.map((el) => fromEvent(el, event)));
+      const injectBuilderId = (e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
+
+      this.onDrag$ = merge(
+        toObs(elements, 'dragstart').pipe(
+          tap(injectBuilderId),
+          mapTo(true)
+        ),
+        toObs(elements, 'dragend').pipe(mapTo(false))
+      )
+        .pipe(distinctUntilChanged((a, b) => a === b))
+        .subscribe((isDragginOn) => this.setState({ isDragginOn }));
+    }
   }
 
   componentWillUnmount() {
-    onDragstartEventHandler('remove', this.props.buildersListId, this.handleDragStart);
+    this.onDrag$.unsubscribe();
   }
 
   render() {
+    const { isDragginOn } = this.state;
     const { width, height, builders, layout, onUpdate } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} onUpdate={onUpdate} />
+        <Grid layout={layout} builders={builders} isDragginOn={isDragginOn} onUpdate={onUpdate} />
       </Container>
     );
   }

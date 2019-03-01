@@ -1,6 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { map, tap, mapTo, distinctUntilChanged } from 'rxjs/operators';
+import { fromEvent, merge } from 'rxjs';
+import Dropzone from './dropzone';
 import Tabs from './tabs';
 
 const Container = styled.div`
@@ -8,37 +12,31 @@ const Container = styled.div`
   height: calc(100% - 23px);
 `;
 
-const TabContainer = styled.div`
-  height: 100%;
-`;
-
 class Content extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      index: 0,
+      tabIndex: 0,
     };
-
-    this.handleOnRemove = this.handleOnRemove.bind(this);
-    this.handleOnSelect = this.handleOnSelect.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onRemove = this.onRemove.bind(this);
   }
 
-  handleOnSelect(index) {
-    this.setState({ index });
+  onSelect(tabIndex) {
+    this.setState({ tabIndex });
   }
 
-  handleOnRemove(id) {
-    this.setState({ index: 0 });
+  onRemove(id) {
+    this.setState({ tabIndex: 0 });
     this.props.onRemove(id);
   }
 
   render() {
-    const { index } = this.state;
-    const { id, tabs, builders, onRemove, onUpdate } = this.props;
+    const { tabIndex } = this.state;
+    const { id, tabs, builders, isDragginOn, onDrop, onUpdate } = this.props;
 
-    if (tabs && tabs[index]) {
-      const { builderId, metadata } = tabs[index];
+    if (tabs && tabs[tabIndex]) {
+      const { builderId, metadata } = tabs[tabIndex];
       const builder = builders[builderId];
 
       if (builder) {
@@ -47,12 +45,12 @@ class Content extends React.Component {
             <Tabs
               id={id}
               tabs={tabs}
-              activeIndex={index}
-              onRemove={this.handleOnRemove}
-              onSelect={this.handleOnSelect}
+              activeIndex={tabIndex}
+              onRemove={this.onRemove}
+              onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            <TabContainer>{builder(metadata)}</TabContainer>
+            {isDragginOn ? <Dropzone isFullView onDrop={onDrop} /> : builder(metadata)}
           </Container>
         );
       }
@@ -68,8 +66,10 @@ Content.propTypes = {
   id: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
   builders: PropTypes.object.isRequired,
-  onRemove: PropTypes.func.isRequired,
+  isDragginOn: PropTypes.bool.isRequired,
+  onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
 };
 
 export default Content;
