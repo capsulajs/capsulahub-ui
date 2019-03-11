@@ -21,13 +21,6 @@ const Container = styled.div`
 `;
 
 class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isDragginOn: false,
-    };
-  }
-
   componentDidMount() {
     const list = document.getElementById(this.props.buildersListId);
 
@@ -35,16 +28,12 @@ class Canvas extends React.Component {
       const elements = [...Array.from(list.children)];
       const toObs = (elements, event) => merge(...elements.map((el) => fromEvent(el, event)));
       const injectBuilderId = (e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
+      const ejectBuilderId = (e) => e.dataTransfer.setData('builderId', null);
 
       this.onDrag$ = merge(
-        toObs(elements, 'dragstart').pipe(
-          tap(injectBuilderId),
-          mapTo(true)
-        ),
-        toObs(elements, 'dragend').pipe(mapTo(false))
-      )
-        .pipe(distinctUntilChanged((a, b) => a === b))
-        .subscribe((isDragginOn) => this.setState({ isDragginOn }));
+        toObs(elements, 'dragstart').pipe(tap(injectBuilderId)),
+        toObs(elements, 'dragend').pipe(tap(ejectBuilderId))
+      ).subscribe();
     }
   }
 
@@ -53,12 +42,11 @@ class Canvas extends React.Component {
   }
 
   render() {
-    const { isDragginOn } = this.state;
     const { width, height, builders, layout, onUpdate } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} isDragginOn={isDragginOn} onUpdate={onUpdate} />
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} />
       </Container>
     );
   }

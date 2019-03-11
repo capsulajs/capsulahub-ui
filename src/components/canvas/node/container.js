@@ -6,13 +6,12 @@ import Element from './element';
 
 class Container extends React.Component {
   render() {
-    const { builders, isDragginOn, nodes, orientation, onDrop, onUpdate, onRemove } = this.props;
+    const { builders, nodes, orientation, onDrop, onUpdate, onRemove } = this.props;
     const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={STYLES.splitter[orientation || 'horizontal']} />;
       const n = (
         <Element
           builders={builders}
-          isDragginOn={isDragginOn}
           node={node}
           key={'N' + idx}
           onDrop={onDrop}
@@ -33,7 +32,6 @@ class Container extends React.Component {
 
 Container.propTypes = {
   builders: PropTypes.object.isRequired,
-  isDragginOn: PropTypes.bool.isRequired,
   nodes: PropTypes.array.isRequired,
   orientation: PropTypes.string.isRequired,
   onDrop: PropTypes.func.isRequired,

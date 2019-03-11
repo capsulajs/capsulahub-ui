@@ -79,7 +79,7 @@ class Dropzone extends React.Component {
       .pipe(...pipes)
       .subscribe((_) => this.setState({ sectors: [] }) || (onLeave && onLeave()));
     this.onDrop$ = fromEvent(container, 'drop')
-      .pipe(map((e) => e.dataTransfer.getData('builderId')))
+      .pipe(map((e) => e.preventDefault() || e.dataTransfer.getData('builderId')))
       .subscribe((builderId) =>
         builderId ? onDrop({ builderId, sectors: this.state.sectors }) : this.setState({ sectors: [] })
       );

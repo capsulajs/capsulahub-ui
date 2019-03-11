@@ -78,7 +78,6 @@ class Grid extends React.Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Container
             builders={builders}
-            isDragginOn={isDragginOn}
             nodes={nodes}
             orientation={orientation}
             onDrop={this.onDrop}
@@ -96,7 +95,6 @@ class Grid extends React.Component {
             id={id}
             tabs={tabs}
             builders={builders}
-            isDragginOn={isDragginOn}
             onDrop={this.onDrop}
             onRemove={this.onRemove(layout)}
             onUpdate={this.onUpdate(layout)}
@@ -112,7 +110,6 @@ class Grid extends React.Component {
 Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
-  isDragginOn: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
 

@@ -17,6 +17,7 @@ class Content extends React.Component {
     super(props);
     this.state = {
       tabIndex: 0,
+      isDragginOn: false,
     };
     this.onSelect = this.onSelect.bind(this);
     this.onRemove = this.onRemove.bind(this);
@@ -32,16 +33,20 @@ class Content extends React.Component {
   }
 
   render() {
-    const { tabIndex } = this.state;
-    const { id, tabs, builders, isDragginOn, onDrop, onUpdate } = this.props;
+    const { tabIndex, isDragginOn } = this.state;
+    const { id, tabs, builders, onDrop, onUpdate } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const { builderId, metadata } = tabs[tabIndex];
       const builder = builders[builderId];
 
       if (builder) {
+        if (isDragginOn) {
+          return <Dropzone isFullView onDrop={(...params) => console.log('DROP', params) || onDrop(...params)} />;
+        }
+
         return (
-          <Container>
+          <Container onDragEnter={() => this.setState({ isDragginOn: true })} onDragLeave={() => console.log('LEAVE')}>
             <Tabs
               id={id}
               tabs={tabs}
@@ -50,7 +55,7 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {isDragginOn ? <Dropzone isFullView onDrop={onDrop} /> : builder(metadata)}
+            {builder(metadata)}
           </Container>
         );
       }
@@ -66,7 +71,6 @@ Content.propTypes = {
   id: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
   builders: PropTypes.object.isRequired,
-  isDragginOn: PropTypes.bool.isRequired,
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,

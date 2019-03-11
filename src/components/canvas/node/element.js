@@ -8,7 +8,7 @@ import Dropzone from '../dropzone';
 
 class Element extends React.Component {
   render() {
-    const { builders, isDragginOn, node, onDrop, onUpdate, onRemove } = this.props;
+    const { builders, node, onDrop, onUpdate, onRemove } = this.props;
     const { id, type, tabs, orientation, nodes } = node;
 
     if (type === 'container') {
@@ -16,7 +16,6 @@ class Element extends React.Component {
         <ReflexElement key={id} styles={STYLES.container} minSize={SECTORS_MIN_SIZE}>
           <Container
             builders={builders}
-            isDragginOn={isDragginOn}
             nodes={nodes}
             orientation={orientation}
             onDrop={onDrop(node)}
@@ -34,7 +33,6 @@ class Element extends React.Component {
             id={node.id}
             tabs={tabs}
             builders={builders}
-            isDragginOn={isDragginOn}
             onDrop={onDrop(node)}
             onUpdate={onUpdate(node)}
             onRemove={onRemove(node)}
@@ -49,7 +47,6 @@ class Element extends React.Component {
 
 Element.propTypes = {
   builders: PropTypes.object.isRequired,
-  isDragginOn: PropTypes.bool.isRequired,
   node: PropTypes.object.isRequired,
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
