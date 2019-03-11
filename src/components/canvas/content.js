@@ -42,7 +42,7 @@ class Content extends React.Component {
 
       if (builder) {
         if (isDragginOn) {
-          return <Dropzone isFullView onDrop={(...params) => console.log('DROP', params) || onDrop(...params)} />;
+          return <Dropzone isFullView onDrop={(...params) => console.log('DROP', params) || onDrop(...params)}/>;
         }
 
         return (
@@ -73,7 +73,7 @@ Content.propTypes = {
   builders: PropTypes.object.isRequired,
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
 };
 
 export default Content;

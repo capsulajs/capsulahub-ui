@@ -36,7 +36,7 @@ Container.propTypes = {
   orientation: PropTypes.string.isRequired,
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
 };
 
 export default Container;
