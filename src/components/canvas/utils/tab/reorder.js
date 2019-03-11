@@ -1,4 +1,4 @@
-import { getNodeTabs, updateNodeTabs } from '..';
+import { getNode, updateTabs } from '..';
 
 const reorder = (tabs, startIndex, endIndex) => {
   const result = Array.from(tabs);
@@ -7,7 +7,7 @@ const reorder = (tabs, startIndex, endIndex) => {
   return result;
 };
 
-export default (layout, source, destination) => {
-  const tabs = reorder(getNodeTabs(layout, destination.droppableId), source.index, destination.index);
-  return updateNodeTabs(layout, destination.droppableId, tabs);
+export default (tree, source, destination) => {
+  const tabs = reorder(getNode(tree, destination.droppableId).tabs, source.index, destination.index);
+  return updateTabs(tree, destination.droppableId, tabs);
 };

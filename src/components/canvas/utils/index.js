@@ -1,4 +1,4 @@
-import { flatten, cloneDeep } from 'lodash';
+import { first, flatten, cloneDeep } from 'lodash';
 
 export const guid = () =>
   Math.random()
@@ -17,35 +17,17 @@ export const decamelize = (str, separator) => {
     .toLowerCase();
 };
 
-export const isAnyNodeWithTabs = (node) => (node.type === 'element' ? node.tabs.length > 0 : node.nodes.length > 0);
-
-export const isAllNodesWithTabs = (layout) => {
-  let statement = true;
-  const check = (node) => {
-    if (node.type === 'element') {
-      if (node.tabs.length === 0) {
-        statement = false;
-      }
-    } else {
-      node.nodes.forEach(check);
-    }
-  };
-  check(layout);
-  return statement;
+export const getNode = (tree, nodeId) => {
+  if (tree.id === nodeId) {
+    return tree;
+  }
+  if (tree.nodes) {
+    return first(flatten(tree.nodes.map((node) => getNode(node, nodeId))));
+  }
 };
 
-export const getNodeTabs = (node, nodeId) => {
-  if (node.id === nodeId) {
-    return node.tabs;
-  }
-  if (node.nodes) {
-    return flatten(node.nodes.map((node) => getNodeTabs(node, nodeId)));
-  }
-  return [];
-};
-
-export const updateNodeTabs = (layout, nodeId, tabs) => {
-  const clonedLayout = cloneDeep(layout);
+export const updateTabs = (tree, nodeId, tabs) => {
+  const clonedTree = cloneDeep(tree);
   const update = (node) => {
     if (node.id === nodeId) {
       node.tabs = tabs;
@@ -53,12 +35,12 @@ export const updateNodeTabs = (layout, nodeId, tabs) => {
       node.nodes.forEach(update);
     }
   };
-  update(clonedLayout);
-  return clonedLayout;
+  update(clonedTree);
+  return clonedTree;
 };
 
-export const updateNodeTab = (layout, nodeId, tabId, updates) => {
-  const clonedLayout = cloneDeep(layout);
+export const updateTab = (tree, nodeId, tabId, updates) => {
+  const clonedTree = cloneDeep(tree);
   const update = (node) => {
     if (node.id === nodeId) {
       node.tabs = node.tabs.map((tab) => (tab.id === tabId ? { ...tab, ...updates } : tab));
@@ -66,6 +48,6 @@ export const updateNodeTab = (layout, nodeId, tabId, updates) => {
       node.nodes.forEach(update);
     }
   };
-  update(clonedLayout);
-  return clonedLayout;
+  update(clonedTree);
+  return clonedTree;
 };

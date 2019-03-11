@@ -21,6 +21,14 @@ const Container = styled.div`
 `;
 
 class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isDragging: false,
+    };
+  }
+
   componentDidMount() {
     const list = document.getElementById(this.props.buildersListId);
 
@@ -31,9 +39,15 @@ class Canvas extends React.Component {
       const ejectBuilderId = (e) => e.dataTransfer.setData('builderId', null);
 
       this.onDrag$ = merge(
-        toObs(elements, 'dragstart').pipe(tap(injectBuilderId)),
-        toObs(elements, 'dragend').pipe(tap(ejectBuilderId))
-      ).subscribe();
+        toObs(elements, 'dragstart').pipe(
+          tap(injectBuilderId),
+          mapTo(true)
+        ),
+        toObs(elements, 'dragend').pipe(
+          tap(ejectBuilderId),
+          mapTo(false)
+        )
+      ).subscribe((isDragging) => this.setState({ isDragging }));
     }
   }
 
@@ -42,11 +56,12 @@ class Canvas extends React.Component {
   }
 
   render() {
+    const { isDragging } = this.state;
     const { width, height, builders, layout, onUpdate } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} onUpdate={onUpdate} />
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} isDragging={isDragging} />
       </Container>
     );
   }

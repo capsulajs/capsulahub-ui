@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { map, tap, mapTo, distinctUntilChanged } from 'rxjs/operators';
+import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
 import { fromEvent, merge } from 'rxjs';
 import Dropzone from './dropzone';
 import Tabs from './tabs';
@@ -32,21 +32,35 @@ class Content extends React.Component {
     this.props.onRemove(id);
   }
 
+  componentDidMount() {
+    const container = ReactDOM.findDOMNode(this);
+
+    this.onDrag$ = fromEvent(container, 'dragover')
+      .pipe(
+        map((e) => e.preventDefault() || [e.clientX, e.clientY]),
+        distinctUntilChanged((a, b) => a.toString() === b.toString()),
+        throttleTime(50),
+        map((point) => document.elementFromPoint(...point).id),
+        distinctUntilChanged((a, b) => a.toString() === b.toString())
+      )
+      .subscribe((id) => this.setState({ isDragginOn: id === this.props.id }));
+  }
+
+  componentWillUnmount() {
+    this.onDrag$.unsubscribe();
+  }
+
   render() {
     const { tabIndex, isDragginOn } = this.state;
-    const { id, tabs, builders, onDrop, onUpdate } = this.props;
+    const { id, tabs, builders, onDrop, onUpdate, isDragging } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const { builderId, metadata } = tabs[tabIndex];
       const builder = builders[builderId];
 
       if (builder) {
-        if (isDragginOn) {
-          return <Dropzone isFullView onDrop={(...params) => console.log('DROP', params) || onDrop(...params)} />;
-        }
-
         return (
-          <Container onDragEnter={() => this.setState({ isDragginOn: true })} onDragLeave={() => console.log('LEAVE')}>
+          <Container id={id}>
             <Tabs
               id={id}
               tabs={tabs}
@@ -55,12 +69,12 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {builder(metadata)}
+            {isDragging ? <Dropzone isFullView onDrop={onDrop} /> : builder(metadata)}
           </Container>
         );
       }
 
-      return 'No builder...';
+      return 'No builder..';
     }
 
     return 'No tabs..';
@@ -74,6 +88,7 @@ Content.propTypes = {
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired,
 };
 
 export default Content;

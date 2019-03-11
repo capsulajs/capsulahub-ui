@@ -11,7 +11,7 @@ import createNode from './utils/node/create';
 import removeTab from './utils/tab/remove';
 import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
-import { updateNodeTab } from './utils';
+import { updateTab } from './utils';
 
 class Grid extends React.Component {
   constructor(props) {
@@ -42,20 +42,11 @@ class Grid extends React.Component {
   }
 
   onRemove(node) {
-    return (tabId) =>
-      this.props.onUpdate(
-        removeTab({
-          layout: this.props.layout,
-          nodeId: node.id,
-          tabId,
-        })
-      );
+    return (tabId) => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
   }
 
   onUpdate(node) {
-    return ({ id, ...updates }) => {
-      this.props.onUpdate(updateNodeTab(this.props.layout, node.id, id, updates));
-    };
+    return ({ id, ...updates }) => this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
   }
 
   onDragEnd(result) {
@@ -63,14 +54,14 @@ class Grid extends React.Component {
     if (!destination) {
       return;
     }
-
+    const tree = this.props.layout;
     source.droppableId === destination.droppableId
-      ? this.props.onUpdate(reorderTab(this.props.layout, source, destination))
-      : this.props.onUpdate(moveTab(this.props.layout, source, destination));
+      ? this.props.onUpdate(reorderTab(tree, source, destination))
+      : this.props.onUpdate(moveTab(tree, source, destination));
   }
 
   render() {
-    const { layout, builders, isDragginOn } = this.props;
+    const { layout, builders, isDragging } = this.props;
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
@@ -83,6 +74,7 @@ class Grid extends React.Component {
             onDrop={this.onDrop}
             onUpdate={this.onUpdate}
             onRemove={this.onRemove}
+            isDragging={isDragging}
           />
         </DragDropContext>
       );
@@ -95,9 +87,10 @@ class Grid extends React.Component {
             id={id}
             tabs={tabs}
             builders={builders}
-            onDrop={this.onDrop}
+            onDrop={this.onDrop(layout)}
             onRemove={this.onRemove(layout)}
             onUpdate={this.onUpdate(layout)}
+            isDragging={isDragging}
           />
         </DragDropContext>
       );
@@ -111,6 +104,7 @@ Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  isDragging: PropTypes.bool.isRequired,
 };
 
 export default Grid;

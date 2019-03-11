@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import removeTab from './remove';
 import reorderTab from './reorder';
-import { getNodeTabs, updateNodeTabs } from '..';
+import { getNode, updateTabs } from '..';
 
 const move = (source, destination, droppableSource, droppableDestination) => {
   const sourceClone = Array.from(source);
@@ -11,12 +11,12 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return destClone;
 };
 
-export default (layout, source, destination) => {
-  const sourceTabs = getNodeTabs(layout, source.droppableId);
-  const destinationTabs = getNodeTabs(layout, destination.droppableId);
+export default (tree, source, destination) => {
+  const sourceTabs = getNode(tree, source.droppableId).tabs;
+  const destinationTabs = getNode(tree, destination.droppableId).tabs;
   const tabs = move(sourceTabs, destinationTabs, source, destination);
-  let newLayout = cloneDeep(layout);
-  newLayout = updateNodeTabs(newLayout, destination.droppableId, tabs);
-  newLayout = removeTab({ layout: newLayout, nodeId: source.droppableId, tabId: sourceTabs[source.index].id });
-  return reorderTab(cloneDeep(newLayout), source, destination);
+  let newTree = cloneDeep(tree);
+  newTree = updateTabs(newTree, destination.droppableId, tabs);
+  newTree = removeTab(newTree, source.droppableId, sourceTabs[source.index].id);
+  return reorderTab(cloneDeep(newTree), source, destination);
 };
