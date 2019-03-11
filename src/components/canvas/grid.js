@@ -104,7 +104,7 @@ Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
+  isDragging: PropTypes.bool.isRequired
 };
 
 export default Grid;

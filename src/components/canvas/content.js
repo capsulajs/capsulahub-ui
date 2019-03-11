@@ -40,10 +40,9 @@ class Content extends React.Component {
         map((e) => e.preventDefault() || [e.clientX, e.clientY]),
         distinctUntilChanged((a, b) => a.toString() === b.toString()),
         throttleTime(50),
-        map((point) => document.elementFromPoint(...point).id),
+        map(point => document.elementFromPoint(...point).id),
         distinctUntilChanged((a, b) => a.toString() === b.toString())
-      )
-      .subscribe((id) => this.setState({ isDragginOn: id === this.props.id }));
+      ).subscribe((id) => this.setState({ isDragginOn: id === this.props.id }));
   }
 
   componentWillUnmount() {
@@ -69,7 +68,7 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {isDragging ? <Dropzone isFullView onDrop={onDrop} /> : builder(metadata)}
+            {isDragging ? <Dropzone isFullView onDrop={onDrop}/> : builder(metadata)}
           </Container>
         );
       }
@@ -88,7 +87,7 @@ Content.propTypes = {
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
+  isDragging: PropTypes.bool.isRequired
 };
 
 export default Content;

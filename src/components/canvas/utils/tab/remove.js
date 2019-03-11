@@ -78,6 +78,6 @@ const remove = (tree, nodeId, tabId) => {
     return emptyNode();
   }
   return removeTab(tree, nodeId, tabId);
-};
+}
 
 export default remove;

@@ -38,7 +38,7 @@ Container.propTypes = {
   onDrop: PropTypes.func.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
+  isDragging: PropTypes.bool.isRequired
 };
 
 export default Container;

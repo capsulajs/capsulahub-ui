@@ -24,7 +24,7 @@ export const getNode = (tree, nodeId) => {
   if (tree.nodes) {
     return first(flatten(tree.nodes.map((node) => getNode(node, nodeId))));
   }
-};
+}
 
 export const updateTabs = (tree, nodeId, tabs) => {
   const clonedTree = cloneDeep(tree);
