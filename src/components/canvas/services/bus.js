@@ -9,7 +9,7 @@ export class DragEventBus {
     let cachedSectors = [];
 
     const dragstart$ = fromEvent(document, 'dragstart').pipe(
-      map(e => ({ builderId: e.target.getAttribute('builder-id') }))
+      map((e) => ({ builderId: e.target.getAttribute('builder-id') }))
     );
 
     const dragover$ = combineLatest(
@@ -26,7 +26,7 @@ export class DragEventBus {
 
             return {
               nodeId: node.id,
-              sectors: cachedSectors
+              sectors: cachedSectors,
             };
           }
           return {};
@@ -35,10 +35,7 @@ export class DragEventBus {
       )
     ).pipe(map(mergeMetadata));
 
-    const drop$ = combineLatest(
-      dragover$,
-      fromEvent(container, 'drop').pipe(mapTo({})),
-    ).pipe(map(mergeMetadata));
+    const drop$ = combineLatest(dragover$, fromEvent(container, 'drop').pipe(mapTo({}))).pipe(map(mergeMetadata));
 
     const dragend$ = fromEvent(document, 'dragend').pipe(mapTo(null));
 
@@ -46,22 +43,29 @@ export class DragEventBus {
       dragstart$.pipe(map((metadata) => ['dragstart', metadata])),
       dragover$.pipe(map((metadata) => ['dragover', metadata])),
       drop$.pipe(map((metadata) => ['drop', metadata])),
-      dragend$.pipe(map((metadata) => ['dragend', metadata])),
-    ).pipe(
-      tap(([type]) => {
-        switch (type) {
-          case 'drop': isEventStreamLocked = true;
-          case 'dragend': isEventStreamLocked = false;
-          default: return;
-        }
-      }),
-      filter(([type]) => !isEventStreamLocked),
-      filter(([type, metadata]) => {
-        switch (type) {
-          case 'drop': Boolean(metadata.nodeId);
-          default: return true;
-        }
-      })
-    ).pipe(tap(console.log));
+      dragend$.pipe(map((metadata) => ['dragend', metadata]))
+    )
+      .pipe(
+        tap(([type]) => {
+          switch (type) {
+            case 'drop':
+              isEventStreamLocked = true;
+            case 'dragend':
+              isEventStreamLocked = false;
+            default:
+              return;
+          }
+        }),
+        filter(([type]) => !isEventStreamLocked),
+        filter(([type, metadata]) => {
+          switch (type) {
+            case 'drop':
+              Boolean(metadata.nodeId);
+            default:
+              return true;
+          }
+        })
+      )
+      .pipe(tap(console.log));
   }
 }

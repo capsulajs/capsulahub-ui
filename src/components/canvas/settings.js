@@ -22,10 +22,10 @@ export const dropzone = {
     '1,3': 'vertical',
     '2,4': 'vertical',
     '1,2,3,4': 'center',
-  }
+  },
 };
 
 export const keyboard = {
   escapeKey: 27,
-  enterKey: 13
+  enterKey: 13,
 };

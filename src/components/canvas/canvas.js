@@ -34,16 +34,16 @@ class Canvas extends React.Component {
   componentDidMount() {
     const { onUpdate } = this.props;
 
-    this.events = new DragEventBus()
-      .events$(ReactDOM.findDOMNode(this))
-      .subscribe(([event, metadata]) => {
-        const { layout } = this.props;
+    this.events = new DragEventBus().events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
+      const { layout } = this.props;
 
-        switch (event) {
-          case 'drop': return onUpdate(createNode(layout, metadata));
-          default: this.setState({ metadata });
-        }
-      });
+      switch (event) {
+        case 'drop':
+          return onUpdate(createNode(layout, metadata));
+        default:
+          this.setState({ metadata });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -56,7 +56,7 @@ class Canvas extends React.Component {
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} onUpdate={onUpdate} metadata={metadata}/>
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} metadata={metadata} />
       </Container>
     );
   }

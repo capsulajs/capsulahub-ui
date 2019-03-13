@@ -13,7 +13,7 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabIndex: 0
+      tabIndex: 0,
     };
     this.onSelect = this.onSelect.bind(this);
     this.onRemove = this.onRemove.bind(this);
@@ -47,9 +47,11 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {metadata && metadata.nodeId === id
-              ? <Dropzone isFullView id={id} metadata={metadata}/>
-              : builder(tab.metadata)}
+            {metadata && metadata.nodeId === id ? (
+              <Dropzone isFullView id={id} metadata={metadata} />
+            ) : (
+              builder(tab.metadata)
+            )}
           </Container>
         );
       }
