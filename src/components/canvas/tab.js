@@ -63,7 +63,7 @@ class Tab extends React.Component {
     const { isEditing, isActive, name } = this.props;
 
     if (isEditing) {
-      return <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />;
+      return <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />
     }
 
     return (

@@ -21,11 +21,11 @@ class Grid extends React.Component {
   }
 
   onRemove(node) {
-    return (tabId) => null; //console.log('REMOVE', this.props.layout, node) //|| this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+    return (tabId) => null//console.log('REMOVE', this.props.layout, node) //|| this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
   }
 
   onUpdate(node) {
-    return ({ id, ...updates }) => null; //console.log('UPDATE', this.props.layout, node) //|| this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
+    return ({ id, ...updates }) => null//console.log('UPDATE', this.props.layout, node) //|| this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
   }
 
   onDragEnd(result) {
@@ -73,7 +73,7 @@ class Grid extends React.Component {
       );
     }
 
-    return <Dropzone id={id} metadata={metadata} />;
+    return <Dropzone id={id} metadata={metadata}/>;
   }
 }
 

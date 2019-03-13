@@ -14,4 +14,4 @@ export const getSectorCouple = (sectors, sector) => {
     : [sector, neighbors[sector][sector % 2]].sort();
 };
 
-export const getDropzoneSectors = (dropzone) => (dropzone ? dropzone.sectors : []);
+export const getDropzoneSectors = (dropzone) => dropzone ? dropzone.sectors : [];
