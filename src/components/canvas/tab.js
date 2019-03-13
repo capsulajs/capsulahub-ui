@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { ESCAPE_KEY, ENTER_KEY, MIN_TAB_NAME_LENGTH } from './constants';
+import { keyboard } from './settings';
 
 const Title = styled.div`
   white-space: nowrap;
@@ -47,22 +47,26 @@ class Tab extends React.Component {
 
   save() {
     const value = this.state.value;
-    if (value && value.length > MIN_TAB_NAME_LENGTH) {
+    if (value && value.length > 2) {
       this.props.onUpdate({ id: this.props.id, name: value });
       this.props.onEditEnd();
     }
   }
 
   keyDown(event) {
-    (event.which === ESCAPE_KEY || event.which === ENTER_KEY) && this.save();
+    if (event.which === keyboard.escapeKey || event.which === keyboard.enterKey) {
+      this.save();
+    }
   }
 
   render() {
     const { isEditing, isActive, name } = this.props;
 
-    return isEditing ? (
-      <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />
-    ) : (
+    if (isEditing) {
+      return <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />;
+    }
+
+    return (
       <Title style={getStyle(isActive)} onClick={this.props.onSelect} onDoubleClick={this.props.onEditStart}>
         {name}
       </Title>

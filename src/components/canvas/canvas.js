@@ -1,11 +1,13 @@
 import 'typeface-montserrat';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { map, mapTo, tap, distinctUntilChanged } from 'rxjs/operators';
-import { fromEvent, merge } from 'rxjs';
 import Grid from './grid';
 import { defaultFontFamily } from '../constants';
+import { getNode } from './utils';
+import createNode from './utils/node/create';
+import { DragEventBus } from './services';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -25,50 +27,42 @@ class Canvas extends React.Component {
     super(props);
 
     this.state = {
-      isDragging: false,
+      metadata: null,
     };
   }
 
   componentDidMount() {
-    const list = document.getElementById(this.props.buildersListId);
+    const { onUpdate } = this.props;
 
-    if (list) {
-      const elements = [...Array.from(list.children)];
-      const toObs = (elements, event) => merge(...elements.map((el) => fromEvent(el, event)));
-      const injectBuilderId = (e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id'));
-      const ejectBuilderId = (e) => e.dataTransfer.setData('builderId', null);
+    this.events = new DragEventBus().events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
+      const { layout } = this.props;
 
-      this.onDrag$ = merge(
-        toObs(elements, 'dragstart').pipe(
-          tap(injectBuilderId),
-          mapTo(true)
-        ),
-        toObs(elements, 'dragend').pipe(
-          tap(ejectBuilderId),
-          mapTo(false)
-        )
-      ).subscribe((isDragging) => this.setState({ isDragging }));
-    }
+      switch (event) {
+        case 'drop':
+          return onUpdate(createNode(layout, metadata));
+        default:
+          this.setState({ metadata });
+      }
+    });
   }
 
   componentWillUnmount() {
-    this.onDrag$.unsubscribe();
+    this.events.unsubscribe();
   }
 
   render() {
-    const { isDragging } = this.state;
+    const { metadata } = this.state;
     const { width, height, builders, layout, onUpdate } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} onUpdate={onUpdate} isDragging={isDragging} />
+        <Grid layout={layout} builders={builders} onUpdate={onUpdate} metadata={metadata} />
       </Container>
     );
   }
 }
 
 Canvas.propTypes = {
-  buildersListId: PropTypes.string.isRequired,
   builders: PropTypes.object.isRequired,
   layout: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,

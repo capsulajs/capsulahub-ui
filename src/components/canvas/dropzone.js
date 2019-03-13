@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { map, filter, throttleTime, distinctUntilChanged } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
-import { SECTORS, SECTORS_HIGHLIGHT_COLOR, SECTORS_CENTER_RATIO } from './constants';
-import { couple, isSmall } from './utils/dropzone';
+import { dropzone } from './settings';
+import { isSizeLessThan } from './utils';
 
 const Container = styled.div`
   height: 100%;
@@ -30,74 +28,27 @@ const Centre = styled.div`
 `;
 
 class Dropzone extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      sectors: [],
-      ratio: SECTORS_CENTER_RATIO,
-    };
-  }
-
   getStyle(sector) {
-    return this.state.sectors.includes(sector) ? { background: SECTORS_HIGHLIGHT_COLOR } : {};
+    const { metadata } = this.props;
+    if (metadata && metadata.sectors && metadata.sectors.includes(sector)) {
+      return { background: dropzone.highlight };
+    }
+    return {};
   }
 
   componentDidMount() {
-    const { isFullView, onDrop, onLeave } = this.props;
-    const container = ReactDOM.findDOMNode(this);
-
-    if (isFullView || isSmall(container)) {
-      this.setState({ ratio: 1 });
-    }
-
-    this.onDrag$ = fromEvent(container, 'dragover')
-      .pipe(
-        map((e) => e.preventDefault() || [e.clientX, e.clientY]),
-        distinctUntilChanged((a, b) => a.toString() === b.toString()),
-        throttleTime(50),
-        map((point) => {
-          const value = document.elementFromPoint(...point).classList.value;
-          const sectors = value.includes('sector') ? value.match(/\d+/g).map(Number) : [];
-          return sectors.length === 1 ? couple(this.state.sectors, sectors[0]) : sectors;
-        }),
-        distinctUntilChanged((a, b) => a.toString() === b.toString())
-      )
-      .subscribe((sectors) => this.setState({ sectors }));
-
-    const pipes = [
-      map((e) => e.preventDefault() || e.fromElement),
-      filter(Boolean),
-      map((element) => !element.classList.value.includes('sector')),
-      filter(Boolean),
-    ];
-
-    this.onDragEnter$ = fromEvent(container, 'dragenter')
-      .pipe(...pipes)
-      .subscribe((_) => this.state.ratio === 1 && this.setState({ sectors: SECTORS }));
-    this.onDragLeave$ = fromEvent(container, 'dragleave')
-      .pipe(...pipes)
-      .subscribe((_) => this.setState({ sectors: [] }) || (onLeave && onLeave()));
-    this.onDrop$ = fromEvent(container, 'drop')
-      .pipe(map((e) => e.preventDefault() || e.dataTransfer.getData('builderId')))
-      .subscribe((builderId) =>
-        builderId ? onDrop({ builderId, sectors: this.state.sectors }) : this.setState({ sectors: [] })
-      );
-  }
-
-  componentWillUnmount() {
-    this.onDrag$.unsubscribe();
-    this.onDragEnter$.unsubscribe();
-    this.onDragLeave$.unsubscribe();
-    this.onDrop$.unsubscribe();
+    this.ref = ReactDOM.findDOMNode(this);
   }
 
   render() {
+    const { id, isFullView, metadata } = this.props;
+    const ratio = isFullView || isSizeLessThan(this.ref, dropzone.minSize) ? 1 : dropzone.ratio;
+
     return (
       <Container>
-        <Centre className={`sector-${SECTORS}`} ratio={this.state.ratio} />
-        {SECTORS.map((sector) => (
-          <Sector key={sector} className={`sector-${sector}`} style={this.getStyle(sector)} />
+        <Centre id={id} className={`sector-${dropzone.sectors}`} ratio={ratio} />
+        {dropzone.sectors.map((sector) => (
+          <Sector id={id} key={sector} className={`sector-${sector}`} style={this.getStyle(sector)} />
         ))}
       </Container>
     );
@@ -105,9 +56,9 @@ class Dropzone extends React.Component {
 }
 
 Dropzone.propTypes = {
-  onDrop: PropTypes.func.isRequired,
-  onLeave: PropTypes.func,
+  id: PropTypes.string.isRequired,
   isFullView: PropTypes.bool,
+  metadata: PropTypes.any,
 };
 
 export default Dropzone;

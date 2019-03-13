@@ -1,5 +1,5 @@
-import { guid, decamelize, emptyNode } from '..';
-import { SECTORS, SECTORS_REVERSE } from '../../constants';
+import { guid, decamelize, emptyNode, getNode } from '..';
+import { dropzone } from '../../settings';
 
 const nodeTab = (builderId) => ({
   builderId,
@@ -9,25 +9,29 @@ const nodeTab = (builderId) => ({
 });
 
 const multiplyNode = (node, builderId, sectors) => {
-  return SECTORS_REVERSE[sectors.toString()]
+  return dropzone.isNeedReverse[sectors.toString()]
     ? [emptyNode(), { ...node, tabs: [...node.tabs, nodeTab(builderId)] }]
     : [{ ...node, tabs: [...node.tabs, nodeTab(builderId)] }, emptyNode()];
 };
 
-const create = ({ layout, node, orientation, builderId, sectors }) => {
+const create = (tree, metadata) => {
+  const { nodeId, builderId, sectors } = metadata;
+  const orientation = dropzone.orientation[sectors.toString()];
+  const node = getNode(tree, nodeId);
+
   switch (true) {
-    case layout.id === node.id:
-      return sectors.toString() === SECTORS.toString()
+    case tree.id === nodeId:
+      return sectors.toString() === dropzone.sectors.toString()
         ? { id: guid(), type: 'element', tabs: [...node.tabs, nodeTab(builderId)] }
         : { id: guid(), type: 'container', nodes: multiplyNode(node, builderId, sectors), orientation };
-    case layout.type === 'element':
-      return layout;
+    case tree.type === 'element':
+      return tree;
     default:
       return {
         id: guid(),
         type: 'container',
-        nodes: layout.nodes.map((l) => create({ layout: l, node, orientation, builderId, sectors })),
-        orientation: layout.orientation,
+        nodes: tree.nodes.map((node) => create(node, metadata)),
+        orientation: tree.orientation,
       };
   }
 };

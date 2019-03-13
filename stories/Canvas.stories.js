@@ -37,7 +37,7 @@ export default class CanvasExample extends React.Component {
           ))}
         </ul>
         <Canvas
-          buildersListId="list"
+          menuId="list"
           builders={builders}
           layout={this.state.layout}
           onUpdate={this.onUpdate}

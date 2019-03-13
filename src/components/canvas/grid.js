@@ -6,8 +6,6 @@ import Container from './node/container';
 import Element from './node/element';
 import Dropzone from './dropzone';
 import Content from './content';
-import { STYLES, SECTORS_ORIENTATION } from './constants';
-import createNode from './utils/node/create';
 import removeTab from './utils/tab/remove';
 import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
@@ -17,36 +15,17 @@ class Grid extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onDrop = this.onDrop.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
   }
 
-  onDrop(node) {
-    return ({ builderId, sectors }) => {
-      const orientation = SECTORS_ORIENTATION[sectors.toString()];
-
-      if (node.type !== 'container') {
-        this.props.onUpdate(
-          createNode({
-            layout: this.props.layout,
-            node,
-            orientation,
-            builderId,
-            sectors,
-          })
-        );
-      }
-    };
-  }
-
   onRemove(node) {
-    return (tabId) => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+    return (tabId) => null; //console.log('REMOVE', this.props.layout, node) //|| this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
   }
 
   onUpdate(node) {
-    return ({ id, ...updates }) => this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
+    return ({ id, ...updates }) => null; //console.log('UPDATE', this.props.layout, node) //|| this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
   }
 
   onDragEnd(result) {
@@ -61,7 +40,7 @@ class Grid extends React.Component {
   }
 
   render() {
-    const { layout, builders, isDragging } = this.props;
+    const { layout, builders, metadata } = this.props;
     const { id, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
@@ -71,10 +50,9 @@ class Grid extends React.Component {
             builders={builders}
             nodes={nodes}
             orientation={orientation}
-            onDrop={this.onDrop}
             onUpdate={this.onUpdate}
             onRemove={this.onRemove}
-            isDragging={isDragging}
+            metadata={metadata}
           />
         </DragDropContext>
       );
@@ -87,16 +65,15 @@ class Grid extends React.Component {
             id={id}
             tabs={tabs}
             builders={builders}
-            onDrop={this.onDrop(layout)}
             onRemove={this.onRemove(layout)}
             onUpdate={this.onUpdate(layout)}
-            isDragging={isDragging}
+            metadata={metadata}
           />
         </DragDropContext>
       );
     }
 
-    return <Dropzone onDrop={this.onDrop(layout)} />;
+    return <Dropzone id={id} metadata={metadata} />;
   }
 }
 
@@ -104,7 +81,7 @@ Grid.propTypes = {
   layout: PropTypes.object.isRequired,
   builders: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  isDragging: PropTypes.bool.isRequired,
+  metadata: PropTypes.any,
 };
 
 export default Grid;

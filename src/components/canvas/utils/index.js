@@ -1,5 +1,13 @@
 import { first, flatten, cloneDeep } from 'lodash';
 
+export const isSizeLessThan = (container, size) => {
+  if (container) {
+    const [w, h] = [container.offsetWidth, container.offsetHeight];
+    return w < size || h < size;
+  }
+  return false;
+};
+
 export const guid = () =>
   Math.random()
     .toString(36)
@@ -19,10 +27,10 @@ export const decamelize = (str, separator) => {
 
 export const getNode = (tree, nodeId) => {
   if (tree.id === nodeId) {
-    return tree;
+    return cloneDeep(tree);
   }
   if (tree.nodes) {
-    return first(flatten(tree.nodes.map((node) => getNode(node, nodeId))));
+    return cloneDeep(first(tree.nodes.map((node) => getNode(node, nodeId)).filter(Boolean)));
   }
 };
 
