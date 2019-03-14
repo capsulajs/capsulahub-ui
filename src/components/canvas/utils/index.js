@@ -38,14 +38,14 @@ export const updateNode = (layout, nodeId, updates) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      Object.keys(updates).forEach((key) => (node[key] = updates[key]));
+      Object.keys(updates).forEach((key) => node[key] = updates[key]);
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
   };
   update(clonedLayout);
   return clonedLayout;
-};
+}
 
 export const updateTabs = (tree, nodeId, tabs) => {
   const clonedTree = cloneDeep(tree);

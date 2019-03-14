@@ -60,7 +60,13 @@ export default class CanvasExample extends React.Component {
             </li>
           ))}
         </ul>
-        <Canvas builders={builders} layout={this.state.layout} onUpdate={this.onUpdate} width={1000} height={350} />
+        <Canvas
+          builders={builders}
+          layout={this.state.layout}
+          onUpdate={this.onUpdate}
+          width={1000}
+          height={350}
+        />
       </React.Fragment>
     );
   }
@@ -68,4 +74,4 @@ export default class CanvasExample extends React.Component {
 
 storiesOf('Canvas', module)
   .add('default', () => <CanvasExample />)
-  .add('persist', () => <CanvasExample persist />);
+  .add('persist', () => <CanvasExample persist/>);
