@@ -41,8 +41,8 @@ class Grid extends React.Component {
   }
 
   onResize(event) {
-    const { name, flex } = event.component.props;
-    this.props.onUpdate(updateNode(this.props.layout, name, { flex }));
+    const { node, flex } = event.component.props;
+    this.props.onUpdate(updateNode(this.props.layout, node.id, { flex }));
   }
 
   render() {
