@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Dropzone from './dropzone';
@@ -47,7 +47,11 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {metadata.builderId ? <Dropzone isFullView id={id} metadata={metadata} /> : id}
+            {(metadata.builderId) ? (
+              <Dropzone isFullView id={id} metadata={metadata} />
+            ) : (
+              id
+            )}
           </Container>
         );
       }

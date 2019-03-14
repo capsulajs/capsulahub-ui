@@ -7,7 +7,7 @@ export class CanvasEventBus {
   events$(container) {
     return merge(
       fromEvent(document, 'dragstart').pipe(
-        tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))
+        tap(e => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))
       ),
       fromEvent(document, 'dragend')
     ).pipe(
@@ -22,8 +22,9 @@ export class CanvasEventBus {
             dragover$.pipe(map((metadata) => ['dragover', metadata])),
             drop$.pipe(map((metadata) => ['drop', metadata]))
           ).pipe(
-            filter(([type, metadata]) =>
-              type === 'drop' ? metadata.builderId && metadata.nodeId && metadata.sectors.length > 0 : true
+            filter(([type, metadata]) => type === 'drop'
+              ? metadata.builderId && metadata.nodeId && metadata.sectors.length > 0
+              : true
             )
           );
         }
