@@ -1,5 +1,5 @@
 export const canvas = {
-  fontFamily: 'Montserrat'
+  fontFamily: 'Montserrat',
 };
 
 export const dropzone = {
