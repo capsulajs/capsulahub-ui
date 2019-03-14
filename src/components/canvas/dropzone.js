@@ -42,7 +42,7 @@ class Dropzone extends React.Component {
 
   render() {
     const { id, isFullView, metadata } = this.props;
-    const ratio = (isFullView || isSizeLessThan(this.ref, dropzone.minSize)) ? 1 : dropzone.ratio;
+    const ratio = isFullView || isSizeLessThan(this.ref, dropzone.minSize) ? 1 : dropzone.ratio;
 
     console.log(ratio, isFullView);
 
