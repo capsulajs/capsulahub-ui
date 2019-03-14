@@ -1,1 +1,1 @@
-export { DragEventBus } from './bus';
+export { CanvasEventBus } from './bus';

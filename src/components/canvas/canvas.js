@@ -4,19 +4,19 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
-import { defaultFontFamily } from '../constants';
 import { getNode } from './utils';
 import createNode from './utils/node/create';
-import { DragEventBus } from './services';
+import { CanvasEventBus } from './services';
+import { canvas } from './settings';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
+  font-family: ${canvas.fontFamily};
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   font-style: regular;
   font-size: 13px;
   background: #515151;
-  color: #A9A9A9;
+  color: #A9A9A
   min-width: 500px;
   min-height: 100px;
   padding 8px;
@@ -27,19 +27,20 @@ class Canvas extends React.Component {
     super(props);
 
     this.state = {
-      metadata: null,
+      metadata: {},
     };
   }
 
   componentDidMount() {
     const { onUpdate } = this.props;
+    const bus = new CanvasEventBus();
 
-    this.events = new DragEventBus().events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
-      const { layout } = this.props;
+    this.events = bus.events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
+      console.log(event, metadata);
 
       switch (event) {
         case 'drop':
-          return onUpdate(createNode(layout, metadata));
+          return onUpdate(createNode(this.props.layout, metadata));
         default:
           this.setState({ metadata });
       }

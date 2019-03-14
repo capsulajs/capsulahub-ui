@@ -47,14 +47,12 @@ class Content extends React.Component {
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {metadata && metadata.nodeId === id ? (
-              <Dropzone isFullView id={id} metadata={metadata} />
-            ) : (
-              builder(tab.metadata)
-            )}
+            {metadata.builderId ? <Dropzone isFullView id={id} metadata={metadata} /> : id}
           </Container>
         );
       }
+
+      //builder(tab.metadata)
 
       return 'No builder..';
     }

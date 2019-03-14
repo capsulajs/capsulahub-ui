@@ -1,3 +1,7 @@
+export const canvas = {
+  fontFamily: 'Montserrat',
+};
+
 export const dropzone = {
   minSize: 75,
   ratio: 0.2,

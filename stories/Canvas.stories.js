@@ -14,7 +14,7 @@ export default class CanvasExample extends React.Component {
     super(props);
     this.state = {
       layout: {
-        id: 'tklj94',
+        id: '0',
         type: 'element',
         tabs: [],
       },

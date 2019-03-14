@@ -46,9 +46,9 @@ class Dropzone extends React.Component {
 
     return (
       <Container>
-        <Centre id={id} className={`sector-${dropzone.sectors}`} ratio={ratio} />
+        <Centre id={`dropzone ${id} ${dropzone.sectors}`} ratio={ratio} />
         {dropzone.sectors.map((sector) => (
-          <Sector id={id} key={sector} className={`sector-${sector}`} style={this.getStyle(sector)} />
+          <Sector id={`dropzone ${id} ${sector}`} key={sector} style={this.getStyle(sector)} />
         ))}
       </Container>
     );
