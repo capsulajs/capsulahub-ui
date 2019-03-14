@@ -14,7 +14,14 @@ class Element extends React.Component {
 
     if (type === 'container') {
       return (
-        <ReflexElement key={id} name={id} style={styles.container} minSize={dropzone.minSize} flex={flex} onResize={onResize}>
+        <ReflexElement
+          key={id}
+          name={id}
+          style={styles.container}
+          minSize={dropzone.minSize}
+          flex={flex}
+          onResize={onResize}
+        >
           <Container
             builders={builders}
             nodes={nodes}
@@ -29,7 +36,14 @@ class Element extends React.Component {
     }
 
     return (
-      <ReflexElement key={id} name={id} style={styles.element[orientation || 'horizontal']} minSize={dropzone.minSize} flex={flex} onResize={onResize}>
+      <ReflexElement
+        key={id}
+        name={id}
+        style={styles.element[orientation || 'horizontal']}
+        minSize={dropzone.minSize}
+        flex={flex}
+        onResize={onResize}
+      >
         <Content
           id={id}
           tabs={tabs}
