@@ -29,8 +29,8 @@ const Centre = styled.div`
 
 class Dropzone extends React.Component {
   getStyle(sector) {
-    const { metadata } = this.props;
-    if (metadata && metadata.sectors && metadata.sectors.includes(sector)) {
+    const { id, metadata } = this.props;
+    if (id === metadata.nodeId && metadata && metadata.sectors && metadata.sectors.includes(sector)) {
       return { background: dropzone.highlight };
     }
     return {};

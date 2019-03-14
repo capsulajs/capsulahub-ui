@@ -20,15 +20,39 @@ export default class CanvasExample extends React.Component {
       },
     };
     this.onUpdate = this.onUpdate.bind(this);
+    this.onReset = this.onReset.bind(this);
+    this.state = {
+      layout: {
+        id: '0',
+        type: 'element',
+        tabs: [],
+      },
+    };
+
+    if (props.persist) {
+      const state = JSON.parse(localStorage.getItem('state'));
+      if (state) {
+        this.state = state;
+      }
+    }
   }
 
   onUpdate(layout) {
     this.setState({ layout });
+    if (this.props.persist) {
+      localStorage.setItem('state', JSON.stringify({ layout }));
+    }
+  }
+
+  onReset() {
+    localStorage.removeItem('state');
+    location.reload();
   }
 
   render() {
     return (
       <React.Fragment>
+        {this.props.persist && <button onClick={this.onReset}>Reset local storage</button>}
         <ul id="list" style={{ width: 120, height: 60, margin: 0 }}>
           {Object.keys(builders).map((key) => (
             <li draggable builder-id={key} key={key}>
@@ -36,17 +60,12 @@ export default class CanvasExample extends React.Component {
             </li>
           ))}
         </ul>
-        <Canvas
-          menuId="list"
-          builders={builders}
-          layout={this.state.layout}
-          onUpdate={this.onUpdate}
-          width={1000}
-          height={350}
-        />
+        <Canvas builders={builders} layout={this.state.layout} onUpdate={this.onUpdate} width={1000} height={350} />
       </React.Fragment>
     );
   }
 }
 
-storiesOf('Canvas', module).add('default', () => <CanvasExample />);
+storiesOf('Canvas', module)
+  .add('default', () => <CanvasExample />)
+  .add('persist', () => <CanvasExample persist />);

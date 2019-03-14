@@ -6,7 +6,7 @@ import styles from './styles';
 
 class Container extends React.Component {
   render() {
-    const { builders, nodes, orientation, onUpdate, onRemove, metadata } = this.props;
+    const { builders, nodes, orientation, onUpdate, onRemove, onResize, metadata } = this.props;
     const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']} />;
       const n = (
@@ -16,6 +16,7 @@ class Container extends React.Component {
           key={'N' + idx}
           onUpdate={onUpdate}
           onRemove={onRemove}
+          onResize={onResize}
           metadata={metadata}
         />
       );
@@ -36,6 +37,7 @@ Container.propTypes = {
   orientation: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
   metadata: PropTypes.any,
 };
 

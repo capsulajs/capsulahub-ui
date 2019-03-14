@@ -9,7 +9,7 @@ import Content from './content';
 import removeTab from './utils/tab/remove';
 import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
-import { updateTab } from './utils';
+import { updateNode } from './utils';
 
 class Grid extends React.Component {
   constructor(props) {
@@ -18,14 +18,15 @@ class Grid extends React.Component {
     this.onRemove = this.onRemove.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   onRemove(node) {
-    return (tabId) => null; //console.log('REMOVE', this.props.layout, node) //|| this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+    return (tabId) => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
   }
 
   onUpdate(node) {
-    return ({ id, ...updates }) => null; //console.log('UPDATE', this.props.layout, node) //|| this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
+    return ({ id, ...updates }) => this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
   }
 
   onDragEnd(result) {
@@ -37,6 +38,11 @@ class Grid extends React.Component {
     source.droppableId === destination.droppableId
       ? this.props.onUpdate(reorderTab(tree, source, destination))
       : this.props.onUpdate(moveTab(tree, source, destination));
+  }
+
+  onResize(event) {
+    const { name, flex } = event.component.props;
+    this.props.onUpdate(updateNode(this.props.layout, name, { flex }));
   }
 
   render() {
@@ -52,6 +58,7 @@ class Grid extends React.Component {
             orientation={orientation}
             onUpdate={this.onUpdate}
             onRemove={this.onRemove}
+            onResize={this.onResize}
             metadata={metadata}
           />
         </DragDropContext>
@@ -67,6 +74,7 @@ class Grid extends React.Component {
             builders={builders}
             onRemove={this.onRemove(layout)}
             onUpdate={this.onUpdate(layout)}
+            onResize={this.onResize}
             metadata={metadata}
           />
         </DragDropContext>

@@ -9,18 +9,26 @@ import { dropzone } from '../settings';
 
 class Element extends React.Component {
   render() {
-    const { builders, node, onUpdate, onRemove, metadata } = this.props;
-    const { id, type, tabs, orientation, nodes } = node;
+    const { builders, node, onUpdate, onRemove, onResize, metadata } = this.props;
+    const { id, type, tabs, orientation, nodes, flex } = node;
 
     if (type === 'container') {
       return (
-        <ReflexElement key={id} style={styles.container} minSize={dropzone.minSize}>
+        <ReflexElement
+          key={id}
+          name={id}
+          style={styles.container}
+          minSize={dropzone.minSize}
+          flex={flex}
+          onResize={onResize}
+        >
           <Container
             builders={builders}
             nodes={nodes}
             orientation={orientation}
             onUpdate={onUpdate(node)}
             onRemove={onRemove(node)}
+            onResize={onResize}
             metadata={metadata}
           />
         </ReflexElement>
@@ -28,9 +36,16 @@ class Element extends React.Component {
     }
 
     return (
-      <ReflexElement key={id} style={styles.element[orientation || 'horizontal']} minSize={dropzone.minSize}>
+      <ReflexElement
+        key={id}
+        name={id}
+        style={styles.element[orientation || 'horizontal']}
+        minSize={dropzone.minSize}
+        flex={flex}
+        onResize={onResize}
+      >
         <Content
-          id={node.id}
+          id={id}
           tabs={tabs}
           builders={builders}
           onUpdate={onUpdate(node)}
@@ -47,6 +62,7 @@ Element.propTypes = {
   node: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
   metadata: PropTypes.any,
 };
 

@@ -36,8 +36,6 @@ class Canvas extends React.Component {
     const bus = new CanvasEventBus();
 
     this.events = bus.events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
-      console.log(event, metadata);
-
       switch (event) {
         case 'drop':
           return onUpdate(createNode(this.props.layout, metadata));
