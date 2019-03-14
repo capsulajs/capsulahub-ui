@@ -9,7 +9,7 @@ export class CanvasEventBus {
       fromEvent(document, 'dragstart').pipe(
         tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))
       ),
-      fromEvent(document, 'dragend')
+      fromEvent(document, 'dragend'),
     ).pipe(
       switchMap((e) => {
         const builderId = e.dataTransfer.getData('builderId');
