@@ -55,7 +55,7 @@ class Content extends React.Component {
       return 'No builder..';
     }
 
-    return <Dropzone isFullView id={id} metadata={metadata} />;
+    return <Dropzone id={id} metadata={metadata} />;
   }
 }
 

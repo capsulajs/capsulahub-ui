@@ -21,13 +21,6 @@ export default class CanvasExample extends React.Component {
     };
     this.onUpdate = this.onUpdate.bind(this);
     this.onReset = this.onReset.bind(this);
-    this.state = {
-      layout: {
-        id: '0',
-        type: 'element',
-        tabs: [],
-      },
-    };
 
     if (props.persist) {
       const state = JSON.parse(localStorage.getItem('state'));
@@ -53,7 +46,7 @@ export default class CanvasExample extends React.Component {
     return (
       <React.Fragment>
         {this.props.persist && <button onClick={this.onReset}>Reset local storage</button>}
-        <ul id="list" style={{ width: 120, height: 60, margin: 0 }}>
+        <ul style={{ width: 120, height: 60, margin: 0 }}>
           {Object.keys(builders).map((key) => (
             <li draggable builder-id={key} key={key}>
               {key}
