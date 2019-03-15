@@ -20,17 +20,17 @@ export default class Content extends React.Component {
   };
 
   state = {
-    tabIndex: 0,
-  };
+    tabIndex: 0
+  }
 
   onSelect = (tabIndex) => {
     this.setState({ tabIndex });
-  };
+  }
 
   onRemove = (id) => {
     this.setState({ tabIndex: 0 });
     this.props.onRemove(this.props.nodeId, id);
-  };
+  }
 
   render() {
     const { tabIndex } = this.state;

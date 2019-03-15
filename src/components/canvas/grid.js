@@ -17,15 +17,15 @@ export default class Grid extends React.Component {
     builders: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired,
     metadata: PropTypes.any,
-  };
+  }
 
   onRemove = (nodeId, tabId) => {
     this.props.onUpdate(removeTab(this.props.layout, nodeId, tabId));
-  };
+  }
 
   onUpdate = (nodeId, tabId, updates) => {
     this.props.onUpdate(updateTab(this.props.layout, nodeId, tabId, updates));
-  };
+  }
 
   onDragEnd = (result) => {
     const { source, destination } = result;
@@ -36,12 +36,12 @@ export default class Grid extends React.Component {
     source.droppableId === destination.droppableId
       ? this.props.onUpdate(reorderTab(tree, source, destination))
       : this.props.onUpdate(moveTab(tree, source, destination));
-  };
+  }
 
   onResize = (event) => {
     const { node, flex } = event.component.props;
     this.props.onUpdate(updateNode(this.props.layout, node.id, { flex }));
-  };
+  }
 
   render() {
     const { layout, builders, metadata } = this.props;

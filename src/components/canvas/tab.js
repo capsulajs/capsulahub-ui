@@ -40,12 +40,12 @@ export default class Tab extends React.Component {
   };
 
   state = {
-    value: this.props.name,
+    value: this.props.name
   };
 
   change = (e) => {
     this.setState({ value: e.target.value.trim() });
-  };
+  }
 
   save = () => {
     const value = this.state.value;
@@ -54,13 +54,13 @@ export default class Tab extends React.Component {
       this.props.onUpdate(nodeId, id, { name: value });
       this.props.onEditEnd();
     }
-  };
+  }
 
   keyDown = (event) => {
     if (event.which === keyboard.escapeKey || event.which === keyboard.enterKey) {
       this.save();
     }
-  };
+  }
 
   render() {
     const { isEditing, isActive, name } = this.props;
