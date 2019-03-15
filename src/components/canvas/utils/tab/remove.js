@@ -75,6 +75,7 @@ const remove = (tree, nodeId, tabId) => {
   if (tree.id === nodeId) {
     if (tree.tabs) {
       tree.tabs = tree.tabs.filter((tab) => tab.id !== tabId);
+      tree.tabIndex -= 1;
       return tree;
     }
     return emptyNode();

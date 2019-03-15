@@ -10,8 +10,8 @@ const nodeTab = (builderId) => ({
 
 const multiplyNode = (node, builderId, sectors) => {
   return dropzone.isNeedReverse[sectors.toString()]
-    ? [emptyNode(), { ...node, tabs: [...node.tabs, nodeTab(builderId)] }]
-    : [{ ...node, tabs: [...node.tabs, nodeTab(builderId)] }, emptyNode()];
+    ? [emptyNode(), { ...node, tabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }]
+    : [{ ...node, tabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }, emptyNode()];
 };
 
 const create = (tree, metadata) => {
