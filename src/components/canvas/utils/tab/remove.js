@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { guid, emptyNode, getNode, updateTabs } from '..';
+import { guid, emptyNode, getNode, updateNode } from '..';
 
 const isNodeValid = (node) => {
   if (node.tabs) {
@@ -64,8 +64,10 @@ const filterTabs = (node) => {
 };
 
 const removeTab = (tree, nodeId, tabId) => {
-  const newTabs = getNode(tree, nodeId).tabs.filter((tab) => tab.id !== tabId);
-  const newTree = updateTabs(tree, nodeId, newTabs);
+  const node = getNode(tree, nodeId);
+  const tabs = node.tabs.filter((tab) => tab.id !== tabId);
+  const tabIndex = node.tabIndex > tabs.length - 1 ? tabs.length - 1 : node.tabIndex;
+  const newTree = updateNode(tree, nodeId, { tabIndex, tabs });
   return filterTabs(newTree);
 };
 

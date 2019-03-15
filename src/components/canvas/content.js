@@ -12,6 +12,7 @@ const Container = styled.div`
 export default class Content extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
+    tabIndex: PropTypes.number.isRequired,
     tabs: PropTypes.array.isRequired,
     builders: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired,
@@ -19,22 +20,11 @@ export default class Content extends React.Component {
     metadata: PropTypes.any,
   };
 
-  state = {
-    tabIndex: 0,
-  };
-
-  onSelect = (tabIndex) => {
-    this.setState({ tabIndex });
-  };
-
-  onRemove = (id) => {
-    this.setState({ tabIndex: 0 });
-    this.props.onRemove(this.props.nodeId, id);
-  };
+  onSelect = (tabIndex) => this.props.onUpdate(this.props.nodeId, null, { tabIndex });
+  onRemove = (id) => this.props.onRemove(this.props.nodeId, id);
 
   render() {
-    const { tabIndex } = this.state;
-    const { nodeId, tabs, builders, onUpdate, metadata } = this.props;
+    const { nodeId, tabIndex, tabs, builders, onUpdate, metadata } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const tab = tabs[tabIndex];

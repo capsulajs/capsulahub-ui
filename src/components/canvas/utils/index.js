@@ -15,7 +15,7 @@ export const guid = () =>
   Math.random()
     .toString(36)
     .substring(2, 5);
-export const emptyNode = () => ({ id: guid(), type: 'element', flex: 0.5, tabs: [] });
+export const emptyNode = () => ({ id: guid(), type: 'element', flex: 0.5, tabIndex: 0, tabs: [] });
 export const decamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
 
@@ -45,19 +45,6 @@ export const updateNode = (layout, nodeId, updates) => {
   };
   update(clonedLayout);
   return clonedLayout;
-};
-
-export const updateTabs = (tree, nodeId, tabs) => {
-  const clonedTree = cloneDeep(tree);
-  const update = (node) => {
-    if (node.id === nodeId) {
-      node.tabs = tabs;
-    } else if (node.nodes) {
-      node.nodes.forEach(update);
-    }
-  };
-  update(clonedTree);
-  return clonedTree;
 };
 
 export const updateTab = (tree, nodeId, tabId, updates) => {

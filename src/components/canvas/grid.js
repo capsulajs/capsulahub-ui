@@ -24,7 +24,9 @@ export default class Grid extends React.Component {
   };
 
   onUpdate = (nodeId, tabId, updates) => {
-    this.props.onUpdate(updateTab(this.props.layout, nodeId, tabId, updates));
+    tabId
+      ? this.props.onUpdate(updateTab(this.props.layout, nodeId, tabId, updates))
+      : this.props.onUpdate(updateNode(this.props.layout, nodeId, updates));
   };
 
   onDragEnd = (result) => {
@@ -45,7 +47,7 @@ export default class Grid extends React.Component {
 
   render() {
     const { layout, builders, metadata } = this.props;
-    const { id, tabs, orientation, nodes } = layout;
+    const { id, tabIndex, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
       return (
@@ -68,6 +70,7 @@ export default class Grid extends React.Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Content
             nodeId={id}
+            tabIndex={tabIndex}
             tabs={tabs}
             builders={builders}
             onRemove={this.onRemove}

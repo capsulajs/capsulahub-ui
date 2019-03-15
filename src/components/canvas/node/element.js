@@ -19,7 +19,7 @@ export default class Element extends React.Component {
 
   render() {
     const { builders, node, onUpdate, onRemove, onResize, metadata } = this.props;
-    const { id, type, tabs, orientation, nodes, flex } = node;
+    const { id, type, tabIndex, tabs, orientation, nodes, flex } = node;
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
@@ -37,6 +37,7 @@ export default class Element extends React.Component {
         ) : (
           <Content
             nodeId={id}
+            tabIndex={tabIndex}
             tabs={tabs}
             builders={builders}
             onUpdate={onUpdate}
