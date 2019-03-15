@@ -7,20 +7,24 @@ import Dropzone from '../dropzone';
 import styles from './styles';
 import { dropzone } from '../settings';
 
-class Element extends React.Component {
+export default class Element extends React.Component {
+  static propTypes = {
+    builders: PropTypes.object.isRequired,
+    node: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onResize: PropTypes.func.isRequired,
+    metadata: PropTypes.any,
+  };
+
   render() {
     const { builders, node, onUpdate, onRemove, onResize, metadata } = this.props;
     const { id, type, tabs, orientation, nodes, flex } = node;
+    const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
-    if (type === 'container') {
-      return (
-        <ReflexElement
-          key={id}
-          style={styles.container}
-          minSize={dropzone.minSize}
-          flex={flex || 0.5}
-          onResize={onResize}
-        >
+    return (
+      <ReflexElement key={id} style={style} minSize={dropzone.minSize} flex={flex || 0.5} onResize={onResize}>
+        {type === 'container' ? (
           <Container
             builders={builders}
             nodes={nodes}
@@ -30,38 +34,17 @@ class Element extends React.Component {
             onResize={onResize}
             metadata={metadata}
           />
-        </ReflexElement>
-      );
-    }
-
-    return (
-      <ReflexElement
-        key={id}
-        style={styles.element[orientation || 'horizontal']}
-        minSize={dropzone.minSize}
-        flex={flex || 0.5}
-        onResize={onResize}
-      >
-        <Content
-          nodeId={id}
-          tabs={tabs}
-          builders={builders}
-          onUpdate={onUpdate}
-          onRemove={onRemove}
-          metadata={metadata}
-        />
+        ) : (
+          <Content
+            nodeId={id}
+            tabs={tabs}
+            builders={builders}
+            onUpdate={onUpdate}
+            onRemove={onRemove}
+            metadata={metadata}
+          />
+        )}
       </ReflexElement>
     );
   }
 }
-
-Element.propTypes = {
-  builders: PropTypes.object.isRequired,
-  node: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  onResize: PropTypes.func.isRequired,
-  metadata: PropTypes.any,
-};
-
-export default Element;

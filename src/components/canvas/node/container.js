@@ -4,7 +4,17 @@ import { ReflexContainer, ReflexSplitter } from 'react-reflex';
 import Element from './element';
 import styles from './styles';
 
-class Container extends React.Component {
+export default class Container extends React.Component {
+  static propTypes = {
+    builders: PropTypes.object.isRequired,
+    nodes: PropTypes.array.isRequired,
+    orientation: PropTypes.string.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onResize: PropTypes.func.isRequired,
+    metadata: PropTypes.any,
+  };
+
   render() {
     const { builders, nodes, orientation, onUpdate, onRemove, onResize, metadata } = this.props;
     const reduce = (acc, node, idx) => {
@@ -30,15 +40,3 @@ class Container extends React.Component {
     );
   }
 }
-
-Container.propTypes = {
-  builders: PropTypes.object.isRequired,
-  nodes: PropTypes.array.isRequired,
-  orientation: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  onResize: PropTypes.func.isRequired,
-  metadata: PropTypes.any,
-};
-
-export default Container;
