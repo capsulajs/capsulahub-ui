@@ -66,7 +66,7 @@ export default class Tabs extends React.Component {
   state = {
     hoverIndex: -1,
     editIndex: -1,
-  }
+  };
 
   hover(hoverIndex) {
     this.setState({ hoverIndex });

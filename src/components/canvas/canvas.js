@@ -29,11 +29,11 @@ export default class Canvas extends React.Component {
     onUpdate: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-  }
+  };
 
   state = {
     metadata: {},
-  }
+  };
 
   componentDidMount() {
     const { onUpdate } = this.props;

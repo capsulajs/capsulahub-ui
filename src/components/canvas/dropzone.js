@@ -56,4 +56,4 @@ export default class Dropzone extends React.Component {
       </Container>
     );
   }
-};
+}
