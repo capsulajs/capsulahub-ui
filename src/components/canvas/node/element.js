@@ -20,35 +20,31 @@ export default class Element extends React.Component {
   render() {
     const { builders, node, onUpdate, onRemove, onResize, metadata } = this.props;
     const { id, type, tabs, orientation, nodes, flex } = node;
-    const style = type === 'container'
-      ? styles.container
-      : styles.element[orientation || 'horizontal'];
+    const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
-    return <ReflexElement
-      key={id}
-      style={style}
-      minSize={dropzone.minSize}
-      flex={flex || 0.5}
-      onResize={onResize}
-    >{type === 'container' ?
-      <Container
-        builders={builders}
-        nodes={nodes}
-        orientation={orientation}
-        onUpdate={onUpdate}
-        onRemove={onRemove}
-        onResize={onResize}
-        metadata={metadata}
-      /> :
-      <Content
-        nodeId={id}
-        tabs={tabs}
-        builders={builders}
-        onUpdate={onUpdate}
-        onRemove={onRemove}
-        metadata={metadata}
-      />
-    }
-    </ReflexElement>;
+    return (
+      <ReflexElement key={id} style={style} minSize={dropzone.minSize} flex={flex || 0.5} onResize={onResize}>
+        {type === 'container' ? (
+          <Container
+            builders={builders}
+            nodes={nodes}
+            orientation={orientation}
+            onUpdate={onUpdate}
+            onRemove={onRemove}
+            onResize={onResize}
+            metadata={metadata}
+          />
+        ) : (
+          <Content
+            nodeId={id}
+            tabs={tabs}
+            builders={builders}
+            onUpdate={onUpdate}
+            onRemove={onRemove}
+            metadata={metadata}
+          />
+        )}
+      </ReflexElement>
+    );
   }
 }
