@@ -9,24 +9,28 @@ const Container = styled.div`
   height: calc(100% - 23px);
 `;
 
-class Content extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabIndex: 0,
-    };
-    this.onSelect = this.onSelect.bind(this);
-    this.onRemove = this.onRemove.bind(this);
-  }
+export default class Content extends React.Component {
+  static propTypes = {
+    nodeId: PropTypes.string.isRequired,
+    tabs: PropTypes.array.isRequired,
+    builders: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    metadata: PropTypes.any,
+  };
 
-  onSelect(tabIndex) {
+  state = {
+    tabIndex: 0,
+  };
+
+  onSelect = (tabIndex) => {
     this.setState({ tabIndex });
-  }
+  };
 
-  onRemove(id) {
+  onRemove = (id) => {
     this.setState({ tabIndex: 0 });
     this.props.onRemove(this.props.nodeId, id);
-  }
+  };
 
   render() {
     const { tabIndex } = this.state;
@@ -58,14 +62,3 @@ class Content extends React.Component {
     return <Dropzone id={nodeId} metadata={metadata} />;
   }
 }
-
-Content.propTypes = {
-  nodeId: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired,
-  builders: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  metadata: PropTypes.any,
-};
-
-export default Content;

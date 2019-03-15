@@ -53,15 +53,20 @@ const getTabStyle = (draggableStyle, isActive) => ({
 
 const getTabCloseStyle = (isHover) => (isHover ? {} : { color: '#515151' });
 
-class Tabs extends React.Component {
-  constructor(props) {
-    super(props);
+export default class Tabs extends React.Component {
+  static propTypes = {
+    nodeId: PropTypes.string.isRequired,
+    tabs: PropTypes.array.isRequired,
+    activeIndex: PropTypes.number.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+  };
 
-    this.state = {
-      hoverIndex: -1,
-      editIndex: -1,
-    };
-  }
+  state = {
+    hoverIndex: -1,
+    editIndex: -1,
+  };
 
   hover(hoverIndex) {
     this.setState({ hoverIndex });
@@ -128,14 +133,3 @@ class Tabs extends React.Component {
     );
   }
 }
-
-Tabs.propTypes = {
-  nodeId: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired,
-  activeIndex: PropTypes.number.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-export default Tabs;

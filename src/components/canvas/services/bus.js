@@ -4,7 +4,7 @@ import dragover from './events/dragover';
 import drop from './events/drop';
 
 export class CanvasEventBus {
-  events$(container) {
+  getEventsStream(container) {
     return merge(
       fromEvent(document, 'dragstart').pipe(
         tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))

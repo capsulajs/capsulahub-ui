@@ -1,6 +1,6 @@
 import { intersection } from 'lodash';
 
-export const mergeMetadata = (metadatas) => metadatas.reduce((a, b) => Object.assign({}, a, b), {});
+export const mergeMetadata = (metadatas) => metadatas.reduce((a, b) => ({ ...a, ...b }), {});
 export const getSectorCouple = (sectors, sector) => {
   const neighbors = {
     1: [2, 3],

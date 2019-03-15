@@ -28,37 +28,39 @@ const Input = styled.input`
 
 const getStyle = (isActive) => ({ borderBottom: isActive ? 'solid 1px #FEFEFE' : 'none' });
 
-class Tab extends React.Component {
-  constructor(props) {
-    super(props);
+export default class Tab extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    nodeId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onEditStart: PropTypes.func.isRequired,
+    onEditEnd: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+  };
 
-    this.change = this.change.bind(this);
-    this.save = this.save.bind(this);
-    this.keyDown = this.keyDown.bind(this);
+  state = {
+    value: this.props.name,
+  };
 
-    this.state = {
-      value: this.props.name,
-    };
-  }
-
-  change(e) {
+  change = (e) => {
     this.setState({ value: e.target.value.trim() });
-  }
+  };
 
-  save() {
+  save = () => {
     const value = this.state.value;
     if (value && value.length > 2) {
       const { nodeId, id } = this.props;
       this.props.onUpdate(nodeId, id, { name: value });
       this.props.onEditEnd();
     }
-  }
+  };
 
-  keyDown(event) {
+  keyDown = (event) => {
     if (event.which === keyboard.escapeKey || event.which === keyboard.enterKey) {
       this.save();
     }
-  }
+  };
 
   render() {
     const { isEditing, isActive, name } = this.props;
@@ -74,15 +76,3 @@ class Tab extends React.Component {
     );
   }
 }
-
-Tab.propTypes = {
-  id: PropTypes.string.isRequired,
-  nodeId: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onEditStart: PropTypes.func.isRequired,
-  onEditEnd: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-export default Tab;

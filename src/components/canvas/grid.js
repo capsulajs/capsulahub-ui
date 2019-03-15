@@ -11,25 +11,23 @@ import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
 import { updateNode, updateTab } from './utils';
 
-class Grid extends React.Component {
-  constructor(props) {
-    super(props);
+export default class Grid extends React.Component {
+  static propTypes = {
+    layout: PropTypes.object.isRequired,
+    builders: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    metadata: PropTypes.any,
+  };
 
-    this.onRemove = this.onRemove.bind(this);
-    this.onUpdate = this.onUpdate.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
-    this.onResize = this.onResize.bind(this);
-  }
-
-  onRemove(nodeId, tabId) {
+  onRemove = (nodeId, tabId) => {
     this.props.onUpdate(removeTab(this.props.layout, nodeId, tabId));
-  }
+  };
 
-  onUpdate(nodeId, tabId, updates) {
+  onUpdate = (nodeId, tabId, updates) => {
     this.props.onUpdate(updateTab(this.props.layout, nodeId, tabId, updates));
-  }
+  };
 
-  onDragEnd(result) {
+  onDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) {
       return;
@@ -38,12 +36,12 @@ class Grid extends React.Component {
     source.droppableId === destination.droppableId
       ? this.props.onUpdate(reorderTab(tree, source, destination))
       : this.props.onUpdate(moveTab(tree, source, destination));
-  }
+  };
 
-  onResize(event) {
+  onResize = (event) => {
     const { node, flex } = event.component.props;
     this.props.onUpdate(updateNode(this.props.layout, node.id, { flex }));
-  }
+  };
 
   render() {
     const { layout, builders, metadata } = this.props;
@@ -84,12 +82,3 @@ class Grid extends React.Component {
     return <Dropzone id={id} metadata={metadata} />;
   }
 }
-
-Grid.propTypes = {
-  layout: PropTypes.object.isRequired,
-  builders: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  metadata: PropTypes.any,
-};
-
-export default Grid;

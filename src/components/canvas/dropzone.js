@@ -27,7 +27,13 @@ const Centre = styled.div`
   background: transparent;
 `;
 
-class Dropzone extends React.Component {
+export default class Dropzone extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    isFullView: PropTypes.bool,
+    metadata: PropTypes.any,
+  };
+
   getStyle(sector) {
     const { id, metadata } = this.props;
     if (id === metadata.nodeId && metadata && metadata.sectors && metadata.sectors.includes(sector)) {
@@ -36,16 +42,13 @@ class Dropzone extends React.Component {
     return {};
   }
 
-  componentDidMount() {
-    this.ref = ReactDOM.findDOMNode(this);
-  }
-
   render() {
     const { id, isFullView, metadata } = this.props;
-    const ratio = isFullView || isSizeLessThan(this.ref, dropzone.minSize) ? 1 : dropzone.ratio;
+    const ref = React.createRef();
+    const ratio = isFullView || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 
     return (
-      <Container>
+      <Container ref={ref}>
         <Centre id={`dropzone ${id} ${dropzone.sectors}`} ratio={ratio} />
         {dropzone.sectors.map((sector) => (
           <Sector id={`dropzone ${id} ${sector}`} key={sector} style={this.getStyle(sector)} />
@@ -54,11 +57,3 @@ class Dropzone extends React.Component {
     );
   }
 }
-
-Dropzone.propTypes = {
-  id: PropTypes.string.isRequired,
-  isFullView: PropTypes.bool,
-  metadata: PropTypes.any,
-};
-
-export default Dropzone;

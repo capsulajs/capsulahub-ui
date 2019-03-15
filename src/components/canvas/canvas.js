@@ -22,20 +22,24 @@ const Container = styled.div`
   padding 8px;
 `;
 
-class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
+export default class Canvas extends React.Component {
+  static propTypes = {
+    builders: PropTypes.object.isRequired,
+    layout: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  };
 
-    this.state = {
-      metadata: {},
-    };
-  }
+  state = {
+    metadata: {},
+  };
 
   componentDidMount() {
     const { onUpdate } = this.props;
     const bus = new CanvasEventBus();
 
-    this.events = bus.events$(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
+    this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
       switch (event) {
         case 'drop':
           return onUpdate(createNode(this.props.layout, metadata));
@@ -43,10 +47,6 @@ class Canvas extends React.Component {
           this.setState({ metadata });
       }
     });
-  }
-
-  componentWillUnmount() {
-    this.events.unsubscribe();
   }
 
   render() {
@@ -59,14 +59,8 @@ class Canvas extends React.Component {
       </Container>
     );
   }
+
+  componentWillUnmount() {
+    this.eventsSubscription.unsubscribe();
+  }
 }
-
-Canvas.propTypes = {
-  builders: PropTypes.object.isRequired,
-  layout: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-};
-
-export default Canvas;
