@@ -21,9 +21,11 @@ const create = (tree, metadata) => {
 
   switch (true) {
     case tree.id === nodeId:
-      const { flex, tabIndex } = tree;
+      const { flex, tabIndex: index } = tree;
+      const tabIndex = Math.min(index + 1, node.tabs.length);
+
       return sectors.toString() === dropzone.sectors.toString()
-        ? { id: guid(), type: 'element', flex, tabIndex: tabIndex + 1, tabs: [...node.tabs, nodeTab(builderId)] }
+        ? { id: guid(), type: 'element', flex, tabIndex, tabs: [...node.tabs, nodeTab(builderId)] }
         : { id: guid(), type: 'container', nodes: multiplyNode(node, builderId, sectors), orientation };
     case tree.type === 'element':
       return tree;

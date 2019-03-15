@@ -16,6 +16,7 @@ export default class CanvasExample extends React.Component {
       layout: {
         id: '0',
         type: 'element',
+        flex: 0.5,
         tabIndex: 0,
         tabs: [],
       },
