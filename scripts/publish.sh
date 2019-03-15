@@ -22,7 +22,7 @@ if [[ "$TRAVIS_BRANCH" =~ ^feature\/.*$ ]]; then
     else
         echo $MSG_VERSION_FAIL && exit 1
     fi
-    npm publish --tag snapshot --access public
+    npm publish --tag snapshot --access public --preid alpha
     if [[ "$?" == 0 ]]; then
         echo $MSG_PUBLISH_SUCCESS
     else
