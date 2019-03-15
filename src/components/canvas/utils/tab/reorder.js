@@ -9,5 +9,5 @@ const reorder = (tabs, startIndex, endIndex) => {
 
 export default (tree, source, destination) => {
   const tabs = reorder(getNode(tree, destination.droppableId).tabs, source.index, destination.index);
-  return updateNode(tree, destination.droppableId, { tabs, tabIndex: destination.index })
+  return updateNode(tree, destination.droppableId, { tabs, tabIndex: destination.index });
 };
