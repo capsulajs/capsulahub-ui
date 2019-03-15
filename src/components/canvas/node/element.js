@@ -14,13 +14,7 @@ class Element extends React.Component {
 
     if (type === 'container') {
       return (
-        <ReflexElement
-          key={id}
-          style={styles.container}
-          minSize={dropzone.minSize}
-          flex={flex || 0.5}
-          onResize={onResize}
-        >
+        <ReflexElement key={id} style={styles.container} minSize={dropzone.minSize} flex={flex || 0.5} onResize={onResize}>
           <Container
             builders={builders}
             nodes={nodes}
