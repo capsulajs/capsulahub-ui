@@ -48,7 +48,8 @@ class Tab extends React.Component {
   save() {
     const value = this.state.value;
     if (value && value.length > 2) {
-      this.props.onUpdate({ id: this.props.id, name: value });
+      const { nodeId, id } = this.props;
+      this.props.onUpdate(nodeId, id, { name: value });
       this.props.onEditEnd();
     }
   }
@@ -75,6 +76,8 @@ class Tab extends React.Component {
 }
 
 Tab.propTypes = {
+  id: PropTypes.string.isRequired,
+  nodeId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
   onEditStart: PropTypes.func.isRequired,

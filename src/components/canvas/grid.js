@@ -9,7 +9,7 @@ import Content from './content';
 import removeTab from './utils/tab/remove';
 import moveTab from './utils/tab/move';
 import reorderTab from './utils/tab/reorder';
-import { updateNode } from './utils';
+import { updateNode, updateTab } from './utils';
 
 class Grid extends React.Component {
   constructor(props) {
@@ -21,12 +21,12 @@ class Grid extends React.Component {
     this.onResize = this.onResize.bind(this);
   }
 
-  onRemove(node) {
-    return (tabId) => this.props.onUpdate(removeTab(this.props.layout, node.id, tabId));
+  onRemove(nodeId, tabId) {
+    this.props.onUpdate(removeTab(this.props.layout, nodeId, tabId));
   }
 
-  onUpdate(node) {
-    return ({ id, ...updates }) => this.props.onUpdate(updateTab(this.props.layout, node.id, id, updates));
+  onUpdate(nodeId, tabId, updates) {
+    this.props.onUpdate(updateTab(this.props.layout, nodeId, tabId, updates));
   }
 
   onDragEnd(result) {
@@ -69,11 +69,11 @@ class Grid extends React.Component {
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Content
-            id={id}
+            nodeId={id}
             tabs={tabs}
             builders={builders}
-            onRemove={this.onRemove(layout)}
-            onUpdate={this.onUpdate(layout)}
+            onRemove={this.onRemove}
+            onUpdate={this.onUpdate}
             onResize={this.onResize}
             metadata={metadata}
           />

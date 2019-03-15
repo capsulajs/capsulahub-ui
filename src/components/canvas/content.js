@@ -25,12 +25,12 @@ class Content extends React.Component {
 
   onRemove(id) {
     this.setState({ tabIndex: 0 });
-    this.props.onRemove(id);
+    this.props.onRemove(this.props.nodeId, id);
   }
 
   render() {
     const { tabIndex } = this.state;
-    const { id, tabs, builders, onUpdate, metadata } = this.props;
+    const { nodeId, tabs, builders, onUpdate, metadata } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const tab = tabs[tabIndex];
@@ -38,16 +38,16 @@ class Content extends React.Component {
 
       if (builder) {
         return (
-          <Container id={id}>
+          <Container id={nodeId}>
             <Tabs
-              id={id}
+              nodeId={nodeId}
               tabs={tabs}
               activeIndex={tabIndex}
               onRemove={this.onRemove}
               onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            {metadata.builderId ? <Dropzone isFullView id={id} metadata={metadata} /> : builder(tab.metadata)}
+            {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
           </Container>
         );
       }
@@ -55,12 +55,12 @@ class Content extends React.Component {
       return 'No builder..';
     }
 
-    return <Dropzone id={id} metadata={metadata} />;
+    return <Dropzone id={nodeId} metadata={metadata} />;
   }
 }
 
 Content.propTypes = {
-  id: PropTypes.string.isRequired,
+  nodeId: PropTypes.string.isRequired,
   tabs: PropTypes.array.isRequired,
   builders: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
