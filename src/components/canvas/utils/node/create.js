@@ -26,15 +26,15 @@ const create = (tree, metadata) => {
 
       return sectors.toString() === dropzone.sectors.toString()
         ? { id: guid(), type: 'element', flex, tabIndex, tabs: [...node.tabs, nodeTab(builderId)] }
-        : { id: guid(), type: 'container', nodes: multiplyNode(node, builderId, sectors), orientation };
+        : { id: guid(), type: 'container', flex, nodes: multiplyNode(node, builderId, sectors), orientation };
     case tree.type === 'element':
       return tree;
     default:
       return {
+        ...tree,
         id: guid(),
         type: 'container',
         nodes: tree.nodes.map((node) => create(node, metadata)),
-        orientation: tree.orientation,
       };
   }
 };
