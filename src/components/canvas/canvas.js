@@ -36,6 +36,8 @@ export default class Canvas extends React.Component {
 
   componentDidMount() {
     this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
+      console.log(event, metadata);
+
       switch (event) {
         case 'dragover':
           return this.setState({ metadata });

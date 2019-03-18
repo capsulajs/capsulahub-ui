@@ -1,7 +1,6 @@
 import 'react-reflex/styles.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext } from 'react-beautiful-dnd';
 import Container from './node/container';
 import Element from './node/element';
 import Dropzone from './dropzone';
@@ -22,19 +21,11 @@ export default class Grid extends React.Component {
     const { id, tabIndex, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
-      return (
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
-        </DragDropContext>
-      );
+      return <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />;
     }
 
     if (tabs && tabs.length) {
-      return (
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />
-        </DragDropContext>
-      );
+      return <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />;
     }
 
     return <Dropzone id={id} metadata={metadata} />;

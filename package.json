@@ -21,7 +21,6 @@
     "lodash": "^4.17.11",
     "react": "^16.8.1",
     "react-ace": "^6.1.4",
-    "react-beautiful-dnd": "^9.0.2",
     "react-click-outside": "^3.0.1",
     "react-json-view": "^1.19.1",
     "react-reflex": "^2.2.9",

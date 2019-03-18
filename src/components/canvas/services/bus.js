@@ -26,15 +26,20 @@ export class CanvasEventBus {
   getDragAndDropEventsStream(container) {
     return merge(
       fromEvent(document, 'dragstart').pipe(
-        tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))
+        map((e) => {
+          const builderId = e.target.getAttribute('data-builder-id');
+          const nodeId = e.target.getAttribute('data-node-id');
+          const tabId = e.target.getAttribute('data-tab-id');
+          return nodeId && tabId ? { builderId, source: { nodeId, tabId } } : { builderId };
+        })
       ),
       fromEvent(document, 'dragend')
     ).pipe(
-      switchMap((e) => {
-        const builderId = e.dataTransfer.getData('builderId');
+      switchMap((metadata) => {
+        const { builderId, source } = metadata;
 
         if (builderId) {
-          const dragover$ = dragover(container, of({ builderId }));
+          const dragover$ = dragover(container, of({ builderId, source }));
           const drop$ = drop(container, dragover$);
 
           return merge(

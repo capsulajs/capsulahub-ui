@@ -36,14 +36,15 @@ export default class Dropzone extends React.Component {
 
   getStyle(sector) {
     const { id, metadata } = this.props;
-    if (id === metadata.nodeId && metadata && metadata.sectors && metadata.sectors.includes(sector)) {
+    const { nodeId, sectors, source } = metadata;
+    if (id === nodeId && sectors && sectors.includes(sector)) {
       return { background: dropzone.highlight };
     }
     return {};
   }
 
   render() {
-    const { id, isFullView, metadata } = this.props;
+    const { id, isFullView } = this.props;
     const ref = React.createRef();
     const ratio = isFullView || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 

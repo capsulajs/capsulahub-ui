@@ -50,7 +50,7 @@ export default class CanvasExample extends React.Component {
         {this.props.persist && <button onClick={this.onReset}>Reset local storage</button>}
         <ul style={{ width: 120, height: 60, margin: 0 }}>
           {Object.keys(builders).map((key) => (
-            <li draggable builder-id={key} key={key}>
+            <li draggable data-builder-id={key} key={key}>
               {key}
             </li>
           ))}

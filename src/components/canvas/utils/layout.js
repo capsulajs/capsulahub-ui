@@ -9,13 +9,14 @@ import reorderTab from './tab/reorder';
 export default (layout, event, metadata) => {
   switch (event) {
     case 'drop':
+      // const { source } = metadata;
       return createNode(layout, metadata);
-    case 'reorder': {
-      const { source, destination } = metadata;
-      return source.droppableId === destination.droppableId
-        ? reorderTab(layout, source, destination)
-        : moveTab(layout, source, destination);
-    }
+    // case 'reorder': {
+    //   const { source, destination } = metadata;
+    //   return source.droppableId === destination.droppableId
+    //     ? reorderTab(layout, source, destination)
+    //     : moveTab(layout, source, destination);
+    // }
     case 'resizestop': {
       const update = (layout, updates = []) => {
         const [u, ...rest] = updates;

@@ -12,8 +12,8 @@ export default (container, obs) => {
       map((point) => document.elementFromPoint(...point)),
       scan((acc, { id }) => {
         if (id && id.includes('dropzone')) {
-          const [_, nodeId, sectorsList] = id.split(' ');
-          const sectors = sectorsList.match(/\d+/g).map(Number);
+          const [_, nodeId, list] = id.split(' ');
+          const sectors = list.match(/\d+/g).map(Number);
 
           return {
             nodeId,
@@ -25,5 +25,14 @@ export default (container, obs) => {
       }, {}),
       distinctUntilChanged((a, b) => isEqual(a, b))
     )
-  ).pipe(map(mergeMetadata));
+  ).pipe(
+    map(mergeMetadata),
+    map((metadata) => {
+      const { builderId, nodeId, source } = metadata;
+      if (source && source.nodeId === nodeId) {
+        return { builderId, source };
+      }
+      return metadata;
+    })
+  );
 };
