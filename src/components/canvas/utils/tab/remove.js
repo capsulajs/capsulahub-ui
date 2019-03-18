@@ -71,7 +71,8 @@ const removeTab = (tree, nodeId, tabId) => {
   return filterTabs(newTree);
 };
 
-const remove = (tree, nodeId, tabId) => {
+const remove = (tree, metadata) => {
+  const { nodeId, tabId } = metadata;
   if (tree.id === nodeId) {
     if (tree.tabs) {
       tree.tabs = tree.tabs.filter((tab) => tab.id !== tabId);

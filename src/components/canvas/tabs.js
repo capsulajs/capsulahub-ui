@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import Tab from './tab';
+import bus from './services';
 
 const Container = styled.div`
   display: flex;
@@ -11,19 +12,7 @@ const Container = styled.div`
   background: #515151;
   color: #a9a9a9;
   width: 100%;
-  overflow: hidden;
-
   overflow-x: scroll;
-  ::-webkit-scrollbar {
-    background: #515151;
-    height: 2px;
-  }
-  ::-webkit-scrollbar-corner {
-    background: #3f3f3f;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #797979;
-  }
   overflow-y: hidden;
 `;
 
@@ -58,9 +47,6 @@ export default class Tabs extends React.Component {
     nodeId: PropTypes.string.isRequired,
     tabs: PropTypes.array.isRequired,
     activeIndex: PropTypes.number.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
   };
 
   state = {
@@ -76,8 +62,10 @@ export default class Tabs extends React.Component {
     this.setState({ editIndex });
   }
 
+  remove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
+
   renderDraggable(tab, index) {
-    const { nodeId, tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
+    const { nodeId, tabs, activeIndex } = this.props;
     const { hoverIndex, editIndex } = this.state;
 
     const isActive = activeIndex === index;
@@ -102,13 +90,11 @@ export default class Tabs extends React.Component {
               name={tab.name}
               isEditing={isEditing}
               isActive={isActive}
-              onSelect={() => onSelect(index)}
               onEditStart={() => this.edit(index)}
               onEditEnd={() => this.edit(-1)}
-              onUpdate={onUpdate}
             />
             {isRemovable && (
-              <Close onClick={(e) => e.preventDefault() || onRemove(tab.id)} style={getTabCloseStyle(isHover)}>
+              <Close onClick={(e) => e.preventDefault() || this.remove(tab.id)} style={getTabCloseStyle(isHover)}>
                 ✕
               </Close>
             )}

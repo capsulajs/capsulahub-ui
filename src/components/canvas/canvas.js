@@ -4,10 +4,9 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
-import { getNode } from './utils';
-import createNode from './utils/node/create';
-import { CanvasEventBus } from './services';
 import { canvas } from './settings';
+import updateLayout from './utils/layout';
+import bus from './services';
 
 const Container = styled.div`
   font-family: ${canvas.fontFamily};
@@ -36,26 +35,25 @@ export default class Canvas extends React.Component {
   };
 
   componentDidMount() {
-    const { onUpdate } = this.props;
-    const bus = new CanvasEventBus();
-
     this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
       switch (event) {
-        case 'drop':
-          return onUpdate(createNode(this.props.layout, metadata));
+        case 'dragover':
+          return this.setState({ metadata });
+        case 'dragend':
+          return this.setState({ metadata });
         default:
-          this.setState({ metadata });
+          return this.props.onUpdate(updateLayout(this.props.layout, event, metadata));
       }
     });
   }
 
   render() {
     const { metadata } = this.state;
-    const { width, height, builders, layout, onUpdate } = this.props;
+    const { width, height, builders, layout } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} builders={builders} onUpdate={onUpdate} metadata={metadata} />
+        <Grid layout={layout} metadata={metadata} builders={builders} />
       </Container>
     );
   }

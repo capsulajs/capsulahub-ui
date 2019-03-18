@@ -15,16 +15,11 @@ export default class Content extends React.Component {
     tabIndex: PropTypes.number.isRequired,
     tabs: PropTypes.array.isRequired,
     builders: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
     metadata: PropTypes.any,
   };
 
-  onSelect = (tabIndex) => this.props.onUpdate(this.props.nodeId, null, { tabIndex });
-  onRemove = (id) => this.props.onRemove(this.props.nodeId, id);
-
   render() {
-    const { nodeId, tabIndex, tabs, builders, onUpdate, metadata } = this.props;
+    const { nodeId, tabIndex, tabs, builders, metadata } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const tab = tabs[tabIndex];
@@ -33,14 +28,7 @@ export default class Content extends React.Component {
       if (builder) {
         return (
           <Container id={nodeId}>
-            <Tabs
-              nodeId={nodeId}
-              tabs={tabs}
-              activeIndex={tabIndex}
-              onRemove={this.onRemove}
-              onSelect={this.onSelect}
-              onUpdate={onUpdate}
-            />
+            <Tabs nodeId={nodeId} tabs={tabs} activeIndex={tabIndex} />
             {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
           </Container>
         );
