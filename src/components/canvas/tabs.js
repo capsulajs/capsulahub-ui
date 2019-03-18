@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   padding: 2px;
   margin: 0 8px 0 0;
   background: #515151;
-  color: ${(props) => (props.isActive ? '#FEFEFE' : '#A9A9A9')};
+  color: ${props => props.isActive ? '#FEFEFE' : '#A9A9A9'};
   display: flex;
   flex-direction: row;
   padding-bottom: 2px;
@@ -33,7 +33,7 @@ const Close = styled.span`
   cursor: pointer;
   margin: auto;
   padding-left: 5px;
-  color: ${(props) => (props.isHover ? '' : '#515151')};
+  color: ${(props) => props.isHover ? '' : '#515151'};
 `;
 
 const getListStyle = () => ({
@@ -61,31 +61,26 @@ export default class Tabs extends React.Component {
     const { nodeId, tabs, tabIndex } = this.props;
     const { hoverIndex, editIndex } = this.state;
 
-    return (
-      <Wrapper
-        key={index}
+    return <Wrapper key={index} isActive={tabIndex === index} onMouseEnter={() => this.hover(index)} onMouseLeave={() => this.hover(-1)}>
+      <Tab
+        nodeId={nodeId}
+        tab={tab}
+        isEditing={editIndex === index}
         isActive={tabIndex === index}
-        onMouseEnter={() => this.hover(index)}
-        onMouseLeave={() => this.hover(-1)}
-      >
-        <Tab
-          nodeId={nodeId}
-          tab={tab}
-          isEditing={editIndex === index}
-          isActive={tabIndex === index}
-          onEditStart={() => this.edit(index)}
-          onEditEnd={() => this.edit(-1)}
-        />
-        {editIndex !== index && (
-          <Close isHover={hoverIndex === index} onClick={(e) => e.preventDefault() || this.remove(tab.id)}>
-            ✕
-          </Close>
-        )}
-      </Wrapper>
-    );
+        onEditStart={() => this.edit(index)}
+        onEditEnd={() => this.edit(-1)}
+      />
+      {editIndex !== index && (
+        <Close isHover={hoverIndex === index} onClick={(e) => e.preventDefault() || this.remove(tab.id)}>✕</Close>
+      )}
+    </Wrapper>
   }
 
   render() {
-    return <Container>{this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}</Container>;
+    return (
+      <Container>
+        {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
+      </Container>
+    );
   }
 }

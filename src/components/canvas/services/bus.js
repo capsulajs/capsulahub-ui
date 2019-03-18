@@ -30,7 +30,9 @@ export class CanvasEventBus {
           const builderId = e.target.getAttribute('data-builder-id');
           const nodeId = e.target.getAttribute('data-node-id');
           const tabId = e.target.getAttribute('data-tab-id');
-          return nodeId && tabId ? { builderId, source: { nodeId, tabId } } : { builderId };
+          return nodeId && tabId
+            ? { builderId, source: { nodeId, tabId } }
+            : { builderId };
         })
       ),
       fromEvent(document, 'dragend')
