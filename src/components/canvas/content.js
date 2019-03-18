@@ -28,7 +28,7 @@ export default class Content extends React.Component {
       if (builder) {
         return (
           <Container id={nodeId}>
-            <Tabs nodeId={nodeId} tabs={tabs} activeIndex={tabIndex}/>
+            <Tabs nodeId={nodeId} tabs={tabs} activeIndex={tabIndex} />
             {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
           </Container>
         );

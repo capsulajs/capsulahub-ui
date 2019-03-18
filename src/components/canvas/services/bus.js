@@ -25,7 +25,9 @@ export class CanvasEventBus {
 
   getDragAndDropEventsStream(container) {
     return merge(
-      fromEvent(document, 'dragstart').pipe(tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))),
+      fromEvent(document, 'dragstart').pipe(
+        tap((e) => e.dataTransfer.setData('builderId', e.target.getAttribute('builder-id')))
+      ),
       fromEvent(document, 'dragend')
     ).pipe(
       switchMap((e) => {
@@ -54,7 +56,7 @@ export class CanvasEventBus {
     return this.subject.asObservable().pipe(
       filter(([event, metadata]) => ['reorder'].includes(event)),
       filter(([event, metadata]) => metadata.destination)
-    )
+    );
   }
 
   getResizeEventsStream() {
@@ -67,20 +69,14 @@ export class CanvasEventBus {
   }
 
   getSelectEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['update'].includes(event)),
-    );
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['update'].includes(event)));
   }
 
   getUpdateEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['select'].includes(event)),
-    );
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['select'].includes(event)));
   }
 
   getRemoveEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['remove'].includes(event)),
-    );
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['remove'].includes(event)));
   }
 }

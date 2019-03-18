@@ -24,12 +24,7 @@ export default class Grid extends React.Component {
     if (nodes && nodes.length) {
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Container
-            builders={builders}
-            nodes={nodes}
-            orientation={orientation}
-            metadata={metadata}
-          />
+          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
         </DragDropContext>
       );
     }
@@ -37,13 +32,7 @@ export default class Grid extends React.Component {
     if (tabs && tabs.length) {
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Content
-            nodeId={id}
-            tabIndex={tabIndex}
-            tabs={tabs}
-            builders={builders}
-            metadata={metadata}
-          />
+          <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />
         </DragDropContext>
       );
     }
