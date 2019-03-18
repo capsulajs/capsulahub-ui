@@ -7,7 +7,7 @@ import { keyboard } from './settings';
 const Title = styled.div`
   white-space: nowrap;
   cursor: pointer;
-  border-bottom: ${(props) => (props.isActive ? 'solid 1px #FEFEFE' : 'none')};
+  border-bottom: ${props => props.isActive ? 'solid 1px #FEFEFE' : 'none'};
 `;
 
 const Input = styled.input`
@@ -48,7 +48,7 @@ export default class Tab extends React.Component {
   select = () => {
     const { nodeId, id: tabId } = this.props;
     bus.emit('select', { nodeId, tabId });
-  };
+  }
 
   save = () => {
     const value = this.state.value;

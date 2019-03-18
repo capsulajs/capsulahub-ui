@@ -15,7 +15,7 @@ export default (layout, event, metadata) => {
       return source.droppableId === destination.droppableId
         ? reorderTab(layout, source, destination)
         : moveTab(layout, source, destination);
-    }
+    };
     case 'resizestop': {
       const update = (layout, updates = []) => {
         const [u, ...rest] = updates;
@@ -25,11 +25,11 @@ export default (layout, event, metadata) => {
         return layout;
       };
       return update(layout, metadata);
-    }
+    };
     case 'select':
       const { nodeId, tabId } = metadata;
       const node = getNode(layout, nodeId);
-      const tabIndex = findIndex(node.tabs, (tab) => tab.id === tabId);
+      const tabIndex = findIndex(node.tabs, tab => tab.id === tabId);
       return updateNode(layout, { nodeId, tabIndex });
     case 'update': {
       const { nodeId, tabId, ...updates } = metadata;
@@ -41,10 +41,10 @@ export default (layout, event, metadata) => {
         return tab;
       });
       return updateNode(layout, { nodeId, tabs });
-    }
+    };
     case 'remove':
       return removeTab(layout, metadata);
     default:
       return layout;
   }
-};
+}

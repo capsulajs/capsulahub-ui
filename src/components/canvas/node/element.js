@@ -22,9 +22,9 @@ export default class Element extends React.Component {
     return (
       <ReflexElement key={id} style={style} flex={node.flex}>
         {type === 'container' ? (
-          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
+          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata}/>
         ) : (
-          <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />
+          <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata}/>
         )}
       </ReflexElement>
     );
