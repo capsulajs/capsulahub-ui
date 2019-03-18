@@ -53,15 +53,20 @@ const getTabStyle = (draggableStyle, isActive) => ({
 
 const getTabCloseStyle = (isHover) => (isHover ? {} : { color: '#515151' });
 
-class Tabs extends React.Component {
-  constructor(props) {
-    super(props);
+export default class Tabs extends React.Component {
+  static propTypes = {
+    nodeId: PropTypes.string.isRequired,
+    tabs: PropTypes.array.isRequired,
+    activeIndex: PropTypes.number.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+  };
 
-    this.state = {
-      hoverIndex: -1,
-      editIndex: -1,
-    };
-  }
+  state = {
+    hoverIndex: -1,
+    editIndex: -1,
+  };
 
   hover(hoverIndex) {
     this.setState({ hoverIndex });
@@ -72,7 +77,7 @@ class Tabs extends React.Component {
   }
 
   renderDraggable(tab, index) {
-    const { tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
+    const { nodeId, tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
     const { hoverIndex, editIndex } = this.state;
 
     const isActive = activeIndex === index;
@@ -93,6 +98,7 @@ class Tabs extends React.Component {
           >
             <Tab
               id={tab.id}
+              nodeId={nodeId}
               name={tab.name}
               isEditing={isEditing}
               isActive={isActive}
@@ -115,7 +121,7 @@ class Tabs extends React.Component {
   render() {
     return (
       <Container>
-        <Droppable droppableId={this.props.id} direction="horizontal">
+        <Droppable droppableId={this.props.nodeId} direction="horizontal">
           {(provided) => (
             <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
               {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
@@ -127,14 +133,3 @@ class Tabs extends React.Component {
     );
   }
 }
-
-Tabs.propTypes = {
-  id: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired,
-  activeIndex: PropTypes.number.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-export default Tabs;

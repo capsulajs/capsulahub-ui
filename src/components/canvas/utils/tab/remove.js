@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { guid, emptyNode, getNodeTabs, updateNodeTabs } from '..';
+import { guid, emptyNode, getNode, updateNode } from '..';
 
 const isNodeValid = (node) => {
   if (node.tabs) {
@@ -63,13 +63,24 @@ const filterTabs = (node) => {
   }
 };
 
-const removeTab = ({ layout, nodeId, tabId }) => {
-  const newTabs = getNodeTabs(layout, nodeId).filter((tab) => tab.id !== tabId);
-  const newLayout = updateNodeTabs(layout, nodeId, newTabs);
-  return filterTabs(newLayout);
+const removeTab = (tree, nodeId, tabId) => {
+  const node = getNode(tree, nodeId);
+  const tabs = node.tabs.filter((tab) => tab.id !== tabId);
+  const tabIndex = node.tabIndex > tabs.length - 1 ? tabs.length - 1 : node.tabIndex;
+  const newTree = updateNode(tree, nodeId, { tabIndex, tabs });
+  return filterTabs(newTree);
 };
 
-const remove = ({ layout, nodeId, tabId }) =>
-  layout.id === nodeId ? emptyNode() : removeTab({ layout, nodeId, tabId });
+const remove = (tree, nodeId, tabId) => {
+  if (tree.id === nodeId) {
+    if (tree.tabs) {
+      tree.tabs = tree.tabs.filter((tab) => tab.id !== tabId);
+      tree.tabIndex = tree.tabs.length - 1;
+      return tree;
+    }
+    return emptyNode();
+  }
+  return removeTab(tree, nodeId, tabId);
+};
 
 export default remove;

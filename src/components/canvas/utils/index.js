@@ -1,4 +1,12 @@
-import { flatten, cloneDeep } from 'lodash';
+import { first, flatten, cloneDeep } from 'lodash';
+
+export const isSizeLessThan = (container, size) => {
+  if (container) {
+    const [w, h] = [container.offsetWidth, container.offsetHeight];
+    return w < size || h < size;
+  }
+  return false;
+};
 
 export const guid = () =>
   Math.random()
@@ -7,7 +15,7 @@ export const guid = () =>
   Math.random()
     .toString(36)
     .substring(2, 5);
-export const emptyNode = () => ({ id: guid(), type: 'element', tabs: [] });
+export const emptyNode = () => ({ id: guid(), type: 'element', flex: 0.5, tabIndex: 0, tabs: [] });
 export const decamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
 
@@ -17,38 +25,20 @@ export const decamelize = (str, separator) => {
     .toLowerCase();
 };
 
-export const isAnyNodeWithTabs = (node) => (node.type === 'element' ? node.tabs.length > 0 : node.nodes.length > 0);
-
-export const isAllNodesWithTabs = (layout) => {
-  let statement = true;
-  const check = (node) => {
-    if (node.type === 'element') {
-      if (node.tabs.length === 0) {
-        statement = false;
-      }
-    } else {
-      node.nodes.forEach(check);
-    }
-  };
-  check(layout);
-  return statement;
+export const getNode = (tree, nodeId) => {
+  if (tree.id === nodeId) {
+    return cloneDeep(tree);
+  }
+  if (tree.nodes) {
+    return cloneDeep(first(tree.nodes.map((node) => getNode(node, nodeId)).filter(Boolean)));
+  }
 };
 
-export const getNodeTabs = (node, nodeId) => {
-  if (node.id === nodeId) {
-    return node.tabs;
-  }
-  if (node.nodes) {
-    return flatten(node.nodes.map((node) => getNodeTabs(node, nodeId)));
-  }
-  return [];
-};
-
-export const updateNodeTabs = (layout, nodeId, tabs) => {
+export const updateNode = (layout, nodeId, updates) => {
   const clonedLayout = cloneDeep(layout);
   const update = (node) => {
     if (node.id === nodeId) {
-      node.tabs = tabs;
+      Object.keys(updates).forEach((key) => (node[key] = updates[key]));
     } else if (node.nodes) {
       node.nodes.forEach(update);
     }
@@ -57,8 +47,8 @@ export const updateNodeTabs = (layout, nodeId, tabs) => {
   return clonedLayout;
 };
 
-export const updateNodeTab = (layout, nodeId, tabId, updates) => {
-  const clonedLayout = cloneDeep(layout);
+export const updateTab = (tree, nodeId, tabId, updates) => {
+  const clonedTree = cloneDeep(tree);
   const update = (node) => {
     if (node.id === nodeId) {
       node.tabs = node.tabs.map((tab) => (tab.id === tabId ? { ...tab, ...updates } : tab));
@@ -66,6 +56,6 @@ export const updateNodeTab = (layout, nodeId, tabId, updates) => {
       node.nodes.forEach(update);
     }
   };
-  update(clonedLayout);
-  return clonedLayout;
+  update(clonedTree);
+  return clonedTree;
 };

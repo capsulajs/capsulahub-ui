@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Dropzone from './dropzone';
 import Tabs from './tabs';
 
 const Container = styled.div`
@@ -8,68 +9,46 @@ const Container = styled.div`
   height: calc(100% - 23px);
 `;
 
-const TabContainer = styled.div`
-  height: 100%;
-`;
+export default class Content extends React.Component {
+  static propTypes = {
+    nodeId: PropTypes.string.isRequired,
+    tabIndex: PropTypes.number.isRequired,
+    tabs: PropTypes.array.isRequired,
+    builders: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    metadata: PropTypes.any,
+  };
 
-class Content extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      index: 0,
-    };
-
-    this.handleOnRemove = this.handleOnRemove.bind(this);
-    this.handleOnSelect = this.handleOnSelect.bind(this);
-  }
-
-  handleOnSelect(index) {
-    this.setState({ index });
-  }
-
-  handleOnRemove(id) {
-    this.setState({ index: 0 });
-    this.props.onRemove(id);
-  }
+  onSelect = (tabIndex) => this.props.onUpdate(this.props.nodeId, null, { tabIndex });
+  onRemove = (id) => this.props.onRemove(this.props.nodeId, id);
 
   render() {
-    const { index } = this.state;
-    const { id, tabs, builders, onRemove, onUpdate } = this.props;
+    const { nodeId, tabIndex, tabs, builders, onUpdate, metadata } = this.props;
 
-    if (tabs && tabs[index]) {
-      const { builderId, metadata } = tabs[index];
-      const builder = builders[builderId];
+    if (tabs && tabs[tabIndex]) {
+      const tab = tabs[tabIndex];
+      const builder = builders[tab.builderId];
 
       if (builder) {
         return (
-          <Container>
+          <Container id={nodeId}>
             <Tabs
-              id={id}
+              nodeId={nodeId}
               tabs={tabs}
-              activeIndex={index}
-              onRemove={this.handleOnRemove}
-              onSelect={this.handleOnSelect}
+              activeIndex={tabIndex}
+              onRemove={this.onRemove}
+              onSelect={this.onSelect}
               onUpdate={onUpdate}
             />
-            <TabContainer>{builder(metadata)}</TabContainer>
+            {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
           </Container>
         );
       }
 
-      return 'No builder...';
+      return 'No builder..';
     }
 
-    return 'No tabs..';
+    return <Dropzone id={nodeId} metadata={metadata} />;
   }
 }
-
-Content.propTypes = {
-  id: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired,
-  builders: PropTypes.object.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-};
-
-export default Content;

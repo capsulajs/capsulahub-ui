@@ -16,18 +16,19 @@ if [[ "$TRAVIS_BRANCH" =~ ^feature\/.*$ ]]; then
     echo "--------------------------------------------"
     echo "|    Deploying snapshot on npm registry    |"
     echo "--------------------------------------------"
-    npm version $VERSION-$BRANCH_NAME-$TIMESTAMP
-    if [[ "$?" == 0 ]]; then
-        echo $MSG_VERSION_SUCCESS
-    else
-        echo $MSG_VERSION_FAIL && exit 1
-    fi
-    npm publish --tag snapshot --access public
-    if [[ "$?" == 0 ]]; then
-        echo $MSG_PUBLISH_SUCCESS
-    else
-        echo $MSG_PUBLISH_FAIL && exit 2
-    fi
+    echo "Not implemented yet"
+    # npm version $VERSION-$BRANCH_NAME-$TIMESTAMP
+    # if [[ "$?" == 0 ]]; then
+    #     echo $MSG_VERSION_SUCCESS
+    # else
+    #     echo $MSG_VERSION_FAIL && exit 1
+    # fi
+    # npm publish --tag snapshot --access public --preid alpha
+    # if [[ "$?" == 0 ]]; then
+    #     echo $MSG_PUBLISH_SUCCESS
+    # else
+    #     echo $MSG_PUBLISH_FAIL && exit 2
+    # fi
 elif [[ "$TRAVIS_BRANCH" == "develop" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     echo $VERSION
     echo "--------------------------------------------"
