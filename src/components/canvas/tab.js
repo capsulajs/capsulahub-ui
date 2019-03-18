@@ -63,7 +63,15 @@ export default class Tab extends React.Component {
     }
 
     return (
-      <Title draggable data-builder-id={tab.builderId} data-node-id={nodeId} data-tab-id={tab.id} isActive={isActive} onClick={this.select} onDoubleClick={this.props.onEditStart}>
+      <Title
+        draggable
+        data-builder-id={tab.builderId}
+        data-node-id={nodeId}
+        data-tab-id={tab.id}
+        isActive={isActive}
+        onClick={this.select}
+        onDoubleClick={this.props.onEditStart}
+      >
         {tab.name}
       </Title>
     );
