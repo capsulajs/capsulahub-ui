@@ -39,8 +39,6 @@ export default class Dropzone extends React.Component {
     const { source, destination } = metadata;
 
     if (destination) {
-
-
       if (tabId) {
         return { background: dropzone.highlight };
       } else if (nodeId === destination.nodeId && destination.sectors.includes(sector)) {
@@ -54,7 +52,7 @@ export default class Dropzone extends React.Component {
   render() {
     const { nodeId, tabId } = this.props;
     const ref = React.createRef();
-    const ratio = (tabId || isSizeLessThan(ref, dropzone.minSize)) ? 1 : dropzone.ratio;
+    const ratio = tabId || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 
     return (
       <Container ref={ref}>
