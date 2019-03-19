@@ -12,7 +12,7 @@ export default (container, obs) => {
       map((point) => document.elementFromPoint(...point)),
       scan((acc, curr) => {
         const nodeId = curr.getAttribute('data-node-id');
-        const tabId = curr.getAttribute('data-tab-id')
+        const tabId = curr.getAttribute('data-tab-id');
         const rawSectors = curr.getAttribute('data-sectors');
 
         if (nodeId) {
