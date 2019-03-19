@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Tab from './tab';
 import bus from './services';
 
@@ -56,6 +58,9 @@ export default class Tabs extends React.Component {
   hover = (hoverIndex) => this.setState({ hoverIndex });
   edit = (editIndex) => this.setState({ editIndex });
   remove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
+  onDragEnd = (result) => {
+    console.log('onDragEnd', result);
+  };
 
   renderDraggable(tab, index) {
     const { nodeId, tabs, tabIndex } = this.props;
@@ -86,6 +91,25 @@ export default class Tabs extends React.Component {
   }
 
   render() {
-    return <Container>{this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}</Container>;
+    const { nodeId, tabs } = this.props;
+
+    return (
+      <Container>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId={nodeId} direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                style={{ display: 'flex', flexDirection: 'row' }}
+                {...provided.droppableProps}
+              >
+                {tabs.map((tab, index) => this.renderDraggable(tab, index))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Container>
+    );
   }
 }

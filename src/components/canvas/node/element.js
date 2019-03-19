@@ -16,11 +16,11 @@ export default class Element extends React.Component {
 
   render() {
     const { builders, node, metadata } = this.props;
-    const { id, type, tabIndex, tabs, orientation, nodes } = node;
+    const { id, type, tabIndex, tabs, flex, orientation, nodes } = node;
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
-      <ReflexElement key={id} style={style} flex={node.flex}>
+      <ReflexElement key={id} style={style} flex={flex}>
         {type === 'container' ? (
           <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
         ) : (
