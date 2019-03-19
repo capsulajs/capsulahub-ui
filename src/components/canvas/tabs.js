@@ -93,23 +93,17 @@ export default class Tabs extends React.Component {
   render() {
     const { nodeId, tabs } = this.props;
 
-    return (
-      <Container>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId={nodeId} direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                style={{ display: 'flex', flexDirection: 'row' }}
-                {...provided.droppableProps}
-              >
-                {tabs.map((tab, index) => this.renderDraggable(tab, index))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </Container>
-    );
+    return <Container>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <Droppable droppableId={nodeId} direction="horizontal">
+          {(provided) => (
+            <div ref={provided.innerRef} style={{display: 'flex', flexDirection: 'row'}} {...provided.droppableProps}>
+              {tabs.map((tab, index) => this.renderDraggable(tab, index))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </Container>;
   }
 }
