@@ -6,37 +6,49 @@ import Tabs from './tabs';
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100% - 23px);
 `;
 
 export default class Content extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
-    tabIndex: PropTypes.number.isRequired,
     tabs: PropTypes.array.isRequired,
+    tabIndex: PropTypes.number.isRequired,
     builders: PropTypes.object.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { nodeId, tabIndex, tabs, builders, metadata } = this.props;
+    const { nodeId, tabs, tabIndex, builders, metadata } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const tab = tabs[tabIndex];
       const builder = builders[tab.builderId];
 
       if (builder) {
-        return (
-          <Container id={nodeId}>
-            <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-            {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
-          </Container>
-        );
+        if (metadata.source || metadata.destination) {
+          if (metadata.source && metadata.destination) {
+            return (
+              <Container>
+                <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+                <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />
+              </Container>
+            );
+          }
+
+          return <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />;
+        } else {
+          return (
+            <Container>
+              <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+              {builder(tab.metadata)}
+            </Container>
+          );
+        }
       }
 
       return 'No builder..';
     }
 
-    return <Dropzone id={nodeId} metadata={metadata} />;
+    return <Dropzone nodeId={nodeId} metadata={metadata} />;
   }
 }

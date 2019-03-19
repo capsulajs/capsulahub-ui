@@ -15,7 +15,8 @@ const multiplyNode = (node, builderId, sectors) => {
 };
 
 const create = (tree, metadata) => {
-  const { nodeId, builderId, sectors } = metadata;
+  const { source, destination } = metadata;
+  const { builderId, nodeId, sectors } = destination;
   const orientation = dropzone.orientation[sectors.toString()];
   const node = getNode(tree, nodeId);
 

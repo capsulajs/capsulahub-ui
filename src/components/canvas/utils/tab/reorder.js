@@ -1,4 +1,3 @@
-import { findIndex } from 'lodash';
 import { getNode, updateNode } from '..';
 
 const reorder = (tabs, startIndex, endIndex) => {
@@ -9,12 +8,6 @@ const reorder = (tabs, startIndex, endIndex) => {
 };
 
 export default (tree, source, destination) => {
-  const node = getNode(tree, destination.nodeId);
-  const sourceIndex = findIndex(node.tabs, (tab) => tab.id === source.tabId);
-  const tabIndex = findIndex(node.tabs, (tab) => tab.id === destination.tabId);
-  const tabs = reorder(node.tabs, sourceIndex, tabIndex);
-
-  console.log(sourceIndex, tabIndex);
-
-  return updateNode(tree, sourceIndex, { tabs, tabIndex });
+  const tabs = reorder(getNode(tree, destination.droppableId).tabs, source.index, destination.index);
+  return updateNode(tree, destination.droppableId, { tabs, tabIndex: destination.index });
 };

@@ -9,14 +9,14 @@ import { dropzone } from '../settings';
 
 export default class Element extends React.Component {
   static propTypes = {
-    builders: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
+    builders: PropTypes.object.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { builders, node, metadata } = this.props;
-    const { id, type, tabIndex, tabs, flex, orientation, nodes } = node;
+    const { node, builders, metadata } = this.props;
+    const { id, type, tabs, tabIndex, flex, orientation, nodes } = node;
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
@@ -24,7 +24,7 @@ export default class Element extends React.Component {
         {type === 'container' ? (
           <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
         ) : (
-          <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />
+          <Content nodeId={id} tabs={tabs} tabIndex={tabIndex} builders={builders} metadata={metadata} />
         )}
       </ReflexElement>
     );

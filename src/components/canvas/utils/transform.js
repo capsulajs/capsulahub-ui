@@ -6,19 +6,12 @@ import removeTab from './tab/remove';
 import moveTab from './tab/move';
 import reorderTab from './tab/reorder';
 
-// moveTab(layout, source, destination)
-
 export default (layout, event, metadata) => {
-  const { source, nodeId, tabId, ...updates } = metadata;
+  const { source, destination, nodeId, tabId, ...updates } = metadata;
   const node = getNode(layout, nodeId);
 
   switch (event) {
     case 'drop':
-      if (source) {
-        if (source.nodeId === nodeId) {
-          return reorderTab(layout, source, { nodeId, tabId });
-        }
-      }
       return createNode(layout, metadata);
     case 'resizestop': {
       const update = (layout, updates = []) => {
@@ -30,6 +23,10 @@ export default (layout, event, metadata) => {
       };
       return update(layout, metadata);
     }
+    case 'reorder':
+      return reorderTab(layout, source, destination);
+    case 'move':
+      return moveTab(layout, source, destination);
     case 'select':
       const tabIndex = findIndex(node.tabs, (tab) => tab.id === tabId);
       return updateNode(layout, { nodeId, tabIndex });

@@ -14,8 +14,6 @@ export default class Grid extends React.Component {
     metadata: PropTypes.any,
   };
 
-  onDragEnd = (result) => bus.emit('reorder', result);
-
   render() {
     const { layout, builders, metadata } = this.props;
     const { id, tabIndex, tabs, orientation, nodes } = layout;
@@ -25,9 +23,9 @@ export default class Grid extends React.Component {
     }
 
     if (tabs && tabs.length) {
-      return <Content nodeId={id} tabIndex={tabIndex} tabs={tabs} builders={builders} metadata={metadata} />;
+      return <Content nodeId={id} tabs={tabs} tabIndex={tabIndex} builders={builders} metadata={metadata} />;
     }
 
-    return <Dropzone id={id} metadata={metadata} />;
+    return <Dropzone nodeId={id} metadata={metadata} />;
   }
 }

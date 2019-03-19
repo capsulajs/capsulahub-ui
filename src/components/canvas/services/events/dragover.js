@@ -12,15 +12,13 @@ export default (container, obs) => {
       map((point) => document.elementFromPoint(...point)),
       scan((acc, curr) => {
         const nodeId = curr.getAttribute('data-node-id');
-        const tabId = curr.getAttribute('data-tab-id');
-        const rawSectors = curr.getAttribute('data-sectors');
 
         if (nodeId) {
+          const rawSectors = curr.getAttribute('data-sectors');
           const sectors = rawSectors.match(/\d+/g).map(Number);
 
           return {
             nodeId,
-            tabId,
             sectors: sectors.length === 1 ? getSectorCouple(acc.sectors || [], sectors[0]) : sectors,
           };
         }

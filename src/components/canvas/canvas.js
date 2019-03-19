@@ -23,8 +23,8 @@ const Container = styled.div`
 
 export default class Canvas extends React.Component {
   static propTypes = {
-    builders: PropTypes.object.isRequired,
     layout: PropTypes.object.isRequired,
+    builders: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -37,10 +37,14 @@ export default class Canvas extends React.Component {
   componentDidMount() {
     this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
       switch (event) {
+        case 'dragstart':
+          return this.setState({ metadata });
         case 'dragover':
           return this.setState({ metadata });
         case 'dragend':
           return this.setState({ metadata });
+        case 'move':
+          return;
         default:
           return this.props.onUpdate(transform(this.props.layout, event, metadata));
       }

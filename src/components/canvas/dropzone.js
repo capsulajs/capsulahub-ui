@@ -29,33 +29,36 @@ const Centre = styled.div`
 
 export default class Dropzone extends React.Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
-    isFullView: PropTypes.bool,
+    nodeId: PropTypes.string.isRequired,
+    tabId: PropTypes.string,
     metadata: PropTypes.any,
   };
 
   getStyle(sector) {
-    const { id, metadata } = this.props;
-    const { nodeId, sectors, source } = metadata;
-    if (source && source.nodeId === nodeId) {
-      return {};
+    const { nodeId, tabId, metadata } = this.props;
+    const { source, destination } = metadata;
+
+    if (destination) {
+      if (tabId) {
+        return { background: dropzone.highlight };
+      } else if (nodeId === destination.nodeId && destination.sectors.includes(sector)) {
+        return { background: dropzone.highlight };
+      }
     }
-    if (id === nodeId && sectors && sectors.includes(sector)) {
-      return { background: dropzone.highlight };
-    }
+
     return {};
   }
 
   render() {
-    const { id, isFullView } = this.props;
+    const { nodeId, tabId } = this.props;
     const ref = React.createRef();
-    const ratio = isFullView || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
+    const ratio = tabId || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 
     return (
       <Container ref={ref}>
-        <Centre data-node-id={id} data-sectors={dropzone.sectors} ratio={ratio} />
+        <Centre data-node-id={nodeId} data-sectors={dropzone.sectors} ratio={ratio} />
         {dropzone.sectors.map((sector) => (
-          <Sector data-node-id={id} data-sectors={sector} key={sector} style={this.getStyle(sector)} />
+          <Sector data-node-id={nodeId} data-sectors={sector} key={sector} style={this.getStyle(sector)} />
         ))}
       </Container>
     );

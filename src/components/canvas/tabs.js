@@ -16,31 +16,10 @@ const Container = styled.div`
   overflow-y: hidden;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  user-select: none;
-  text-transform: uppercase;
-  padding: 2px;
-  margin: 0 8px 0 0;
-  background: #515151;
-  color: ${(props) => (props.isActive ? '#FEFEFE' : '#A9A9A9')};
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 2px;
-`;
-
-const Close = styled.span`
-  cursor: pointer;
-  margin: auto;
-  padding-left: 5px;
-  color: ${(props) => (props.isHover ? '' : '#515151')};
-`;
-
 const getListStyle = () => ({
   background: '#515151',
   display: 'flex',
+  flexDirection: 'row',
 });
 
 export default class Tabs extends React.Component {
@@ -50,43 +29,39 @@ export default class Tabs extends React.Component {
     tabIndex: PropTypes.number.isRequired,
   };
 
-  state = {
-    hoverIndex: -1,
-    editIndex: -1,
+  onSelect = (tabId) => bus.emit('select', { tabId, nodeId: this.props.nodeId });
+  onUpdate = ({ tabId, name }) => bus.emit('update', { tabId, name, nodeId: this.props.nodeId });
+  onRemove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
+  onDragStart = () => {
+    const { nodeId, tabs, tabIndex } = this.props;
+    const tab = tabs[tabIndex];
+    bus.emit('dragstart', { source: { nodeId, tabId: tab.id } });
   };
-
-  hover = (hoverIndex) => this.setState({ hoverIndex });
-  edit = (editIndex) => this.setState({ editIndex });
-  remove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
-  onDragEnd = (result) => {
-    console.log('onDragEnd', result);
+  onDragEnd = (metadata) => {
+    const { source, destination } = metadata;
+    if (destination && source.droppableId === destination.droppableId) {
+      bus.emit('reorder', metadata);
+    }
+    bus.emit('dragend', {});
   };
 
   renderDraggable(tab, index) {
-    const { nodeId, tabs, tabIndex } = this.props;
-    const { hoverIndex, editIndex } = this.state;
+    const { nodeId, tabIndex } = this.props;
 
     return (
-      <Wrapper
-        key={index}
-        isActive={tabIndex === index}
-        onMouseEnter={() => this.hover(index)}
-        onMouseLeave={() => this.hover(-1)}
-      >
-        <Tab
-          nodeId={nodeId}
-          tab={tab}
-          isEditing={editIndex === index}
-          isActive={tabIndex === index}
-          onEditStart={() => this.edit(index)}
-          onEditEnd={() => this.edit(-1)}
-        />
-        {editIndex !== index && (
-          <Close isHover={hoverIndex === index} onClick={(e) => e.preventDefault() || this.remove(tab.id)}>
-            ✕
-          </Close>
+      <Draggable key={tab.id} draggableId={tab.id} index={index}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <Tab
+              tab={tab}
+              isActive={tabIndex === index}
+              onSelect={this.onSelect}
+              onUpdate={this.onUpdate}
+              onRemove={this.onRemove}
+            />
+          </div>
         )}
-      </Wrapper>
+      </Draggable>
     );
   }
 
@@ -95,14 +70,10 @@ export default class Tabs extends React.Component {
 
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
           <Droppable droppableId={nodeId} direction="horizontal">
             {(provided) => (
-              <div
-                ref={provided.innerRef}
-                style={{ display: 'flex', flexDirection: 'row' }}
-                {...provided.droppableProps}
-              >
+              <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
                 {tabs.map((tab, index) => this.renderDraggable(tab, index))}
                 {provided.placeholder}
               </div>

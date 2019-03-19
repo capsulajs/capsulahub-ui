@@ -1,14 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import bus from './services';
 import { keyboard } from './settings';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  user-select: none;
+  text-transform: uppercase;
+  padding: 2px;
+  margin: 0 8px 0 0;
+  background: #515151;
+  color: ${(props) => (props.isActive ? '#FEFEFE' : '#A9A9A9')};
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 2px;
+`;
+
+const Close = styled.span`
+  cursor: pointer;
+  margin: auto;
+  padding-left: 5px;
+  color: ${(props) => (props.isHover ? '' : '#515151')};
+`;
 
 const Title = styled.div`
   white-space: nowrap;
   cursor: pointer;
   border-bottom: ${(props) => (props.isActive ? 'solid 1px #FEFEFE' : 'none')};
-  llfvfvf: lol;
 `;
 
 const Input = styled.input`
@@ -31,50 +50,61 @@ const Input = styled.input`
 
 export default class Tab extends React.Component {
   static propTypes = {
-    nodeId: PropTypes.string.isRequired,
     tab: PropTypes.object.isRequired,
-    onEditStart: PropTypes.func.isRequired,
-    onEditEnd: PropTypes.func.isRequired,
     isActive: PropTypes.bool.isRequired,
-    isEditing: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
   };
 
   state = {
     value: this.props.tab.name,
+    isHover: false,
+    isEdit: false,
   };
 
-  change = (e) => this.setState({ value: e.target.value.trim() });
-  select = () => bus.emit('select', { nodeId: this.props.nodeId, tabId: this.props.tab.id });
-  keyDown = (event) => (event.which === keyboard.escapeKey || event.which === keyboard.enterKey) && this.save();
-  save = () => {
-    const value = this.state.value;
+  onHover = (isHover) => this.setState({ isHover });
+  onEdit = (isEdit) => this.setState({ isEdit });
+  onSelect = () => this.props.onSelect(this.props.tab.id);
+  onChange = (e) => this.setState({ value: e.target.value.trim() });
+  onKeyDown = (e) => (e.which === keyboard.escapeKey || e.which === keyboard.enterKey) && this.onSave();
+  onRemove = (e) => e.preventDefault() || this.props.onRemove(this.props.tab.id);
+  onSave = () => {
+    const { value } = this.state;
     if (value && value.length > 2) {
-      const { nodeId, tab } = this.props;
-      bus.emit('update', { nodeId, tabId: tab.id, name: value });
-      this.props.onEditEnd();
+      this.props.onUpdate({ tabId: this.props.tab.id, name: value });
+      this.onEdit(false);
     }
   };
 
-  render() {
-    const { isEditing, isActive, nodeId, tab } = this.props;
+  renderContent() {
+    const { isHover, isEdit, value } = this.state;
+    const { tab, isActive } = this.props;
 
-    if (isEditing) {
-      return <Input value={this.state.value} onChange={this.change} onBlur={this.save} onKeyDown={this.keyDown} />;
+    if (isEdit) {
+      return <Input value={value} onChange={this.onChange} onBlur={this.onSave} onKeyDown={this.onKeyDown} />;
     }
 
     return (
-      <Title
-        // draggable
-        // data-builder-id={tab.builderId}
-        // data-node-id={nodeId}
-        // data-tab-id={tab.id}
-        // data-sectors={'1,2,3,4'}
-        isActive={isActive}
-        onClick={this.select}
-        onDoubleClick={this.props.onEditStart}
-      >
+      <Title isActive={isActive} onClick={this.onSelect} onDoubleClick={() => this.onEdit(true)}>
         {tab.name}
       </Title>
+    );
+  }
+
+  render() {
+    const { isHover, isEdit } = this.state;
+    const { isActive, tab } = this.props;
+
+    return (
+      <Container isActive={isActive} onMouseEnter={() => this.onHover(true)} onMouseLeave={() => this.onHover(false)}>
+        {this.renderContent()}
+        {!isEdit && (
+          <Close isHover={isHover} onClick={this.onRemove}>
+            ✕
+          </Close>
+        )}
+      </Container>
     );
   }
 }
