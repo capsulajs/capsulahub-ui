@@ -26,7 +26,9 @@ export class CanvasEventBus {
 
   getCanvasDragAndDropEventsStream(container) {
     return merge(
-      fromEvent(document, 'dragstart').pipe(map((e) => e.target.getAttribute('data-builder-id'))),
+      fromEvent(document, 'dragstart').pipe(
+        map((e) => e.target.getAttribute('data-builder-id'))
+      ),
       fromEvent(document, 'dragend').pipe(mapTo(false))
     ).pipe(
       switchMap((builderId) => {
@@ -96,7 +98,9 @@ export class CanvasEventBus {
   }
 
   getTabReorderEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['reorder'].includes(event)));
+    return this.subject.asObservable().pipe(
+      filter(([event, metadata]) => ['reorder'].includes(event))
+    );
   }
 
   getTabSelectEventsStream() {

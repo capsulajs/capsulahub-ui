@@ -37,12 +37,10 @@ export default class Content extends React.Component {
 
           return <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />;
         } else {
-          return (
-            <Container>
-              <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-              {builder(tab.metadata)}
-            </Container>
-          );
+          return <Container>
+            <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+            {builder(tab.metadata)}
+          </Container>;
         }
       }
 

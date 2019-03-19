@@ -54,7 +54,7 @@ export default class Tab extends React.Component {
     isActive: PropTypes.bool.isRequired,
     onSelect: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
   };
 
   state = {
@@ -96,15 +96,13 @@ export default class Tab extends React.Component {
     const { isHover, isEdit } = this.state;
     const { isActive, tab } = this.props;
 
-    return (
-      <Container isActive={isActive} onMouseEnter={() => this.onHover(true)} onMouseLeave={() => this.onHover(false)}>
-        {this.renderContent()}
-        {!isEdit && (
-          <Close isHover={isHover} onClick={this.onRemove}>
-            ✕
-          </Close>
-        )}
-      </Container>
-    );
+    return <Container
+      isActive={isActive}
+      onMouseEnter={() => this.onHover(true)}
+      onMouseLeave={() => this.onHover(false)}
+    >
+      {this.renderContent()}
+      {!isEdit && <Close isHover={isHover} onClick={this.onRemove}>✕</Close>}
+    </Container>
   }
 }

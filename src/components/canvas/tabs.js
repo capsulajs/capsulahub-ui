@@ -19,7 +19,7 @@ const Container = styled.div`
 const getListStyle = () => ({
   background: '#515151',
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'row'
 });
 
 export default class Tabs extends React.Component {
@@ -35,7 +35,7 @@ export default class Tabs extends React.Component {
   onDragStart = () => {
     const { nodeId, tabs, tabIndex } = this.props;
     const tab = tabs[tabIndex];
-    bus.emit('dragstart', { source: { nodeId, tabId: tab.id } });
+    bus.emit('dragstart', { source: { nodeId, tabId: tab.id} });
   };
   onDragEnd = (metadata) => {
     const { source, destination } = metadata;
@@ -52,13 +52,7 @@ export default class Tabs extends React.Component {
       <Draggable key={tab.id} draggableId={tab.id} index={index}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-            <Tab
-              tab={tab}
-              isActive={tabIndex === index}
-              onSelect={this.onSelect}
-              onUpdate={this.onUpdate}
-              onRemove={this.onRemove}
-            />
+           <Tab tab={tab} isActive={tabIndex === index} onSelect={this.onSelect} onUpdate={this.onUpdate} onRemove={this.onRemove}/>
           </div>
         )}
       </Draggable>
