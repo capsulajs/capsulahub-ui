@@ -26,24 +26,24 @@ export default class Content extends React.Component {
 
       if (builder) {
         if (metadata.source || metadata.destination) {
-          if (metadata.source && metadata.destination) {
+          if (metadata.source) {
             return (
               <Container>
                 <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-                <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />
+                ldkvdvjdvj
               </Container>
             );
           }
 
           return <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />;
-        } else {
-          return (
-            <Container>
-              <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-              {builder(tab.metadata)}
-            </Container>
-          );
         }
+
+        return (
+          <Container>
+            <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+            {builder(tab.metadata)}
+          </Container>
+        );
       }
 
       return 'No builder..';

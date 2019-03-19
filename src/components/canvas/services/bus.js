@@ -60,39 +60,7 @@ export class CanvasEventBus {
   }
 
   getTabDragAndDropEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)),
-      switchMap(([event, metadata]) => {
-        const { source } = metadata;
-
-        // if (source) {
-        //   return fromEvent(document, 'mousemove').pipe(
-        //     map((e) => e.preventDefault() || [e.clientX, e.clientY]),
-        //     distinctUntilChanged((a, b) => a.toString() === b.toString()),
-        //     map((point) => document.elementFromPoint(...point)),
-        //     map((element) => {
-        //       const nodeId = element.getAttribute('data-node-id');
-        //       const tabId = element.getAttribute('data-tab-id');
-
-        //       // console.log(nodeId, tabId);
-
-        //       if (nodeId) {
-        //         if (tabId) {
-        //           return { source, destination: { nodeId, tabId, sectors: [1, 2, 3, 4] } };
-        //         } else {
-        //           return { source, destination: { nodeId } };
-        //         }
-        //       }
-
-        //       return metadata;
-        //     }),
-        //     map((metadata) => [event, metadata])
-        //   );
-        // }
-
-        return of(['dragend', {}]);
-      })
-    );
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)));
   }
 
   getTabReorderEventsStream() {

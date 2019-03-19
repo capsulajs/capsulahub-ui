@@ -39,9 +39,7 @@ export default class Dropzone extends React.Component {
     const { source, destination } = metadata;
 
     if (destination) {
-      if (tabId) {
-        return { background: dropzone.highlight };
-      } else if (nodeId === destination.nodeId && destination.sectors.includes(sector)) {
+      if (nodeId === destination.nodeId && destination.sectors.includes(sector)) {
         return { background: dropzone.highlight };
       }
     }
