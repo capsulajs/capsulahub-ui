@@ -60,9 +60,7 @@ export class CanvasEventBus {
   }
 
   getTabDragAndDropEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)),
-    );
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)));
   }
 
   getTabReorderEventsStream() {
