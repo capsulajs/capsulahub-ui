@@ -10,13 +10,17 @@ export default (container, obs) => {
       map((e) => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       map((point) => document.elementFromPoint(...point)),
-      scan((acc, { id }) => {
-        if (id && id.includes('dropzone')) {
-          const [_, nodeId, list] = id.split(' ');
-          const sectors = list.match(/\d+/g).map(Number);
+      scan((acc, curr) => {
+        const nodeId = curr.getAttribute('data-node-id');
+        const tabId = curr.getAttribute('data-tab-id');
+        const rawSectors = curr.getAttribute('data-sectors');
+
+        if (nodeId) {
+          const sectors = rawSectors.match(/\d+/g).map(Number);
 
           return {
             nodeId,
+            tabId,
             sectors: sectors.length === 1 ? getSectorCouple(acc.sectors || [], sectors[0]) : sectors,
           };
         }
@@ -25,14 +29,5 @@ export default (container, obs) => {
       }, {}),
       distinctUntilChanged((a, b) => isEqual(a, b))
     )
-  ).pipe(
-    map(mergeMetadata),
-    map((metadata) => {
-      const { builderId, nodeId, source } = metadata;
-      if (source && source.nodeId === nodeId) {
-        return { builderId, source };
-      }
-      return metadata;
-    })
-  );
+  ).pipe(map(mergeMetadata));
 };

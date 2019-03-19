@@ -68,6 +68,7 @@ export default class Tab extends React.Component {
         data-builder-id={tab.builderId}
         data-node-id={nodeId}
         data-tab-id={tab.id}
+        data-sectors={'1,2,3,4'}
         isActive={isActive}
         onClick={this.select}
         onDoubleClick={this.props.onEditStart}

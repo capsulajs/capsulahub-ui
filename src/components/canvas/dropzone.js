@@ -37,6 +37,9 @@ export default class Dropzone extends React.Component {
   getStyle(sector) {
     const { id, metadata } = this.props;
     const { nodeId, sectors, source } = metadata;
+    if (source && source.nodeId === nodeId) {
+      return {};
+    }
     if (id === nodeId && sectors && sectors.includes(sector)) {
       return { background: dropzone.highlight };
     }
@@ -50,9 +53,9 @@ export default class Dropzone extends React.Component {
 
     return (
       <Container ref={ref}>
-        <Centre id={`dropzone ${id} ${dropzone.sectors}`} ratio={ratio} />
+        <Centre data-node-id={id} data-sectors={dropzone.sectors} ratio={ratio} />
         {dropzone.sectors.map((sector) => (
-          <Sector id={`dropzone ${id} ${sector}`} key={sector} style={this.getStyle(sector)} />
+          <Sector data-node-id={id} data-sectors={sector} key={sector} style={this.getStyle(sector)} />
         ))}
       </Container>
     );

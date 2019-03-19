@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Grid from './grid';
 import { canvas } from './settings';
-import updateLayout from './utils/layout';
+import transform from './utils/transform';
 import bus from './services';
 
 const Container = styled.div`
@@ -36,15 +36,13 @@ export default class Canvas extends React.Component {
 
   componentDidMount() {
     this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
-      console.log(event, metadata);
-
       switch (event) {
         case 'dragover':
           return this.setState({ metadata });
         case 'dragend':
           return this.setState({ metadata });
         default:
-          return this.props.onUpdate(updateLayout(this.props.layout, event, metadata));
+          return this.props.onUpdate(transform(this.props.layout, event, metadata));
       }
     });
   }
