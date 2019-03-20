@@ -42,8 +42,8 @@ export default class Canvas extends React.Component {
       destination && source.droppableId === destination.droppableId
         ? bus.emit('reorder', metadata)
         : bus.emit('move', metadata);
-      bus.emit('dragend', {});
     }
+    bus.emit('dragend', {});
   };
 
   componentDidMount() {
