@@ -22,10 +22,11 @@ const create = (tree, metadata) => {
 
   switch (true) {
     case tree.id === nodeId:
-      const { flex, tabIndex } = tree;
+      const { flex } = tree;
+      const tabIndex = node.tabs.length;
 
       return sectors.toString() === dropzone.sectors.toString()
-        ? { id: guid(), type: 'element', flex, tabIndex: tabIndex + 1, tabs: [...node.tabs, nodeTab(builderId)] }
+        ? { id: guid(), type: 'element', flex, tabIndex, tabs: [...node.tabs, nodeTab(builderId)] }
         : { id: guid(), type: 'container', flex, nodes: multiplyNode(node, builderId, sectors), orientation };
     case tree.type === 'element':
       return tree;

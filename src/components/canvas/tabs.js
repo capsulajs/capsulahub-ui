@@ -13,6 +13,17 @@ const Container = styled.div`
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
+
+  ::-webkit-scrollbar {
+    background: #515151;
+    height: 2px;
+  }
+  ::-webkit-scrollbar-corner {
+    background: #3f3f3f;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #797979;
+  }
 `;
 
 const getListStyle = () => ({
