@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { intersection } from 'lodash';
 
 export const mergeMetadata = (metadatas) => metadatas.reduce((a, b) => ({ ...a, ...b }), {});
@@ -15,3 +16,5 @@ export const getSectorCouple = (sectors, sector) => {
 };
 
 export const getDropzoneSectors = (dropzone) => (dropzone ? dropzone.sectors : []);
+export const subjectToObservable = (subject, events) =>
+  subject.asObservable().pipe(filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)));

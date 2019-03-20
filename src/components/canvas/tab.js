@@ -102,7 +102,7 @@ export default class Tab extends React.Component {
         {this.renderContent()}
         {!isEdit && (
           <Close isHover={isHover} onClick={this.onRemove}>
-            ✕
+            &#10005;
           </Close>
         )}
       </Container>
