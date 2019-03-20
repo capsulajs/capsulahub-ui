@@ -14,14 +14,14 @@ export default (layout, event, metadata) => {
     case 'drop':
       return createNode(layout, metadata);
     case 'resizestop': {
-      const update = (layout, updates = []) => {
-        const [u, ...rest] = updates;
-        if (u) {
-          return update(updateNode(layout, u), rest);
+      const updateMultipleNodes = (layout, updates = []) => {
+        const [update, ...rest] = updates;
+        if (update) {
+          return updateMultipleNodes(updateNode(layout, update), rest);
         }
         return layout;
       };
-      return update(layout, metadata);
+      return updateMultipleNodes(layout, metadata);
     }
     case 'reorder':
       return reorderTab(layout, source, destination);

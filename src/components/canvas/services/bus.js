@@ -1,4 +1,4 @@
-import { map, mapTo, tap, filter, switchMap, bufferCount, distinctUntilChanged } from 'rxjs/operators';
+import { map, mapTo, tap, filter, switchMap, bufferCount } from 'rxjs/operators';
 import { Subject, fromEvent, merge, of, empty } from 'rxjs';
 import dragover from './events/dragover';
 import drop from './events/drop';

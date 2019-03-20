@@ -66,7 +66,7 @@ const filterTabs = (node) => {
 const removeTab = (tree, nodeId, tabId) => {
   const node = getNode(tree, nodeId);
   const tabs = node.tabs.filter((tab) => tab.id !== tabId);
-  const tabIndex = node.tabIndex > tabs.length - 1 ? tabs.length - 1 : node.tabIndex;
+  const tabIndex = Math.max(0, tabs.length - 1);
   const newTree = updateNode(tree, nodeId, { tabIndex, tabs });
   return filterTabs(newTree);
 };
@@ -76,7 +76,7 @@ const remove = (tree, metadata) => {
   if (tree.id === nodeId) {
     if (tree.tabs) {
       tree.tabs = tree.tabs.filter((tab) => tab.id !== tabId);
-      tree.tabIndex = tree.tabs.length - 1;
+      tree.tabIndex = Math.max(0, tree.tabs.length - 1);
       return tree;
     }
     return emptyNode();

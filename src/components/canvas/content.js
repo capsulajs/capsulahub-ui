@@ -4,12 +4,17 @@ import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
 import Dropzone from './dropzone';
 import Tabs from './tabs';
+import { dropzone } from './settings';
 
 const Container = styled.div`
   width: 100%;
 `;
 
-const getListStyle = () => ({ background: '#676767', width: '100%', height: '100%' });
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? dropzone.highlight : '#676767',
+  width: '100%',
+  height: '100%',
+});
 
 export default class Content extends React.Component {
   static propTypes = {
@@ -33,7 +38,6 @@ export default class Content extends React.Component {
             return (
               <Container>
                 <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-                Drag tab...
               </Container>
             );
           }
@@ -58,8 +62,8 @@ export default class Content extends React.Component {
 
     return (
       <Droppable droppableId={nodeId}>
-        {(provided) => (
-          <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
             {provided.placeholder}
           </div>
         )}
