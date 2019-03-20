@@ -63,8 +63,6 @@ export default class Tab extends React.Component {
     isEdit: false,
   };
 
-  onHover = (isHover) => this.setState({ isHover });
-  onEdit = (isEdit) => this.setState({ isEdit });
   onSelect = () => this.props.onSelect(this.props.tab.id);
   onChange = (e) => this.setState({ value: e.target.value.trim() });
   onKeyDown = (e) => (e.which === keyboard.escapeKey || e.which === keyboard.enterKey) && this.onSave();
@@ -73,9 +71,12 @@ export default class Tab extends React.Component {
     const { value } = this.state;
     if (value && value.length > 2) {
       this.props.onUpdate({ tabId: this.props.tab.id, name: value });
-      this.onEdit(false);
+      this.setState({ isEdit: false });
     }
   };
+  onMouseEnter = () => this.setState({ isHover: true });
+  onMouseLeave = () => this.setState({ isHover: false });
+  onDoubleClick = () => this.setState({ isEdit: true });
 
   renderContent() {
     const { isHover, isEdit, value } = this.state;
@@ -86,7 +87,7 @@ export default class Tab extends React.Component {
     }
 
     return (
-      <Title isActive={isActive} onClick={this.onSelect} onDoubleClick={() => this.onEdit(true)}>
+      <Title isActive={isActive} onClick={this.onSelect} onDoubleClick={this.onDoubleClick}>
         {tab.name}
       </Title>
     );
@@ -97,7 +98,7 @@ export default class Tab extends React.Component {
     const { isActive, tab } = this.props;
 
     return (
-      <Container isActive={isActive} onMouseEnter={() => this.onHover(true)} onMouseLeave={() => this.onHover(false)}>
+      <Container isActive={isActive} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         {this.renderContent()}
         {!isEdit && (
           <Close isHover={isHover} onClick={this.onRemove}>
