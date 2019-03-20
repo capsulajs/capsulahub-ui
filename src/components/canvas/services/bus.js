@@ -1,7 +1,8 @@
-import { map, mapTo, tap, filter, switchMap, bufferCount } from 'rxjs/operators';
+import { map, mapTo, filter, switchMap, bufferCount } from 'rxjs/operators';
 import { Subject, fromEvent, merge, of, empty } from 'rxjs';
 import dragover from './events/dragover';
 import drop from './events/drop';
+import { subjectToObservable } from './utils';
 
 export class CanvasEventBus {
   constructor() {
@@ -52,35 +53,17 @@ export class CanvasEventBus {
   }
 
   getCanvasResizeEventsStream() {
-    return this.subject.asObservable().pipe(
-      filter(([event, metadata]) => ['resize', 'resizestop'].includes(event)),
+    return subjectToObservable(this.subject, ['resize', 'resizestop']).pipe(
       filter(([event, metadata]) => metadata.flex > 0.1 && metadata.flex < 0.9),
       bufferCount(2),
       map((updates) => [updates[0][0], updates.map(([_, metadata]) => metadata)])
     );
   }
 
-  getTabDragAndDropEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['dragstart', 'dragend'].includes(event)));
-  }
-
-  getTabReorderEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['reorder'].includes(event)));
-  }
-
-  getTabMoveEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['move'].includes(event)));
-  }
-
-  getTabSelectEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['update'].includes(event)));
-  }
-
-  getTabUpdateEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['select'].includes(event)));
-  }
-
-  getTabRemoveEventsStream() {
-    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['remove'].includes(event)));
-  }
+  getTabDragAndDropEventsStream = () => subjectToObservable(this.subject, ['dragstart', 'dragend']);
+  getTabReorderEventsStream = () => subjectToObservable(this.subject, ['reorder']);
+  getTabMoveEventsStream = () => subjectToObservable(this.subject, ['move']);
+  getTabSelectEventsStream = () => subjectToObservable(this.subject, ['update']);
+  getTabUpdateEventsStream = () => subjectToObservable(this.subject, ['select']);
+  getTabRemoveEventsStream = () => subjectToObservable(this.subject, ['remove']);
 }
