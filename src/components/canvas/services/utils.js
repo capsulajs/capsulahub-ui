@@ -16,5 +16,6 @@ export const getSectorCouple = (sectors, sector) => {
 };
 
 export const getDropzoneSectors = (dropzone) => (dropzone ? dropzone.sectors : []);
-export const subjectToObservable = (subject, events) =>
-  subject.asObservable().pipe(filter(([event, metadata]) => events.includes(event)));
+export const subjectToObservable = (subject, events) => subject.asObservable().pipe(
+  filter(([event, metadata]) => events.includes(event))
+);
