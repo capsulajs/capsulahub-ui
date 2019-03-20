@@ -13,7 +13,7 @@ const Container = styled.div`
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? dropzone.highlight : '#676767',
   width: '100%',
-  height: '100%'
+  height: '100%',
 });
 
 export default class Content extends React.Component {
