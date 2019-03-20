@@ -18,6 +18,7 @@ export class CanvasEventBus {
       this.getCanvasResizeEventsStream(),
       this.getTabDragAndDropEventsStream(),
       this.getTabReorderEventsStream(),
+      this.getTabMoveEventsStream(),
       this.getTabSelectEventsStream(),
       this.getTabUpdateEventsStream(),
       this.getTabRemoveEventsStream()
@@ -65,6 +66,10 @@ export class CanvasEventBus {
 
   getTabReorderEventsStream() {
     return this.subject.asObservable().pipe(filter(([event, metadata]) => ['reorder'].includes(event)));
+  }
+
+  getTabMoveEventsStream() {
+    return this.subject.asObservable().pipe(filter(([event, metadata]) => ['move'].includes(event)));
   }
 
   getTabSelectEventsStream() {
