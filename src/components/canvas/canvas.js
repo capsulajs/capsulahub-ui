@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Grid from './grid';
 import { canvas } from './settings';
 import transform from './utils/transform';
@@ -34,6 +35,15 @@ export default class Canvas extends React.Component {
     metadata: {},
   };
 
+  onDragStart = (metadata) => bus.emit('dragstart', metadata);
+  onDragEnd = (metadata) => {
+    const { source, destination } = metadata;
+    destination && source.droppableId === destination.droppableId
+      ? bus.emit('reorder', metadata)
+      : bus.emit('move', metadata);
+    bus.emit('dragend', {});
+  };
+
   componentDidMount() {
     this.eventsSubscription = bus.getEventsStream(ReactDOM.findDOMNode(this)).subscribe(([event, metadata]) => {
       switch (event) {
@@ -43,8 +53,6 @@ export default class Canvas extends React.Component {
           return this.setState({ metadata });
         case 'dragend':
           return this.setState({ metadata });
-        case 'move':
-          return;
         default:
           return this.props.onUpdate(transform(this.props.layout, event, metadata));
       }
@@ -57,7 +65,9 @@ export default class Canvas extends React.Component {
 
     return (
       <Container width={width} height={height}>
-        <Grid layout={layout} metadata={metadata} builders={builders} />
+        <DragDropContext onBeforeDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+          <Grid layout={layout} metadata={metadata} builders={builders} />
+        </DragDropContext>
       </Container>
     );
   }

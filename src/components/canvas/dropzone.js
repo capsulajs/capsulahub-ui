@@ -10,6 +10,7 @@ const Container = styled.div`
   padding: 0;
   margin: 0;
   position: relative;
+  background: #676767;
 `;
 
 const Sector = styled.div`
@@ -48,7 +49,7 @@ export default class Dropzone extends React.Component {
   }
 
   render() {
-    const { nodeId, tabId } = this.props;
+    const { nodeId, tabId, metadata } = this.props;
     const ref = React.createRef();
     const ratio = tabId || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 

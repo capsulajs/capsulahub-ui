@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-beautiful-dnd';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Tab from './tab';
 import bus from './services';
@@ -32,18 +31,6 @@ export default class Tabs extends React.Component {
   onSelect = (tabId) => bus.emit('select', { tabId, nodeId: this.props.nodeId });
   onUpdate = ({ tabId, name }) => bus.emit('update', { tabId, name, nodeId: this.props.nodeId });
   onRemove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
-  onDragStart = () => {
-    const { nodeId, tabs, tabIndex } = this.props;
-    const tab = tabs[tabIndex];
-    bus.emit('dragstart', { source: { nodeId, tabId: tab.id } });
-  };
-  onDragEnd = (metadata) => {
-    const { source, destination } = metadata;
-    if (destination && source.droppableId === destination.droppableId) {
-      bus.emit('reorder', metadata);
-    }
-    bus.emit('dragend', {});
-  };
 
   renderDraggable(tab, index) {
     const { nodeId, tabIndex } = this.props;
@@ -70,16 +57,14 @@ export default class Tabs extends React.Component {
 
     return (
       <Container>
-        <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
-          <Droppable droppableId={nodeId} direction="horizontal">
-            {(provided) => (
-              <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
-                {tabs.map((tab, index) => this.renderDraggable(tab, index))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <Droppable droppableId={nodeId} direction="horizontal">
+          {(provided) => (
+            <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+              {tabs.map((tab, index) => this.renderDraggable(tab, index))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </Container>
     );
   }

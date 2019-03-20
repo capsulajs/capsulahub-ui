@@ -27,7 +27,7 @@ export class CanvasEventBus {
   getCanvasDragAndDropEventsStream(container) {
     return merge(
       fromEvent(document, 'dragstart').pipe(map((e) => e.target.getAttribute('data-builder-id'))),
-      fromEvent(document, 'dragend').pipe(mapTo(false))
+      fromEvent(document, 'dragend').pipe(mapTo(null))
     ).pipe(
       switchMap((builderId) => {
         if (builderId) {

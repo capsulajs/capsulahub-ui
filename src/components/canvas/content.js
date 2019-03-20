@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Droppable } from 'react-beautiful-dnd';
 import Dropzone from './dropzone';
 import Tabs from './tabs';
 
 const Container = styled.div`
   width: 100%;
 `;
+
+const getListStyle = () => ({ background: '#676767', width: '100%', height: '100%' });
 
 export default class Content extends React.Component {
   static propTypes = {
@@ -30,7 +33,7 @@ export default class Content extends React.Component {
             return (
               <Container>
                 <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-                ldkvdvjdvj
+                Drag tab...
               </Container>
             );
           }
@@ -49,6 +52,18 @@ export default class Content extends React.Component {
       return 'No builder..';
     }
 
-    return <Dropzone nodeId={nodeId} metadata={metadata} />;
+    if (!metadata.source && metadata.destination) {
+      return <Dropzone nodeId={nodeId} metadata={metadata} />;
+    }
+
+    return (
+      <Droppable droppableId={nodeId}>
+        {(provided) => (
+          <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    );
   }
 }
