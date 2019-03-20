@@ -38,10 +38,12 @@ export default class Canvas extends React.Component {
   onDragStart = (metadata) => bus.emit('dragstart', metadata);
   onDragEnd = (metadata) => {
     const { source, destination } = metadata;
-    destination && source.droppableId === destination.droppableId
-      ? bus.emit('reorder', metadata)
-      : bus.emit('move', metadata);
-    bus.emit('dragend', {});
+    if (destination) {
+      destination && source.droppableId === destination.droppableId
+        ? bus.emit('reorder', metadata)
+        : bus.emit('move', metadata);
+      bus.emit('dragend', {});
+    }
   };
 
   componentDidMount() {
