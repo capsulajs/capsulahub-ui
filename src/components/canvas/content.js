@@ -56,12 +56,14 @@ export default class Content extends React.Component {
       return <Dropzone nodeId={nodeId} metadata={metadata} />;
     }
 
-    return <Droppable droppableId={nodeId}>
-      {(provided) => (
-        <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>;
+    return (
+      <Droppable droppableId={nodeId}>
+        {(provided) => (
+          <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    );
   }
 }
