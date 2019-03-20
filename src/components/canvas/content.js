@@ -1,47 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Droppable } from 'react-beautiful-dnd';
 import Dropzone from './dropzone';
 import Tabs from './tabs';
+import { dropzone } from './settings';
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100% - 23px);
 `;
+
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? dropzone.highlight : '#676767',
+  width: '100%',
+  height: '100%',
+});
 
 export default class Content extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
-    tabIndex: PropTypes.number.isRequired,
     tabs: PropTypes.array.isRequired,
+    tabIndex: PropTypes.number.isRequired,
     builders: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
     metadata: PropTypes.any,
   };
 
-  onSelect = (tabIndex) => this.props.onUpdate(this.props.nodeId, null, { tabIndex });
-  onRemove = (id) => this.props.onRemove(this.props.nodeId, id);
-
   render() {
-    const { nodeId, tabIndex, tabs, builders, onUpdate, metadata } = this.props;
+    const { nodeId, tabs, tabIndex, builders, metadata } = this.props;
 
     if (tabs && tabs[tabIndex]) {
       const tab = tabs[tabIndex];
       const builder = builders[tab.builderId];
 
       if (builder) {
+        if (metadata.source || metadata.destination) {
+          if (metadata.source) {
+            return (
+              <Container>
+                <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+              </Container>
+            );
+          }
+
+          return <Dropzone nodeId={nodeId} tabId={tab.id} metadata={metadata} />;
+        }
+
         return (
-          <Container id={nodeId}>
-            <Tabs
-              nodeId={nodeId}
-              tabs={tabs}
-              activeIndex={tabIndex}
-              onRemove={this.onRemove}
-              onSelect={this.onSelect}
-              onUpdate={onUpdate}
-            />
-            {metadata.builderId ? <Dropzone isFullView id={nodeId} metadata={metadata} /> : builder(tab.metadata)}
+          <Container>
+            <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+            {builder(tab.metadata)}
           </Container>
         );
       }
@@ -49,6 +56,18 @@ export default class Content extends React.Component {
       return 'No builder..';
     }
 
-    return <Dropzone id={nodeId} metadata={metadata} />;
+    if (!metadata.source && metadata.destination) {
+      return <Dropzone nodeId={nodeId} metadata={metadata} />;
+    }
+
+    return (
+      <Droppable droppableId={nodeId}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)} {...provided.droppableProps}>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    );
   }
 }

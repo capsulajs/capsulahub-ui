@@ -10,10 +10,12 @@ export default (container, obs) => {
       map((e) => e.preventDefault() || [e.clientX, e.clientY]),
       distinctUntilChanged((a, b) => a.toString() === b.toString()),
       map((point) => document.elementFromPoint(...point)),
-      scan((acc, { id }) => {
-        if (id && id.includes('dropzone')) {
-          const [_, nodeId, sectorsList] = id.split(' ');
-          const sectors = sectorsList.match(/\d+/g).map(Number);
+      scan((acc, curr) => {
+        const nodeId = curr.getAttribute('data-node-id');
+
+        if (nodeId) {
+          const rawSectors = curr.getAttribute('data-sectors');
+          const sectors = rawSectors.match(/\d+/g).map(Number);
 
           return {
             nodeId,

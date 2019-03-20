@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Tab from './tab';
+import bus from './services';
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   background: #515151;
   color: #a9a9a9;
   width: 100%;
-  overflow: hidden;
-
   overflow-x: scroll;
+  overflow-y: hidden;
+
   ::-webkit-scrollbar {
     background: #515151;
     height: 2px;
@@ -24,94 +24,39 @@ const Container = styled.div`
   ::-webkit-scrollbar-thumb {
     background: #797979;
   }
-  overflow-y: hidden;
-`;
-
-const Close = styled.span`
-  cursor: pointer;
-  margin: auto;
-  padding-left: 5px;
 `;
 
 const getListStyle = () => ({
   background: '#515151',
   display: 'flex',
-});
-
-const getTabStyle = (draggableStyle, isActive) => ({
-  userSelect: 'none',
-  textTransform: 'uppercase',
-  padding: '2px',
-  margin: `0 8px 0 0`,
-  background: '#515151',
-  color: isActive ? '#FEFEFE' : '#A9A9A9',
-  display: 'flex',
   flexDirection: 'row',
-  paddingBottom: '2px',
-  ...draggableStyle,
 });
-
-const getTabCloseStyle = (isHover) => (isHover ? {} : { color: '#515151' });
 
 export default class Tabs extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
     tabs: PropTypes.array.isRequired,
-    activeIndex: PropTypes.number.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
+    tabIndex: PropTypes.number.isRequired,
   };
 
-  state = {
-    hoverIndex: -1,
-    editIndex: -1,
-  };
-
-  hover(hoverIndex) {
-    this.setState({ hoverIndex });
-  }
-
-  edit(editIndex) {
-    this.setState({ editIndex });
-  }
+  onSelect = (tabId) => bus.emit('select', { tabId, nodeId: this.props.nodeId });
+  onUpdate = ({ tabId, name }) => bus.emit('update', { tabId, name, nodeId: this.props.nodeId });
+  onRemove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
 
   renderDraggable(tab, index) {
-    const { nodeId, tabs, activeIndex, onRemove, onSelect, onUpdate } = this.props;
-    const { hoverIndex, editIndex } = this.state;
-
-    const isActive = activeIndex === index;
-    const isHover = hoverIndex === index;
-    const isEditing = editIndex === index;
-    const isRemovable = !isEditing && tabs.length;
+    const { nodeId, tabIndex } = this.props;
 
     return (
-      <Draggable key={index} draggableId={tab.id} index={index}>
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            style={getTabStyle(provided.draggableProps.style, isActive)}
-            onMouseEnter={() => this.hover(index)}
-            onMouseLeave={() => this.hover(-1)}
-          >
+      <Draggable key={tab.id} draggableId={tab.id} index={index}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Tab
-              id={tab.id}
-              nodeId={nodeId}
-              name={tab.name}
-              isEditing={isEditing}
-              isActive={isActive}
-              onSelect={() => onSelect(index)}
-              onEditStart={() => this.edit(index)}
-              onEditEnd={() => this.edit(-1)}
-              onUpdate={onUpdate}
+              tab={tab}
+              isActive={tabIndex === index}
+              onSelect={this.onSelect}
+              onUpdate={this.onUpdate}
+              onRemove={this.onRemove}
             />
-            {isRemovable && (
-              <Close onClick={(e) => e.preventDefault() || onRemove(tab.id)} style={getTabCloseStyle(isHover)}>
-                ✕
-              </Close>
-            )}
           </div>
         )}
       </Draggable>
@@ -119,12 +64,14 @@ export default class Tabs extends React.Component {
   }
 
   render() {
+    const { nodeId, tabs } = this.props;
+
     return (
       <Container>
-        <Droppable droppableId={this.props.nodeId} direction="horizontal">
+        <Droppable droppableId={nodeId} direction="horizontal">
           {(provided) => (
             <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>
-              {this.props.tabs.map((tab, index) => this.renderDraggable(tab, index))}
+              {tabs.map((tab, index) => this.renderDraggable(tab, index))}
               {provided.placeholder}
             </div>
           )}

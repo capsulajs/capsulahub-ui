@@ -1,1 +1,3 @@
-export { CanvasEventBus } from './bus';
+import { CanvasEventBus } from './bus';
+
+export default new CanvasEventBus();

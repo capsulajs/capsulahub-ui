@@ -15,14 +15,15 @@ const multiplyNode = (node, builderId, sectors) => {
 };
 
 const create = (tree, metadata) => {
-  const { nodeId, builderId, sectors } = metadata;
+  const { source, destination } = metadata;
+  const { builderId, nodeId, sectors } = destination;
   const orientation = dropzone.orientation[sectors.toString()];
   const node = getNode(tree, nodeId);
 
   switch (true) {
     case tree.id === nodeId:
-      const { flex, tabIndex: index } = tree;
-      const tabIndex = Math.min(index + 1, node.tabs.length);
+      const { flex } = tree;
+      const tabIndex = node.tabs.length;
 
       return sectors.toString() === dropzone.sectors.toString()
         ? { id: guid(), type: 'element', flex, tabIndex, tabs: [...node.tabs, nodeTab(builderId)] }

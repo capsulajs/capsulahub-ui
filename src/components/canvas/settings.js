@@ -5,7 +5,7 @@ export const canvas = {
 export const dropzone = {
   minSize: 50,
   ratio: 0.2,
-  highlight: '#C9DADF',
+  highlight: '#ddd',
   sectors: [1, 2, 3, 4],
   sectorNeighbors: {
     1: [2, 3],

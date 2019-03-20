@@ -12,11 +12,11 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 export default (tree, source, destination) => {
-  const sourceTabs = getNode(tree, source.droppableId).tabs;
-  const destinationTabs = getNode(tree, destination.droppableId).tabs;
-  const tabs = move(sourceTabs, destinationTabs, source, destination);
   let newTree = cloneDeep(tree);
-  newTree = removeTab(newTree, source.droppableId, sourceTabs[source.index].id);
-  newTree = updateNode(newTree, destination.droppableId, { tabs });
+  const nodeS = getNode(tree, source.droppableId);
+  const nodeD = getNode(tree, destination.droppableId);
+  const tabs = move(nodeS.tabs, nodeD.tabs, source, destination);
+  newTree = updateNode(newTree, destination.droppableId, { tabs, tabIndex: destination.index });
+  newTree = removeTab(newTree, { nodeId: source.droppableId, tabId: nodeS.tabs[source.index].id });
   return newTree;
 };

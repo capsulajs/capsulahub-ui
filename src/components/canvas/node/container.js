@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ReflexContainer, ReflexSplitter } from 'react-reflex';
 import Element from './element';
+import bus from '../services';
 import styles from './styles';
 
 export default class Container extends React.Component {
@@ -9,24 +10,31 @@ export default class Container extends React.Component {
     builders: PropTypes.object.isRequired,
     nodes: PropTypes.array.isRequired,
     orientation: PropTypes.string.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onResize: PropTypes.func.isRequired,
     metadata: PropTypes.any,
   };
 
+  onResize = (e) => {
+    const { node, flex } = e.component.props;
+    bus.emit('resize', { nodeId: node.id, flex });
+  };
+
+  onStopResize = (e) => {
+    const { node, flex } = e.component.props;
+    bus.emit('resizestop', { nodeId: node.id, flex });
+  };
+
   render() {
-    const { builders, nodes, orientation, onUpdate, onRemove, onResize, metadata } = this.props;
+    const { builders, nodes, orientation, metadata } = this.props;
     const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']} />;
       const n = (
         <Element
           builders={builders}
+          flex={node.flex}
           node={node}
           key={'N' + idx}
-          onUpdate={onUpdate}
-          onRemove={onRemove}
-          onResize={onResize}
+          onResize={this.onResize}
+          onStopResize={this.onStopResize}
           metadata={metadata}
         />
       );

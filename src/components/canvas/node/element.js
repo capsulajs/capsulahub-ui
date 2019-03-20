@@ -9,41 +9,22 @@ import { dropzone } from '../settings';
 
 export default class Element extends React.Component {
   static propTypes = {
-    builders: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onResize: PropTypes.func.isRequired,
+    builders: PropTypes.object.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { builders, node, onUpdate, onRemove, onResize, metadata } = this.props;
-    const { id, type, tabIndex, tabs, orientation, nodes, flex } = node;
+    const { node, builders, metadata } = this.props;
+    const { id, type, tabs, tabIndex, flex, orientation, nodes } = node;
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
-      <ReflexElement key={id} style={style} minSize={dropzone.minSize} flex={flex || 0.5} onResize={onResize}>
+      <ReflexElement key={id} style={style} flex={flex}>
         {type === 'container' ? (
-          <Container
-            builders={builders}
-            nodes={nodes}
-            orientation={orientation}
-            onUpdate={onUpdate}
-            onRemove={onRemove}
-            onResize={onResize}
-            metadata={metadata}
-          />
+          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
         ) : (
-          <Content
-            nodeId={id}
-            tabIndex={tabIndex}
-            tabs={tabs}
-            builders={builders}
-            onUpdate={onUpdate}
-            onRemove={onRemove}
-            metadata={metadata}
-          />
+          <Content nodeId={id} tabs={tabs} tabIndex={tabIndex} builders={builders} metadata={metadata} />
         )}
       </ReflexElement>
     );
