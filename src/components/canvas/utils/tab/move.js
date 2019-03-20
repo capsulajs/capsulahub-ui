@@ -16,7 +16,7 @@ export default (tree, source, destination) => {
   const nodeS = getNode(tree, source.droppableId);
   const nodeD = getNode(tree, destination.droppableId);
   const tabs = move(nodeS.tabs, nodeD.tabs, source, destination);
-  newTree = updateNode(newTree, destination.droppableId, { tabs });
+  newTree = updateNode(newTree, destination.droppableId, { tabs, tabIndex: destination.index });
   newTree = removeTab(newTree, { nodeId: source.droppableId, tabId: nodeS.tabs[source.index].id });
   return newTree;
 };
