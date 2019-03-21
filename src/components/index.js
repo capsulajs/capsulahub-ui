@@ -10,9 +10,4 @@ import { CheckBox } from './form/checkbox';
 import { JsonInput } from './form/json-input';
 import { Dropdown } from './form/dropdown';
 
-export {
-  Canvas, Logger, Catalog,
-  Button, Input, CheckBox,
-  JsonInput, Dropdown, Loader,
-  Modal, Paragraph
-};
+export { Canvas, Logger, Catalog, Button, Input, CheckBox, JsonInput, Dropdown, Loader, Modal, Paragraph };
