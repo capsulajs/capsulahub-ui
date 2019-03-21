@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Logs } from 'src';
+import { Logger } from 'src';
 import { getRandomLogs } from './utils';
 
 export const props = {
@@ -13,6 +13,6 @@ export const actions = {
   onResend: action('onResend'),
 };
 
-storiesOf('Logs', module)
-  .add('default', () => <Logs {...props} {...actions} />)
-  .add('data', () => <Logs data={getRandomLogs()} {...props} {...actions} />);
+storiesOf('Logger', module)
+  .add('default', () => <Logger {...props} {...actions} />)
+  .add('data', () => <Logger data={getRandomLogs()} {...props} {...actions} />);

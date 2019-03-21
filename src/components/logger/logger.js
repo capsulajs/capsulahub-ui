@@ -164,7 +164,7 @@ const Row = ({ number, item, onResend }) => {
   );
 };
 
-export const Logs = ({ data, onDelete, onEdit, onClear, onResend, path }) => (
+export default ({ data, onDelete, onEdit, onClear, onResend, path }) => (
   <Container>
     <Header>
       <FlexRow>
