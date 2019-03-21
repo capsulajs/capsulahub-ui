@@ -9,5 +9,5 @@ export {
   Dropdown,
   Loader,
   Modal,
-  Paragraph,
+  Paragraph
 } from './components';
