@@ -30,19 +30,11 @@ export default class Content extends React.Component {
   render() {
     const { width, height, events } = this.props;
 
-    if (events.length) {
-      return (
-        <Container width={width} height={height}>
-          {events.map((event, index) => (
-            <Row key={index} number={index + 1} event={event} />
-          ))}
-        </Container>
-      );
-    }
-
     return (
       <Container width={width} height={height}>
-        No events...
+        {events.length
+          ? events.map((event, index) => <Row key={index} number={index + 1} event={event} />)
+          : 'No events...'}
       </Container>
     );
   }
