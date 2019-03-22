@@ -2,17 +2,16 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Logger } from 'src';
-import { getRandomLogs } from './utils';
+import { getLogs } from './utils';
 
-export const props = {
-  path: 'path>path?path',
+const props = {
+  logs: getLogs(),
+  width: 1000,
+  height: 350,
 };
 
-export const actions = {
-  onClear: action('onClear'),
-  onResend: action('onResend'),
-};
+const actions = {};
 
 storiesOf('Logger', module)
   .add('default', () => <Logger {...props} {...actions} />)
-  .add('data', () => <Logger data={getRandomLogs()} {...props} {...actions} />);
+  .add('data', () => <Logger {...props} {...actions} />);
