@@ -5,7 +5,7 @@ import { Logger } from 'src';
 import { getLogs } from './utils';
 
 const props = {
-  logs: getLogs(),
+  logs: [getLogs(), getLogs()],
   width: 1000,
   height: 350,
 };

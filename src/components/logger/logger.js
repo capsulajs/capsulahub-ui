@@ -49,7 +49,7 @@ export default class Logger extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    logs: PropTypes.object.isRequired,
+    logs: PropTypes.array.isRequired,
   };
 
   state = {
@@ -59,8 +59,10 @@ export default class Logger extends React.Component {
   onClear = () => this.setState({ events: [] });
 
   componentDidMount() {
-    this.logsSubscription = this.props.logs.subscribe((event) => {
-      this.setState({ events: [...this.state.events, event] });
+    this.logsSubscriptions = this.props.logs.map((obs) => {
+      return obs.subscribe((event) => {
+        this.setState((state) => ({ events: [...state.events, event] }));
+      });
     });
   }
 
@@ -83,6 +85,6 @@ export default class Logger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.logsSubscription.unsubscribe();
+    this.logsSubscriptions.map((sub) => sub.unsubscribe());
   }
 }
