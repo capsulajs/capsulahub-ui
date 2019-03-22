@@ -16,7 +16,7 @@ export const createRandomObject = (fieldCount, allowNested) => {
   let generatedObj = {};
   for (let i = 0; i < fieldCount; i++) {
     let generatedObjField;
-    switch (randomInt(allowNested ? 6 : 5)) {
+    switch(randomInt(allowNested ? 6 : 5)) {
       case 0:
         generatedObjField = randomInt(1000);
         break;
@@ -56,9 +56,9 @@ export const getLogs = () => {
       serviceName: 'Test',
       methodName: 'test',
       request: createRandomObject(Math.ceil(Math.random() * 3), true),
-      response: createRandomObject(Math.ceil(Math.random() * 3), true),
+      response: createRandomObject(Math.ceil(Math.random() * 3), true)
     };
-  };
+  }
 
   return interval(random(1000, 10000)).pipe(map(f));
 };

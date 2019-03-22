@@ -11,8 +11,8 @@ const Container = styled.div`
   font-style: regular;
   font-size: 13px;
   background: #3f3f3f;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   color: #767676;
   position: relative;
 `;
@@ -54,7 +54,7 @@ export default class Logger extends React.Component {
 
   state = {
     events: [],
-  };
+  }
 
   onClear = () => this.setState({ events: [] });
 
@@ -68,18 +68,13 @@ export default class Logger extends React.Component {
     const { events } = this.state;
     const { width, height } = this.props;
 
-    return (
-      <Container width={width} height={height}>
-        <Header>
-          <Row>
-            <Image src={image} />
-            <Title>LOG</Title>
-          </Row>
-          <Clear onClick={this.onClear}>&#10005;</Clear>
-        </Header>
-        <Content events={events} width={width - 20} height={height - 36} />
-      </Container>
-    );
+    return <Container width={width} height={height}>
+      <Header>
+        <Row><Image src={image} /><Title>LOG</Title></Row>
+        <Clear onClick={this.onClear}>&#10005;</Clear>
+      </Header>
+      <Content events={events} width={width - 20} height={height - 36}/>
+    </Container>;
   }
 
   componentWillUnmount() {

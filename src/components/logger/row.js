@@ -20,7 +20,7 @@ const PointWrapper = styled.div`
 `;
 
 const Point = styled.div`
-  background: ${(props) => (props.active ? '#34D6FC' : '#4C4C4C')};
+  background: ${props => props.active ? '#34D6FC' : '#4C4C4C'};
   width: 4px;
   height: 4px;
   border-radius: 2px;
@@ -40,31 +40,27 @@ const Content = styled.div`
 
 export default class Row extends React.Component {
   static propTypes = {
-    event: PropTypes.object.isRequired,
-  };
+    event: PropTypes.object.isRequired
+  }
 
   render() {
     const { event } = this.props;
 
-    let content = (
-      <ReactJson
-        src={event.response}
-        name={false}
-        iconStyle={'circle'}
-        theme={theme}
-        indentWidth={2}
-        collapsed={true}
-        displayDataTypes={false}
-        displayObjectSize={false}
-        enableClipboard={true}
-      />
-    );
+    let content = <ReactJson
+      src={event.response}
+      name={false}
+      iconStyle={'circle'}
+      theme={theme}
+      indentWidth={2}
+      collapsed={true}
+      displayDataTypes={false}
+      displayObjectSize={false}
+      enableClipboard={true}
+    />
 
     return (
       <Container>
-        <PointWrapper>
-          <Point active={pick([true, false])} />
-        </PointWrapper>
+        <PointWrapper><Point active={pick([true, false])}/></PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
         <Content>{content}</Content>
       </Container>

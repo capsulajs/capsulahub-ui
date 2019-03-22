@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Row from './row';
 
 const Container = styled.div`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   margin: 0 10px 10px 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
@@ -25,25 +25,17 @@ export default class Content extends React.Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     events: PropTypes.array.isRequired,
-  };
+  }
 
   render() {
     const { width, height, events } = this.props;
 
     if (events.length) {
-      return (
-        <Container width={width} height={height}>
-          {events.map((event, index) => (
-            <Row key={index} number={index + 1} event={event} />
-          ))}
-        </Container>
-      );
+      return <Container width={width} height={height}>
+        {events.map((event, index) => <Row key={index} number={index + 1} event={event} />)}
+      </Container>;
     }
 
-    return (
-      <Container width={width} height={height}>
-        No events...
-      </Container>
-    );
+    return  <Container width={width} height={height}>No events...</Container>;
   }
 }
