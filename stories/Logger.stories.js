@@ -7,7 +7,7 @@ import { getLogs } from './utils';
 const props = {
   logs: getLogs(),
   width: 1000,
-  height: 350
+  height: 350,
 };
 
 const actions = {};
