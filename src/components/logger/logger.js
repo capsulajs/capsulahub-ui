@@ -59,7 +59,7 @@ export default class Logger extends React.Component {
   onClear = () => this.setState({ events: [] });
 
   componentDidMount() {
-    this.logsSubscriptions = this.props.logs.map((obs) => {
+    this.logsSubscriptions = this.props.logs.map(obs => {
       return obs.subscribe((event) => {
         this.setState((state) => ({ events: [...state.events, event] }));
       });
@@ -85,6 +85,6 @@ export default class Logger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.logsSubscriptions.map((sub) => sub.unsubscribe());
+    this.logsSubscriptions.map(sub => sub.unsubscribe());
   }
 }
