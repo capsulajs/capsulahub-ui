@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { pick } from 'lodash';
 import theme from './theme';
 import { decorate } from '../utils';
+import arrows from '../../assets/arrows.png';
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +33,16 @@ const TimestampWrapper = styled.div`
 
 const Timestamp = styled.div`
   color: #dedede;
+`;
+
+const Arrows = styled.img`
+  width: 18px;
+  height: 18px;
+  padding-left: 12px;
+`;
+
+const Title = styled.div`
+  padding-left: 12px;
 `;
 
 const Content = styled.div`
@@ -66,6 +77,8 @@ export default class Row extends React.Component {
           <Point active={pick([true, false])} />
         </PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
+        <Arrows src={arrows} />
+        <Title>{event.methodName}</Title>
         <Content>{content}</Content>
       </Container>
     );
