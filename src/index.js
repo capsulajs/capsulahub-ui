@@ -1,4 +1,7 @@
 export {
+  Canvas,
+  Logger,
+  Catalog,
   Button,
   Input,
   CheckBox,
@@ -6,8 +9,5 @@ export {
   Dropdown,
   Loader,
   Modal,
-  Logs,
   Paragraph,
-  Canvas,
-  Catalog,
 } from './components';

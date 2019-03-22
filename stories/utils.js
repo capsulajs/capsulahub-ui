@@ -1,8 +1,22 @@
+import { interval } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { random } from 'lodash';
+
 export const createRandomObject = (fieldCount, allowNested) => {
+  const randomInt = (rightBound) => Math.floor(Math.random() * rightBound);
+  const randomString = (size) => {
+    let alphaChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let generatedString = '';
+    for (let i = 0; i < size; i++) {
+      generatedString += alphaChars[randomInt(alphaChars.length)];
+    }
+    return generatedString;
+  };
+
   let generatedObj = {};
-  for(let i = 0; i < fieldCount; i++) {
+  for (let i = 0; i < fieldCount; i++) {
     let generatedObjField;
-    switch(randomInt(allowNested ? 6 : 5)) {
+    switch (randomInt(allowNested ? 6 : 5)) {
       case 0:
         generatedObjField = randomInt(1000);
         break;
@@ -24,44 +38,27 @@ export const createRandomObject = (fieldCount, allowNested) => {
     }
     generatedObj[randomString(8)] = generatedObjField;
   }
+
   return generatedObj;
 };
 
-export const randomInt = (rightBound) => Math.floor(Math.random() * rightBound);
-export const randomString = (size) => {
-  let alphaChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let generatedString = '';
-  for(let i = 0; i < size; i++) {
-    generatedString += alphaChars[randomInt(alphaChars.length)];
-  }
-  return generatedString;
-};
+export const getLogs = () => {
+  let count = 0;
 
-export const getRandomLogs = () => {
-  const data = [];
-  for (let i = 0; i < 25; i++) {
-    const ratio = Math.random();
-    if (0 <= ratio && ratio <= 1 / 3) {
-      data.push({
-        status: 'fail',
-        data: { message: 'Not Found' },
-        timestamp: new Date(),
-      });
-    }
-    if (1 / 3 <= ratio && ratio <= 2 / 3) {
-      data.push({
-        status: 'success',
-        data: createRandomObject(Math.ceil(Math.random() * 5), true),
-        timestamp: new Date()
-      })
-    }
-    if (2 / 3 <= ratio && ratio <= 1) {
-      data.push({
-        status: 'info',
-        data: ['connected', 'disconnected'][Math.floor(Math.random() * 2)],
-        timestamp: new Date()
-      })
-    }
-  }
-  return data;
+  const f = () => {
+    count = count + 1;
+    const isRequest = count % 2 === 0;
+
+    return {
+      timestamp: new Date().getTime(),
+      correlationId: isRequest ? count : count - 1,
+      type: isRequest ? 'request' : 'response',
+      serviceName: 'Test',
+      methodName: 'test',
+      request: createRandomObject(Math.ceil(Math.random() * 3), true),
+      response: createRandomObject(Math.ceil(Math.random() * 3), true),
+    };
+  };
+
+  return interval(random(1000, 10000)).pipe(map(f));
 };
