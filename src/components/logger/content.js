@@ -34,8 +34,7 @@ export default class Content extends React.Component {
       <Container width={width} height={height}>
         {events.length
           ? events.map((event, index) => <Row key={index} number={index + 1} event={event} />)
-          : 'No events...'
-        }
+          : 'No events...'}
       </Container>
     );
   }
