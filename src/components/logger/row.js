@@ -79,7 +79,7 @@ export default class Row extends React.Component {
     return (
       <Container>
         <PointWrapper onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
-          <Point active={isActive} />
+          <Point active={isActive}/>
         </PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
         <Arrows src={arrows} />
