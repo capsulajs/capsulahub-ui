@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isMethodsContain } from './utils';
 
 const Container = styled.ul`
   list-style: none;
@@ -62,39 +63,67 @@ const ArrowUp = styled.div`
   -webkit-transform: rotate(-135deg);
 `;
 
-class List extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpened: false,
-    };
-    this.toggle = this.toggle.bind(this);
-    this.renderItems = this.renderItems.bind(this);
-  }
+export default class List extends React.Component {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    methods: PropTypes.array.isRequired,
+    padding: PropTypes.number.isRequired,
+    selectMethod: PropTypes.func.isRequired,
+    selectedMethod: PropTypes.object,
+  };
 
-  toggle() {
-    this.setState({ isOpened: !this.state.isOpened });
-  }
+  static defaultProps = {
+    padding: 10,
+  };
 
-  renderItems(items) {
-    const { padding, onSelect } = this.props;
+  state = {
+    selectedMethod: this.props.selectedMethod,
+    isOpened: isMethodsContain(this.props.methods, this.props.selectedMethod),
+    nestedListPadding: this.props.padding + 16,
+  };
 
-    return items.map((item, i) => {
-      if (item.children) {
-        return <List key={i} name={item.name} items={item.children} onSelect={onSelect} padding={padding + 16} />;
+  toggle = () => this.setState({ isOpened: !this.state.isOpened });
+  select = (selectedMethod) => {
+    this.setState({ selectedMethod });
+    this.props.selectMethod(selectedMethod);
+  };
+  getStyle = (method) => {
+    const { selectedMethod } = this.state;
+    return selectedMethod && method.id === selectedMethod.id ? { background: '#545454', color: '#e2e2e2' } : {};
+  };
+  renderItems = (methods) => {
+    const { selectMethod, selectedMethod } = this.props;
+
+    return methods.map((method, index) => {
+      if (method.children) {
+        return (
+          <List
+            key={index}
+            name={method.name}
+            methods={method.children}
+            padding={this.state.nestedListPadding}
+            selectMethod={selectMethod}
+            selectedMethod={selectedMethod}
+          />
+        );
       }
 
       return (
-        <Item key={i} padding={padding + 16} onClick={() => onSelect(item)}>
-          {item.name}
+        <Item
+          key={index}
+          padding={this.state.nestedListPadding}
+          onClick={() => this.select(method)}
+          style={this.getStyle(method)}
+        >
+          {method.name}
         </Item>
       );
     });
-  }
+  };
 
   render() {
     const { isOpened } = this.state;
-    const { name, items, padding } = this.props;
+    const { name, methods, padding } = this.props;
 
     return (
       <Container>
@@ -102,21 +131,8 @@ class List extends React.Component {
           {isOpened ? <ArrowDown /> : <ArrowUp />}
           <Title>{name}</Title>
         </Header>
-        {isOpened && this.renderItems(items)}
+        {isOpened && this.renderItems(methods)}
       </Container>
     );
   }
 }
-
-List.defaultProps = {
-  padding: 10,
-};
-
-List.propTypes = {
-  name: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  padding: PropTypes.number.isRequired,
-};
-
-export default List;

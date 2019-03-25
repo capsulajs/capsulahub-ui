@@ -14,23 +14,22 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-class Catalog extends React.Component {
+export default class Catalog extends React.Component {
+  static propTypes = {
+    methods: PropTypes.array.isRequired,
+    selectMethod: PropTypes.func.isRequired,
+    selectedMethod: PropTypes.object,
+  };
+
   render() {
-    const { menu, onSelect } = this.props;
+    const { methods, selectMethod, selectedMethod } = this.props;
 
     return (
       <Container>
-        {menu.map(({ name, children }) => (
-          <List key={name} name={name} items={children} onSelect={onSelect} />
+        {methods.map(({ name, children }) => (
+          <List key={name} name={name} methods={children} selectMethod={selectMethod} selectedMethod={selectedMethod} />
         ))}
       </Container>
     );
   }
 }
-
-Catalog.propTypes = {
-  menu: PropTypes.array.isRequired,
-  onSelect: PropTypes.func.isRequired,
-};
-
-export default Catalog;
