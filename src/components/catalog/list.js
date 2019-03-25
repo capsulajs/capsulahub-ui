@@ -70,14 +70,12 @@ const isListContainSelectedMethod = (method, selectedMethod) => {
 
   const contain = (method, selectedMethod) => {
     return method.children
-      ? method.children.map((method) => contain(method.children, selectedMethod)).filter(Boolean).length
-        ? true
-        : false
-      : method.id === selectedMethod.id;
-  };
+      ? method.children.map((method) => contain(method.children, selectedMethod)).filter(Boolean).length ? true : false
+      : method.id === selectedMethod.id
+  }
 
   return contain(method, selectedMethod);
-};
+}
 
 export default class List extends React.Component {
   static propTypes = {
@@ -105,24 +103,16 @@ export default class List extends React.Component {
   };
   getStyle = (method) => {
     const { selectedMethod } = this.state;
-    return selectedMethod && method.id === selectedMethod.id ? { background: '#545454', color: '#e2e2e2' } : {};
+    return selectedMethod && method.id === selectedMethod.id
+      ? { background: '#545454', color: '#e2e2e2' }
+      : {};
   };
   renderItems = (methods) => {
     const { padding, selectMethod, selectedMethod } = this.props;
 
     return methods.map((method, index) => {
       if (method.children) {
-        return (
-          <List
-            key={index}
-            index={index}
-            name={method.name}
-            methods={method.children}
-            padding={padding + 16}
-            selectMethod={selectMethod}
-            selectedMethod={selectedMethod}
-          />
-        );
+        return <List key={index} index={index} name={method.name} methods={method.children} padding={padding + 16} selectMethod={selectMethod} selectedMethod={selectedMethod} />;
       }
 
       return (
@@ -131,7 +121,7 @@ export default class List extends React.Component {
         </Item>
       );
     });
-  };
+  }
 
   render() {
     const { isOpened } = this.state;
