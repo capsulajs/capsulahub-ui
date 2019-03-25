@@ -27,13 +27,35 @@ export default class Content extends React.Component {
     events: PropTypes.array.isRequired,
   };
 
+  state = {
+    hoverCorrelationId: null,
+    activeCorrelationId: null,
+  };
+
+  onMouseEnter = ({ correlationId }) => this.setState({ hoverCorrelationId: correlationId });
+  onMouseLeave = () => this.setState({ hoverCorrelationId: null });
+  onClick = ({ correlationId }) =>
+    this.setState((state) => ({ activeCorrelationId: state.activeCorrelationId ? null : correlationId }));
+
   render() {
+    const { hoverCorrelationId, activeCorrelationId } = this.state;
     const { width, height, events } = this.props;
+    const correlationId = hoverCorrelationId || activeCorrelationId;
 
     return (
       <Container width={width} height={height}>
         {events.length
-          ? events.map((event, index) => <Row key={index} number={index + 1} event={event} />)
+          ? events.map((event, index) => (
+              <Row
+                key={index}
+                number={index + 1}
+                event={event}
+                isActive={event.correlationId === correlationId}
+                onMouseEnter={() => this.onMouseEnter(event)}
+                onMouseLeave={this.onMouseLeave}
+                onClick={() => this.onClick(event)}
+              />
+            ))
           : 'No events...'}
       </Container>
     );
