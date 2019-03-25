@@ -79,7 +79,7 @@ export default class List extends React.Component {
   state = {
     selectedMethod: this.props.selectedMethod,
     isOpened: isMethodsContain(this.props.methods, this.props.selectedMethod),
-    nestedListPadding: this.props.padding + 16,
+    nestedListPadding: this.props.padding + 16
   };
 
   toggle = () => this.setState({ isOpened: !this.state.isOpened });
@@ -109,12 +109,7 @@ export default class List extends React.Component {
       }
 
       return (
-        <Item
-          key={index}
-          padding={this.state.nestedListPadding}
-          onClick={() => this.select(method)}
-          style={this.getStyle(method)}
-        >
+        <Item key={index} padding={this.state.nestedListPadding} onClick={() => this.select(method)} style={this.getStyle(method)}>
           {method.name}
         </Item>
       );
