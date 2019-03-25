@@ -27,7 +27,14 @@ export default class Catalog extends React.Component {
     return (
       <Container>
         {methods.map(({ name, children }, index) => (
-          <List key={name} index={index} name={name} methods={children} selectMethod={selectMethod} selectedMethod={selectedMethod}/>
+          <List
+            key={name}
+            index={index}
+            name={name}
+            methods={children}
+            selectMethod={selectMethod}
+            selectedMethod={selectedMethod}
+          />
         ))}
       </Container>
     );
