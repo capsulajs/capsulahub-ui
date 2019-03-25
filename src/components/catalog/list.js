@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { flatten } from 'lodash';
+import { isMethodsContain } from './utils';
 
 const Container = styled.ul`
   list-style: none;
@@ -63,25 +63,8 @@ const ArrowUp = styled.div`
   -webkit-transform: rotate(-135deg);
 `;
 
-const isListContainSelectedMethod = (method, selectedMethod) => {
-  if (!selectedMethod) {
-    return false;
-  }
-
-  const contain = (method, selectedMethod) => {
-    return method.children
-      ? method.children.map((method) => contain(method.children, selectedMethod)).filter(Boolean).length
-        ? true
-        : false
-      : method.id === selectedMethod.id;
-  };
-
-  return contain(method, selectedMethod);
-};
-
 export default class List extends React.Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     methods: PropTypes.array.isRequired,
     padding: PropTypes.number.isRequired,
@@ -95,7 +78,7 @@ export default class List extends React.Component {
 
   state = {
     selectedMethod: this.props.selectedMethod,
-    isOpened: isListContainSelectedMethod(this.props.methods[this.props.index], this.props.selectedMethod),
+    isOpened: isMethodsContain(this.props.methods, this.props.selectedMethod),
   };
 
   toggle = () => this.setState({ isOpened: !this.state.isOpened });
@@ -115,7 +98,6 @@ export default class List extends React.Component {
         return (
           <List
             key={index}
-            index={index}
             name={method.name}
             methods={method.children}
             padding={padding + 16}
