@@ -4,7 +4,11 @@ import { action } from '@storybook/addon-actions';
 import { Catalog } from 'src';
 
 export const props = {
-  menu: [
+  selectedMethod: {
+    id: 20,
+    name: 'API 1',
+  },
+  methods: [
     {
       id: 0,
       name: 'Environment',
@@ -32,6 +36,7 @@ export const props = {
       ],
     },
     {
+      id: 99,
       name: 'Team',
       children: [
         {
@@ -76,7 +81,7 @@ export const props = {
 };
 
 export const actions = {
-  onSelect: action('onSelect'),
+  selectMethod: action('onSelect'),
 };
 
 storiesOf('Catalog', module).add('default', () => <Catalog {...props} {...actions} />);
