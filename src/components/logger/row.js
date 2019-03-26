@@ -18,6 +18,7 @@ const PointWrapper = styled.div`
   height: 18px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Point = styled.div`
@@ -52,10 +53,18 @@ const Content = styled.div`
 export default class Row extends React.Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    onPointEnter: PropTypes.func.isRequired,
+    onPointLeave: PropTypes.func.isRequired,
+    onPointClick: PropTypes.func.isRequired,
   };
 
+  onPointClick = () => this.props.onPointClick(this.props.event);
+  onPointEnter = () => this.props.onPointEnter(this.props.event);
+  onPointLeave = () => this.props.onPointLeave();
+
   render() {
-    const { event } = this.props;
+    const { event, isActive, onMouseLeave } = this.props;
 
     let content = (
       <ReactJson
@@ -73,8 +82,8 @@ export default class Row extends React.Component {
 
     return (
       <Container>
-        <PointWrapper>
-          <Point active={pick([true, false])} />
+        <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
+          <Point active={isActive} />
         </PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
         <Arrows src={arrows} />
