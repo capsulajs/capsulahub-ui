@@ -32,9 +32,9 @@ export default class Content extends React.Component {
     activeCorrelationId: null,
   };
 
-  onMouseEnter = ({ correlationId }) => this.setState({ hoverCorrelationId: correlationId });
-  onMouseLeave = () => this.setState({ hoverCorrelationId: null });
-  onClick = ({ correlationId }) =>
+  onPointEnter = ({ correlationId }) => this.setState({ hoverCorrelationId: correlationId });
+  onPointLeave = () => this.setState({ hoverCorrelationId: null });
+  onPointClick = ({ correlationId }) =>
     this.setState((state) => ({ activeCorrelationId: state.activeCorrelationId ? null : correlationId }));
 
   render() {
@@ -51,9 +51,9 @@ export default class Content extends React.Component {
                 number={index + 1}
                 event={event}
                 isActive={event.correlationId === correlationId}
-                onMouseEnter={() => this.onMouseEnter(event)}
-                onMouseLeave={this.onMouseLeave}
-                onClick={() => this.onClick(event)}
+                onPointEnter={this.onPointEnter}
+                onPointLeave={this.onPointLeave}
+                onPointClick={this.onPointClick}
               />
             ))
           : 'No events...'}
