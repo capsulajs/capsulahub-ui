@@ -11,5 +11,5 @@ export {
   Loader,
   Modal,
   Paragraph,
-  Span
+  Span,
 } from './components';
