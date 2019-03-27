@@ -15,7 +15,7 @@ const Container = styled.div`
   font-size: ${defaultFomtSize};
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  background: #3f3f3f;
+  background: #3F3F3F;
   color: #767676;
   min-width: 150px;
 `;
@@ -48,29 +48,24 @@ export default class RequestForm extends React.Component {
     const { width, height, value, onChange } = this.props;
     const items = [{ label: 'javascript' }, { label: 'json' }];
 
-    return (
-      <Container width={width} height={height}>
-        <Header>
-          <Image src={image} />
-          <Title>
-            JSON Input
-            <Dropdown title="Input" items={items} />
-          </Title>
-        </Header>
-        <AceEditor
-          mode="json"
-          theme="capsula-js"
-          value={value}
-          onChange={onChange}
-          editorProps={{ $blockScrolling: true }}
-          fontSize={11}
-          setOptions={{
-            tabSize: 2,
-          }}
-          width={width}
-          height={`calc(${height} - 39px)`}
-        />
-      </Container>
-    );
+    return <Container width={width} height={height}>
+      <Header>
+        <Image src={image} />
+        <Title>JSON Input<Dropdown title="Input" items={items}/></Title>
+      </Header>
+      <AceEditor
+        mode="json"
+        theme="capsula-js"
+        value={value}
+        onChange={onChange}
+        editorProps={{ $blockScrolling: true }}
+        fontSize={11}
+        setOptions={{
+          tabSize: 2,
+        }}
+        width={width}
+        height={`calc(${height} - 39px)`}
+      />
+    </Container>;
   }
 }
