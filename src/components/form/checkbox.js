@@ -47,12 +47,10 @@ const CheckMark = styled.span`
   }
 `;
 
-const CheckBox = ({ label, onChange }) => (
+export default ({ label, onChange }) => (
   <Container>
     {label}
     <Input type="checkbox" onChange={(e) => onChange(e.target.checked)} />
     <CheckMark />
   </Container>
 );
-
-export { CheckBox };

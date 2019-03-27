@@ -79,7 +79,7 @@ const Item = styled.li`
   }
 `;
 
-export class D extends React.Component {
+class Dropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -132,4 +132,4 @@ export class D extends React.Component {
   }
 }
 
-export const Dropdown = enhanceWithClickOutside(D);
+export default enhanceWithClickOutside(Dropdown);

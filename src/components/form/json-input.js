@@ -31,7 +31,7 @@ const Title = styled.div`
   text-transform: uppercase;
 `;
 
-const JsonInput = ({ id, value, width, height, onChange }) => (
+export default ({ id, value, width, height, onChange }) => (
   <Container style={{ width, height }}>
     <Header>
       <Image src={image} />
@@ -53,5 +53,3 @@ const JsonInput = ({ id, value, width, height, onChange }) => (
     />
   </Container>
 );
-
-export { JsonInput };

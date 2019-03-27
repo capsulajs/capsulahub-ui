@@ -1,6 +1,5 @@
-import styled from 'styled-components';
 import 'typeface-montserrat';
-
+import styled from 'styled-components';
 import {
   defaultFontStyle,
   defaultFontWeight,
@@ -10,7 +9,7 @@ import {
   defaultBackgroundColor,
 } from '../constants';
 
-export const Paragraph = styled.p`
+export default () => styled.p`
   font-style: ${(props) => props.fontStyle || defaultFontStyle};
   font-weight: ${(props) => props.fontWeight || defaultFontWeight};
   font-size: ${(props) => props.fontSize || defaultFomtSize};

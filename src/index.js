@@ -2,6 +2,7 @@ export {
   Canvas,
   Logger,
   Catalog,
+  RequestForm,
   Button,
   Input,
   CheckBox,
@@ -10,4 +11,5 @@ export {
   Loader,
   Modal,
   Paragraph,
+  Span,
 } from './components';

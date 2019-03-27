@@ -27,7 +27,7 @@ const Header = styled.div`
   font-size: 10px;
 `;
 
-class M extends React.Component {
+class Modal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -61,6 +61,4 @@ class M extends React.Component {
   }
 }
 
-const Modal = enhanceWithClickOutside(M);
-
-export { Modal };
+export default enhanceWithClickOutside(Modal);
