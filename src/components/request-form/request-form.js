@@ -19,22 +19,28 @@ const Container = styled.div`
   color: #767676;
   min-width: 150px;
 `;
-
 const Header = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  justify-content: space-between;
+  padding: 5px;
 `;
-
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 const Image = styled.img`
   padding-right: 5px;
   width: 16px;
   height: 16px;
 `;
-
 const Title = styled.div`
   text-transform: uppercase;
 `;
+
+const languages = [{ label: 'javascript' }, { label: 'json' }];
 
 export default class RequestForm extends React.Component {
   static propTypes = {
@@ -44,18 +50,19 @@ export default class RequestForm extends React.Component {
     value: PropTypes.object,
   };
 
+  select = ({ label }) => console.log('select', label);
+
   render() {
     const { width, height, value, onChange } = this.props;
-    const items = [{ label: 'javascript' }, { label: 'json' }];
 
     return (
       <Container width={width} height={height}>
         <Header>
-          <Image src={image} />
-          <Title>
-            JSON Input
-            <Dropdown title="Input" items={items} />
-          </Title>
+          <Wrapper>
+            <Image src={image} />
+            <Title>Input</Title>
+          </Wrapper>
+          <Dropdown title="Language" items={languages} width={200} onChange={this.select} />
         </Header>
         <AceEditor
           mode="json"

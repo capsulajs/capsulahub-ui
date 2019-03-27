@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
 import { defaultFontFamily } from '../constants';
@@ -9,8 +10,7 @@ const Container = styled.div`
   font-style: regular;
   background: #737373;
   color: #f8f7f7;
-  width: 100%;
-  max-width: 300px;
+  width: ${(props) => props.width || 300}px;
 `;
 
 const Header = styled.div`
@@ -59,7 +59,7 @@ const List = styled.ul`
   color: #373737;
   margin: 0;
   padding: 0;
-  width: 300px;
+  width: ${(props) => props.width || 300};
 `;
 
 const Item = styled.li`
@@ -80,46 +80,40 @@ const Item = styled.li`
 `;
 
 class Dropdown extends React.Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
+    width: PropTypes.number,
+  };
 
-    this.state = {
-      isOpen: false,
-      title: this.props.title,
-      items: this.props.items || [],
-      selected: null,
-    };
-  }
+  state = {
+    isOpen: false,
+    title: this.props.title,
+    items: this.props.items || [],
+    selected: null,
+  };
 
-  handleClickOutside() {
-    this.setState({
-      isOpen: false,
-    });
-  }
-
-  toggle() {
-    this.setState((prevState) => ({
-      isOpen: !prevState.isOpen,
-    }));
-  }
-
-  select(selected) {
+  handleClickOutside = () => this.setState({ isOpen: false });
+  toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+  select = (selected) => {
     this.setState({ selected });
     this.toggle();
     this.props.onChange(this.state.items[selected]);
-  }
+  };
 
   render() {
+    const { width } = this.props;
     const { title, items, selected, isOpen } = this.state;
 
     return (
-      <Container>
+      <Container width={width}>
         <Header onClick={() => this.toggle()}>
           <Title>{Number.isInteger(selected) ? items[selected].label : title}</Title>
           {isOpen ? <ArrowUp /> : <ArrowDown />}
         </Header>
         {isOpen && (
-          <List>
+          <List width={width}>
             {items.map((item, index) => (
               <Item key={index} onClick={() => this.select(index)}>
                 {item.label}
