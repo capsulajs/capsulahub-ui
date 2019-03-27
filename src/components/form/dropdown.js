@@ -10,7 +10,7 @@ const Container = styled.div`
   font-style: regular;
   background: #737373;
   color: #f8f7f7;
-  width: ${(props) => props.width || 300}px;
+  width: ${props => props.width || 300}px;
 `;
 
 const Header = styled.div`
@@ -59,7 +59,7 @@ const List = styled.ul`
   color: #373737;
   margin: 0;
   padding: 0;
-  width: ${(props) => props.width || 300};
+  width: ${props => props.width || 300};
 `;
 
 const Item = styled.li`
@@ -92,7 +92,7 @@ class Dropdown extends React.Component {
     title: this.props.title,
     items: this.props.items || [],
     selected: null,
-  };
+  }
 
   handleClickOutside = () => this.setState({ isOpen: false });
   toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
@@ -100,7 +100,7 @@ class Dropdown extends React.Component {
     this.setState({ selected });
     this.toggle();
     this.props.onChange(this.state.items[selected]);
-  };
+  }
 
   render() {
     const { width } = this.props;
