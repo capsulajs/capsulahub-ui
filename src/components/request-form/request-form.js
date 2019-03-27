@@ -62,7 +62,7 @@ export default class RequestForm extends React.Component {
             <Image src={image} />
             <Title>Input</Title>
           </Wrapper>
-          <Dropdown title="Language" items={languages} width={200} onChange={this.select}/>
+          <Dropdown title="Language" items={languages} width={200} onChange={this.select} />
         </Header>
         <AceEditor
           mode="json"
