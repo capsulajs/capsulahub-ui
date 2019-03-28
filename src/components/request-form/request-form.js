@@ -52,15 +52,15 @@ export default class RequestForm extends React.Component {
 
   state = {
     mode: 'javascript',
-    content: this.props.value || '',
-  };
+    content: this.props.value || ''
+  }
 
-  onLoad = (editor) => (this.editor = editor);
+  onLoad = (editor) => this.editor = editor;
   onChangeMode = ({ label }) => this.setState({ mode: label }) || this.editor.getSession().setMode(`ace/mode/${label}`);
   onChangeContent = (content) => {
     this.setState({ content });
     this.props.onChange(content);
-  };
+  }
 
   render() {
     const { mode, content } = this.state;
