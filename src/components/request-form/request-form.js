@@ -52,7 +52,7 @@ export default class RequestForm extends React.Component {
     input: PropTypes.string,
     selectLanguage: PropTypes.func.isRequired,
     setInput: PropTypes.func.isRequired,
-    submit: PropTypes.func.isRequired,
+    submit: PropTypes.func.isRequired
   };
 
   state = {
@@ -64,7 +64,7 @@ export default class RequestForm extends React.Component {
   selectLanguage = ({ label }) => {
     this.setState({ language: label });
     this.editor.getSession().setMode(`ace/mode/${label}`);
-  };
+  }
   onChangeContent = (input) => {
     this.setState({ input });
     this.props.setInput(input);
@@ -97,7 +97,7 @@ export default class RequestForm extends React.Component {
           width={width}
           height={`calc(${height} - 39px)`}
         />
-        <Button text="Submit" css="margin: 10px; padding: 5px; width: 100px;" onClick={this.onSubmit} />
+        <Button text="Submit" css="margin: 10px; padding: 5px; width: 100px;" onClick={this.onSubmit}/>
       </Container>
     );
   }
