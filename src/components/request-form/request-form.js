@@ -140,7 +140,7 @@ export default class RequestForm extends React.Component {
                 width={`${width - 10}px`}
                 height={`${(height - (65 + 2 * input.length)) / input.length}px`}
               />
-              <Line/>
+              <Line />
             </React.Fragment>
           ))}
           <Footer>
