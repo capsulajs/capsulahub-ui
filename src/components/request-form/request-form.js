@@ -99,11 +99,10 @@ export default class RequestForm extends React.Component {
   };
   onSubmit = () => {
     const { language } = this.state;
-    const args = language === 'javascript'
-      ? this.state.arguments.map(JSONL.parse).map(JSON.stringify)
-      : this.state.arguments;
+    const args =
+      language === 'javascript' ? this.state.arguments.map(JSONL.parse).map(JSON.stringify) : this.state.arguments;
     this.props.submit({ language, arguments: args });
-  }
+  };
 
   render() {
     const { language, arguments: input } = this.state;
