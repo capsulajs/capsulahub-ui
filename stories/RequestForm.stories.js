@@ -3,11 +3,11 @@ import { storiesOf } from '@storybook/react';
 import { RequestForm } from 'src';
 
 export const props = {
-  width: '100%',
-  height: '200px',
+  width: 700,
+  height: 200,
   path: 'test/test',
   selectLanguage: console.log,
-  setInput: console.log,
+  setArgument: console.log,
   submit: console.log,
 };
 
