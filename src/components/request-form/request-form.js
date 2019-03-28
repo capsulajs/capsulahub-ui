@@ -80,16 +80,12 @@ export default class RequestForm extends React.Component {
     const reset = (n, array = []) => [...array, ...new Array(n).fill('')].slice(0, n);
 
     switch (label) {
-      case 'One':
-        return this.setState({ arguments: reset(1, args) });
-      case 'Two':
-        return this.setState({ arguments: reset(2, args) });
-      case 'Three':
-        return this.setState({ arguments: reset(3, args) });
-      default:
-        return this.setState({ arguments: reset(1, args) });
+      case 'One': return this.setState({ arguments: reset(1, args) });
+      case 'Two': return this.setState({ arguments: reset(2, args) });
+      case 'Three': return this.setState({ arguments: reset(3, args) });
+      default: return this.setState({ arguments: reset(1, args) });
     }
-  };
+  }
   onChangeInput = (index) => (newArgument) => {
     const args = [...this.state.arguments];
     args[index] = newArgument;
@@ -128,7 +124,7 @@ export default class RequestForm extends React.Component {
                 tabSize: 2,
               }}
               width={`${width - 10}px`}
-              height={`${(height - 65) / input.length}px`}
+              height={`${((height - 65) / input.length)}px`}
             />
           ))}
           <Footer>
