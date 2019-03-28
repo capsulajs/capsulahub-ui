@@ -8,9 +8,9 @@ const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-size: 12px;
   font-style: regular;
-  background: #737373;
+  background: #767676;
   color: #f8f7f7;
-  width: ${(props) => props.width || 300}px;
+  width: ${(props) => props.width || 200}px;
 `;
 
 const Header = styled.div`
@@ -51,28 +51,29 @@ const ArrowUp = styled.div`
   -webkit-transform: rotate(-135deg);
 `;
 
-const List = styled.ul`
+const List = styled.div`
   position: absolute;
   z-index: 99;
-  list-style-type: none;
   background: #e1e1e1;
   color: #373737;
-  margin: 0;
-  padding: 0;
-  width: ${(props) => props.width || 300};
+  width: ${(props) => props.width || 200}px;
 `;
 
-const Item = styled.li`
+const Item = styled.div`
   text-decoration: none;
   padding: 10px;
+  width: calc(100% - 20px);
   border-bottom: solid #d9d9d9 1px;
+  background: #e1e1e1;
+  cursor: pointer;
+
   :first-child {
     border-top: solid #d9d9d9 1px;
   }
+
   :last-child {
     border-bottom: none;
   }
-  cursor: pointer;
 
   &:hover {
     background: #d9d9d9;

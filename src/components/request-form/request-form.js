@@ -50,9 +50,20 @@ export default class RequestForm extends React.Component {
     value: PropTypes.object,
   };
 
-  select = ({ label }) => console.log('select', label);
+  state = {
+    mode: 'javascript',
+    content: this.props.value || '',
+  };
+
+  onLoad = (editor) => (this.editor = editor);
+  onChangeMode = ({ label }) => this.setState({ mode: label }) || this.editor.getSession().setMode(`ace/mode/${label}`);
+  onChangeContent = (content) => {
+    this.setState({ content });
+    this.props.onChange(content);
+  };
 
   render() {
+    const { mode, content } = this.state;
     const { width, height, value, onChange } = this.props;
 
     return (
@@ -60,15 +71,16 @@ export default class RequestForm extends React.Component {
         <Header>
           <Wrapper>
             <Image src={image} />
-            <Title>Input</Title>
+            <Title>Request Form</Title>
           </Wrapper>
-          <Dropdown title="Language" items={languages} width={200} onChange={this.select} />
+          <Dropdown title="Language" items={languages} width={120} onChange={this.onChangeMode} />
         </Header>
         <AceEditor
-          mode="json"
+          mode={mode}
           theme="capsula-js"
-          value={value}
-          onChange={onChange}
+          value={content}
+          onLoad={this.onLoad}
+          onChange={this.onChangeContent}
           editorProps={{ $blockScrolling: true }}
           fontSize={11}
           setOptions={{
