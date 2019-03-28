@@ -18,19 +18,26 @@ const Container = styled.div`
   background: #3f3f3f;
   color: #767676;
   min-width: 150px;
+`;
+const Column = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 5px;
 `;
 const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px;
+`;
+const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 `;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
 `;
 const Image = styled.img`
@@ -40,6 +47,7 @@ const Image = styled.img`
 `;
 const Title = styled.div`
   text-transform: uppercase;
+  color: ${(props) => props.color};
 `;
 
 const languages = [{ label: 'javascript' }, { label: 'json' }];
@@ -73,31 +81,36 @@ export default class RequestForm extends React.Component {
 
   render() {
     const { language, input } = this.state;
-    const { width, height, value, onChange } = this.props;
+    const { width, height, path } = this.props;
 
     return (
       <Container width={width} height={height}>
-        <Header>
-          <Wrapper>
-            <Image src={image} />
-            <Title>Request Form</Title>
-          </Wrapper>
-          <Dropdown title="Language" items={languages} width={120} onChange={this.selectLanguage} />
-        </Header>
-        <AceEditor
-          mode={language}
-          theme="capsula-js"
-          value={input}
-          onLoad={this.onLoad}
-          onChange={this.onChangeContent}
-          fontSize={11}
-          setOptions={{
-            tabSize: 2,
-          }}
-          width={width}
-          height={`calc(${height} - 39px)`}
-        />
-        <Button text="Submit" css="margin: 10px; padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
+        <Column>
+          <Header>
+            <Wrapper>
+              <Image src={image} />
+              <Title>Request Form</Title>
+            </Wrapper>
+            <Dropdown title="Language" items={languages} width={120} onChange={this.selectLanguage} />
+          </Header>
+          <AceEditor
+            mode={language}
+            theme="capsula-js"
+            value={input}
+            onLoad={this.onLoad}
+            onChange={this.onChangeContent}
+            fontSize={11}
+            setOptions={{
+              tabSize: 2,
+            }}
+            width={width}
+            height={`calc(${height} - 64px)`}
+          />
+          <Footer>
+            <Button text="Submit" css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
+            <Title color="#f8f7f7">{path}</Title>
+          </Footer>
+        </Column>
       </Container>
     );
   }
