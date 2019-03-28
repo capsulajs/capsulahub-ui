@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AceEditor from 'react-ace';
-import { Dropdown } from '..';
+import { Dropdown, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
 import 'brace/mode/javascript';
@@ -18,6 +18,8 @@ const Container = styled.div`
   background: #3f3f3f;
   color: #767676;
   min-width: 150px;
+  display: flex;
+  flex-direction: column;
 `;
 const Header = styled.div`
   display: flex;
@@ -46,24 +48,31 @@ export default class RequestForm extends React.Component {
   static propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    value: PropTypes.object,
+    path: PropTypes.string.isRequired,
+    input: PropTypes.string,
+    selectLanguage: PropTypes.func.isRequired,
+    setInput: PropTypes.func.isRequired,
+    submit: PropTypes.func.isRequired,
   };
 
   state = {
-    mode: 'javascript',
-    content: this.props.value || '',
+    language: 'javascript',
+    input: this.props.input || '',
   };
 
   onLoad = (editor) => (this.editor = editor);
-  onChangeMode = ({ label }) => this.setState({ mode: label }) || this.editor.getSession().setMode(`ace/mode/${label}`);
-  onChangeContent = (content) => {
-    this.setState({ content });
-    this.props.onChange(content);
+  selectLanguage = ({ label }) => {
+    this.setState({ language: label });
+    this.editor.getSession().setMode(`ace/mode/${label}`);
   };
+  onChangeContent = (input) => {
+    this.setState({ input });
+    this.props.setInput(input);
+  };
+  onSubmit = () => this.props.submit(this.state);
 
   render() {
-    const { mode, content } = this.state;
+    const { language, input } = this.state;
     const { width, height, value, onChange } = this.props;
 
     return (
@@ -73,15 +82,14 @@ export default class RequestForm extends React.Component {
             <Image src={image} />
             <Title>Request Form</Title>
           </Wrapper>
-          <Dropdown title="Language" items={languages} width={120} onChange={this.onChangeMode} />
+          <Dropdown title="Language" items={languages} width={120} onChange={this.selectLanguage} />
         </Header>
         <AceEditor
-          mode={mode}
+          mode={language}
           theme="capsula-js"
-          value={content}
+          value={input}
           onLoad={this.onLoad}
           onChange={this.onChangeContent}
-          editorProps={{ $blockScrolling: true }}
           fontSize={11}
           setOptions={{
             tabSize: 2,
@@ -89,6 +97,7 @@ export default class RequestForm extends React.Component {
           width={width}
           height={`calc(${height} - 39px)`}
         />
+        <Button text="Submit" css="margin: 10px; padding: 5px; width: 100px;" onClick={this.onSubmit} />
       </Container>
     );
   }

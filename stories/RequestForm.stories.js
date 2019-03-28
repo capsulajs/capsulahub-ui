@@ -5,7 +5,10 @@ import { RequestForm } from 'src';
 export const props = {
   width: '100%',
   height: '200px',
-  onChange: (content) => console.log('Content: ', content),
+  path: 'test/test',
+  selectLanguage: console.log,
+  setInput: console.log,
+  submit: console.log,
 };
 
 storiesOf('RequestForm', module).add('default', () => <RequestForm {...props} />);
