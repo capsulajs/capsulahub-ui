@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import AceEditor from 'react-ace';
+import JSONL from 'json-literal';
 import { Dropdown, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
@@ -96,7 +97,12 @@ export default class RequestForm extends React.Component {
     this.setState({ arguments: args });
     this.props.setArgument(index, this.state.arguments);
   };
-  onSubmit = () => this.props.submit({ arguments: this.state.arguments });
+  onSubmit = () => {
+    const { language } = this.state;
+    const args =
+      language === 'javascript' ? this.state.arguments.map(JSONL.parse).map(JSON.stringify) : this.state.arguments;
+    this.props.submit({ language, arguments: args });
+  };
 
   render() {
     const { language, arguments: input } = this.state;
