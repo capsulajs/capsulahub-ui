@@ -47,7 +47,7 @@ const Image = styled.img`
 `;
 const Title = styled.div`
   text-transform: uppercase;
-  color: ${(props) => props.color};
+  color: ${props => props.color};
 `;
 
 const languages = [{ label: 'javascript' }, { label: 'json' }];
