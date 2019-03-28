@@ -41,6 +41,10 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
 `;
+const Line = styled.div`
+  border: 1px dashed #767676;
+  width: 100%;
+`;
 const Image = styled.img`
   padding-right: 5px;
   width: 16px;
@@ -122,20 +126,22 @@ export default class RequestForm extends React.Component {
             </Wrapper>
           </Header>
           {input.map((value, index) => (
-            <AceEditor
-              key={index}
-              mode={language}
-              theme="capsula-js"
-              value={value}
-              onLoad={this.onLoad}
-              onChange={this.onChangeInput(index)}
-              fontSize={11}
-              setOptions={{
-                tabSize: 2,
-              }}
-              width={`${width - 10}px`}
-              height={`${(height - 65) / input.length}px`}
-            />
+            <React.Fragment key={index}>
+              <AceEditor
+                mode={language}
+                theme="capsula-js"
+                value={value}
+                onLoad={this.onLoad}
+                onChange={this.onChangeInput(index)}
+                fontSize={11}
+                setOptions={{
+                  tabSize: 2,
+                }}
+                width={`${width - 10}px`}
+                height={`${(height - (65 + 2 * input.length)) / input.length}px`}
+              />
+              <Line />
+            </React.Fragment>
           ))}
           <Footer>
             <Button text="Submit" css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
