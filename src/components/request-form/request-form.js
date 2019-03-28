@@ -97,7 +97,7 @@ export default class RequestForm extends React.Component {
           width={width}
           height={`calc(${height} - 39px)`}
         />
-        <Button text="Submit" css="margin: 10px; padding: 5px; width: 100px;" onClick={this.onSubmit} />
+        <Button text="Submit" css="margin: 10px; padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
       </Container>
     );
   }
