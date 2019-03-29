@@ -20,12 +20,12 @@ export default class Editor extends React.Component {
     mode: PropTypes.string.isRequired,
     onLoad: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
+    onValid: PropTypes.func.isRequired,
     value: PropTypes.string,
   };
 
-  onChange = (newArgument) => {
-    this.props.onChange(this.props.index, newArgument);
-  };
+  onChange = (input) => this.props.onChange(this.props.index, input);
+  onValid = (input) => this.props.onValid(input.length === 0);
 
   render() {
     const { width, height, mode, onLoad, onChange, value } = this.props;
@@ -38,6 +38,9 @@ export default class Editor extends React.Component {
           value={value}
           onLoad={onLoad}
           onChange={this.onChange}
+          enableBasicAutocompletion={true}
+          enableLiveAutocompletion={true}
+          onValidate={this.onValid}
           fontSize={11}
           setOptions={{
             tabSize: 2,

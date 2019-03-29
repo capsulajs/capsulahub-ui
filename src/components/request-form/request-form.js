@@ -65,7 +65,8 @@ export default class RequestForm extends React.Component {
 
   state = {
     language: 'javascript',
-    arguments: [''],
+    arguments: ['{}'],
+    isValid: true,
   };
 
   onLoad = (editor) => (this.editor = editor);
@@ -76,7 +77,7 @@ export default class RequestForm extends React.Component {
   };
   onChangeArgumentsCount = ({ label }) => {
     const args = this.state.arguments;
-    const getRequiredArguments = (n, array = []) => [...array, ...new Array(n).fill('')].slice(0, n);
+    const getRequiredArguments = (n, array = []) => [...array, ...new Array(n).fill('{}')].slice(0, n);
 
     switch (label) {
       case 'One':
@@ -95,15 +96,20 @@ export default class RequestForm extends React.Component {
     this.setState({ arguments: args });
     this.props.setArgument(index, this.state.arguments);
   };
+  onValid = (isValid) => this.setState({ isValid });
   onSubmit = () => {
-    const { language } = this.state;
-    const args =
-      language === javascript ? this.state.arguments.map(JSONL.parse).map(JSON.stringify) : this.state.arguments;
-    this.props.submit({ language, arguments: args });
+    const { isValid, language, arguments: args } = this.state;
+
+    if (isValid) {
+      this.props.submit({
+        language,
+        arguments: language === javascript ? args.map(JSONL.parse).map(JSON.stringify) : args,
+      });
+    }
   };
 
   render() {
-    const { language, arguments: input } = this.state;
+    const { language, isValid, arguments: input } = this.state;
     const { width, height, path } = this.props;
 
     return (
@@ -127,15 +133,18 @@ export default class RequestForm extends React.Component {
               value={value}
               onLoad={this.onLoad}
               onChange={this.onChangeArgument}
-              enableBasicAutocompletion={true}
-              enableLiveAutocompletion={true}
-              onValidate={(d) => console.log('LFFF', d)}
+              onValid={this.onValid}
               width={width - 10}
               height={(height - (65 + 2 * input.length)) / input.length}
             />
           ))}
           <Footer>
-            <Button text="Submit" css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
+            <Button
+              text="Submit"
+              theme={isValid ? 'active' : 'disabled'}
+              css="padding: 3px 5px 4px 5px; width: 100px;"
+              onClick={this.onSubmit}
+            />
             <Title color="#f8f7f7">{path}</Title>
           </Footer>
         </Column>
