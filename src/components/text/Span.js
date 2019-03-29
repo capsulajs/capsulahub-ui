@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import 'typeface-montserrat';
+import styled from 'styled-components';
 
-export const Span = styled.span`
+export default () => styled.span`
   font-family: Montserrat;
   font-size: 1rem;
 `;

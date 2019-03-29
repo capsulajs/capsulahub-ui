@@ -23,6 +23,6 @@ const CInput = styled.input`
   }
 `;
 
-export const Input = ({ onChange, placeholder }) => (
+export default ({ onChange, placeholder }) => (
   <CInput placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
 );

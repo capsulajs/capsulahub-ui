@@ -17,8 +17,11 @@ ace.define('ace/theme/capsula-js', ['require', 'exports', 'module', 'ace/lib/dom
   background: #3F3F3F\
 }\
 .ace-capsula-js {\
-  background-color: #3F3F3F;\
-  color: #DEDEDE\
+  background: #3F3F3F;\
+  color: #DEDEDE;\
+}\
+.ace-capsula-js .ace_selection {\
+  background: #58D7FE;\
 }\
 .ace-capsula-js .ace_constant,\
 .ace-capsula-js .ace_constant.ace_character,\

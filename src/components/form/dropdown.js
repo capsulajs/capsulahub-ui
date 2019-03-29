@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
 import { defaultFontFamily } from '../constants';
@@ -7,10 +8,9 @@ const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-size: 12px;
   font-style: regular;
-  background: #737373;
+  background: #767676;
   color: #f8f7f7;
-  width: 100%;
-  max-width: 300px;
+  width: ${(props) => props.width || 200}px;
 `;
 
 const Header = styled.div`
@@ -51,75 +51,70 @@ const ArrowUp = styled.div`
   -webkit-transform: rotate(-135deg);
 `;
 
-const List = styled.ul`
+const List = styled.div`
   position: absolute;
   z-index: 99;
-  list-style-type: none;
   background: #e1e1e1;
   color: #373737;
-  margin: 0;
-  padding: 0;
-  width: 300px;
+  width: ${(props) => props.width || 200}px;
 `;
 
-const Item = styled.li`
+const Item = styled.div`
   text-decoration: none;
   padding: 10px;
+  width: calc(100% - 20px);
   border-bottom: solid #d9d9d9 1px;
+  background: #e1e1e1;
+  cursor: pointer;
+
   :first-child {
     border-top: solid #d9d9d9 1px;
   }
+
   :last-child {
     border-bottom: none;
   }
-  cursor: pointer;
 
   &:hover {
     background: #d9d9d9;
   }
 `;
 
-export class D extends React.Component {
-  constructor(props) {
-    super(props);
+class Dropdown extends React.Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired,
+    width: PropTypes.number,
+  };
 
-    this.state = {
-      isOpen: false,
-      title: this.props.title,
-      items: this.props.items || [],
-      selected: null,
-    };
-  }
+  state = {
+    isOpen: false,
+    title: this.props.title,
+    items: this.props.items || [],
+    selected: null,
+  };
 
-  handleClickOutside() {
-    this.setState({
-      isOpen: false,
-    });
-  }
-
-  toggle() {
-    this.setState((prevState) => ({
-      isOpen: !prevState.isOpen,
-    }));
-  }
-
-  select(selected) {
+  handleClickOutside = () => this.setState({ isOpen: false });
+  toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
+  select = (selected) => {
     this.setState({ selected });
     this.toggle();
     this.props.onChange(this.state.items[selected]);
-  }
+  };
 
   render() {
+    const { width } = this.props;
     const { title, items, selected, isOpen } = this.state;
 
     return (
-      <Container>
+      <Container width={width}>
         <Header onClick={() => this.toggle()}>
           <Title>{Number.isInteger(selected) ? items[selected].label : title}</Title>
           {isOpen ? <ArrowUp /> : <ArrowDown />}
         </Header>
         {isOpen && (
-          <List>
+          <List width={width}>
             {items.map((item, index) => (
               <Item key={index} onClick={() => this.select(index)}>
                 {item.label}
@@ -132,4 +127,4 @@ export class D extends React.Component {
   }
 }
 
-export const Dropdown = enhanceWithClickOutside(D);
+export default enhanceWithClickOutside(Dropdown);
