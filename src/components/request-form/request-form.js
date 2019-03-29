@@ -103,7 +103,7 @@ export default class RequestForm extends React.Component {
     if (isValid) {
       this.props.submit({
         language,
-        arguments: language === javascript ? args.map(JSONL.parse).map(JSON.stringify) : args,
+        arguments: language === javascript ? args.map(JSONL.parse).map(JSON.stringify) : args
       });
     }
   };
@@ -139,12 +139,7 @@ export default class RequestForm extends React.Component {
             />
           ))}
           <Footer>
-            <Button
-              text="Submit"
-              theme={isValid ? 'active' : 'disabled'}
-              css="padding: 3px 5px 4px 5px; width: 100px;"
-              onClick={this.onSubmit}
-            />
+            <Button text="Submit" theme={isValid ? 'active' : 'disabled'} css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
             <Title color="#f8f7f7">{path}</Title>
           </Footer>
         </Column>
