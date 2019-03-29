@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
-import '../theme';
+import './theme';
 
 const Line = styled.div`
   height: 1px;

@@ -127,6 +127,9 @@ export default class RequestForm extends React.Component {
               value={value}
               onLoad={this.onLoad}
               onChange={this.onChangeArgument}
+              enableBasicAutocompletion={true}
+              enableLiveAutocompletion={true}
+              onValidate={(d) => console.log('LFFF', d)}
               width={width - 10}
               height={(height - (65 + 2 * input.length)) / input.length}
             />

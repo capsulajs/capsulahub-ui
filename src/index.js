@@ -6,7 +6,6 @@ export {
   Button,
   Input,
   CheckBox,
-  JsonInput,
   Dropdown,
   Loader,
   Modal,
