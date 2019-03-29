@@ -83,17 +83,17 @@ export default class RequestForm extends React.Component {
   };
   onChangeArgumentsCount = ({ label }) => {
     const args = this.state.arguments;
-    const reset = (n, array = []) => [...array, ...new Array(n).fill('')].slice(0, n);
+    const getRequiredArguments = (n, array = []) => [...array, ...new Array(n).fill('')].slice(0, n);
 
     switch (label) {
       case 'One':
-        return this.setState({ arguments: reset(1, args) });
+        return this.setState({ arguments: getRequiredArguments(1, args) });
       case 'Two':
-        return this.setState({ arguments: reset(2, args) });
+        return this.setState({ arguments: getRequiredArguments(2, args) });
       case 'Three':
-        return this.setState({ arguments: reset(3, args) });
+        return this.setState({ arguments: getRequiredArguments(3, args) });
       default:
-        return this.setState({ arguments: reset(1, args) });
+        return this.setState({ arguments: getRequiredArguments(1, args) });
     }
   };
   onChangeInput = (index) => (newArgument) => {
