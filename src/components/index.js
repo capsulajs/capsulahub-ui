@@ -11,4 +11,17 @@ import Input from './form/input';
 import CheckBox from './form/checkbox';
 import Dropdown from './form/dropdown';
 
-export { Canvas, Logger, Catalog, RequestForm, Button, Input, CheckBox, Dropdown, Loader, Modal, Paragraph, Span };
+export {
+  Canvas,
+  Logger,
+  Catalog,
+  RequestForm,
+  Button,
+  Input,
+  CheckBox,
+  Dropdown,
+  Loader,
+  Modal,
+  Paragraph,
+  Span,
+};
