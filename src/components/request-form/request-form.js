@@ -120,16 +120,12 @@ export default class RequestForm extends React.Component {
             </Wrapper>
           </Header>
           {input.map((value, index) => (
-            <Editor
-              key={index}
-              index={index}
-              mode={language}
-              value={value}
-              onLoad={this.onLoad}
-              onChange={this.onChangeArgument}
-              width={width - 10}
-              height={(height - (65 + 2 * input.length)) / input.length}
-            />
+            <Editor key={index} index={index}
+                    mode={language} value={value}
+                    onLoad={this.onLoad}
+                    onChange={this.onChangeArgument}
+                    width={width - 10}
+                    height={(height - (65 + 2 * input.length)) / input.length} />
           ))}
           <Footer>
             <Button text="Submit" css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
