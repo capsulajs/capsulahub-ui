@@ -42,7 +42,8 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 const Line = styled.div`
-  border: 1px dashed #767676;
+  height: 1px;
+  border-bottom: 1px dashed #767676;
   width: 100%;
 `;
 const Image = styled.img`
