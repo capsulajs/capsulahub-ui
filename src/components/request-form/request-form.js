@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AceEditor from 'react-ace';
 import JSONL from 'json-literal';
+import Editor from './editor';
 import { Dropdown, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
-import 'brace/mode/javascript';
-import 'brace/mode/json';
-import '../theme';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -41,11 +38,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
 `;
-const Line = styled.div`
-  height: 1px;
-  border-bottom: 1px dashed #767676;
-  width: 100%;
-`;
 const Image = styled.img`
   padding-right: 5px;
   width: 16px;
@@ -56,8 +48,9 @@ const Title = styled.div`
   color: ${(props) => props.color};
 `;
 
+const javascript = 'javascript';
 const argumentsCount = [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }];
-const languages = [{ label: 'javascript' }, { label: 'json' }];
+const languages = [{ label: javascript }, { label: 'json' }];
 
 export default class RequestForm extends React.Component {
   static propTypes = {
@@ -96,7 +89,7 @@ export default class RequestForm extends React.Component {
         return this.setState({ arguments: getRequiredArguments(1, args) });
     }
   };
-  onChangeInput = (index) => (newArgument) => {
+  onChangeArgument = (index, newArgument) => {
     const args = [...this.state.arguments];
     args[index] = newArgument;
     this.setState({ arguments: args });
@@ -105,7 +98,7 @@ export default class RequestForm extends React.Component {
   onSubmit = () => {
     const { language } = this.state;
     const args =
-      language === 'javascript' ? this.state.arguments.map(JSONL.parse).map(JSON.stringify) : this.state.arguments;
+      language === javascript ? this.state.arguments.map(JSONL.parse).map(JSON.stringify) : this.state.arguments;
     this.props.submit({ language, arguments: args });
   };
 
@@ -127,22 +120,16 @@ export default class RequestForm extends React.Component {
             </Wrapper>
           </Header>
           {input.map((value, index) => (
-            <React.Fragment key={index}>
-              <AceEditor
-                mode={language}
-                theme="capsula-js"
-                value={value}
-                onLoad={this.onLoad}
-                onChange={this.onChangeInput(index)}
-                fontSize={11}
-                setOptions={{
-                  tabSize: 2,
-                }}
-                width={`${width - 10}px`}
-                height={`${(height - (65 + 2 * input.length)) / input.length}px`}
-              />
-              <Line />
-            </React.Fragment>
+            <Editor
+              key={index}
+              index={index}
+              mode={language}
+              value={value}
+              onLoad={this.onLoad}
+              onChange={this.onChangeArgument}
+              width={width - 10}
+              height={(height - (65 + 2 * input.length)) / input.length}
+            />
           ))}
           <Footer>
             <Button text="Submit" css="padding: 3px 5px 4px 5px; width: 100px;" onClick={this.onSubmit} />
