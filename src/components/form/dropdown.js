@@ -88,10 +88,13 @@ class Dropdown extends React.Component {
     width: PropTypes.number,
   };
 
+  static defaultProps = {
+    items: [],
+  };
+
   state = {
     isOpen: false,
     title: this.props.title,
-    items: this.props.items || [],
     selected: null,
   };
 
@@ -100,25 +103,23 @@ class Dropdown extends React.Component {
   select = (selected) => {
     this.setState({ selected });
     this.toggle();
-    this.props.onChange(this.state.items[selected]);
+    this.props.onChange(this.props.items[selected]);
   };
 
   render() {
-    const { width } = this.props;
-    const { title, items, selected, isOpen } = this.state;
+    const { width, items } = this.props;
+    const { title, selected, isOpen } = this.state;
 
     return (
       <Container width={width}>
-        <Header onClick={() => this.toggle()}>
+        <Header onClick={this.toggle}>
           <Title>{Number.isInteger(selected) ? items[selected].label : title}</Title>
           {isOpen ? <ArrowUp /> : <ArrowDown />}
         </Header>
         {isOpen && (
           <List width={width}>
             {items.map((item, index) => (
-              <Item key={index} onClick={() => this.select(index)}>
-                {item.label}
-              </Item>
+              <DropdownItem key={index} item={item} index={index} select={this.select} />
             ))}
           </List>
         )}
@@ -126,5 +127,11 @@ class Dropdown extends React.Component {
     );
   }
 }
+
+const DropdownItem = ({ select, index, item }) => {
+  const handleOnClick = () => select(index);
+
+  return <Item onClick={handleOnClick}>{item.label}</Item>;
+};
 
 export default enhanceWithClickOutside(Dropdown);
