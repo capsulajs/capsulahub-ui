@@ -1,0 +1,12 @@
+.idea/
+.cache/
+dist/
+stories/
+src/
+tests/
+.prettierignore
+.prettierrc.js
+.remarkrc
+.travis.yml
+jest.config.js
+ts*.json
