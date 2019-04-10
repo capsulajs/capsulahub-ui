@@ -7,7 +7,7 @@ const Button = styled.button`
   font-size: ${defaultFomtSize};
   background-color: ${(props) => props.theme.bg};
   color: ${(props) => props.theme.color};
-  padding: 3px 5px 4px 5px;
+  padding: 3px 5px 5px 5px;
   margin: 0;
   cursor: pointer;
   border: none;
