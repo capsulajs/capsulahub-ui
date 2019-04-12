@@ -6,15 +6,15 @@ import { getLogs } from './utils';
 
 class LoggerExample extends React.Component {
   state = {
-    logs: [],
-  };
+    logs: []
+  }
 
   componentDidMount() {
     this.setState({ logs: [getLogs(), getLogs()] });
   }
 
   render() {
-    return <Logger logs={this.state.logs} width={1000} height={350} />;
+    return <Logger logs={this.state.logs} width={1000} height={350}/>
   }
 }
 
