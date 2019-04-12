@@ -58,6 +58,15 @@ export default class Logger extends React.Component {
 
   onClear = () => this.setState({ events: [] });
 
+  componentWillUpdate({ logs }) {
+    this.logsSubscriptions.map((sub) => sub.unsubscribe());
+    this.logsSubscriptions = logs.map((obs) => {
+      return obs.subscribe((event) => {
+        this.setState((state) => ({ events: [...state.events, event] }));
+      });
+    });
+  }
+
   componentDidMount() {
     this.logsSubscriptions = this.props.logs.map((obs) => {
       return obs.subscribe((event) => {

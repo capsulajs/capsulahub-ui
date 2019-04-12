@@ -4,14 +4,20 @@ import { action } from '@storybook/addon-actions';
 import { Logger } from 'src';
 import { getLogs } from './utils';
 
-const props = {
-  logs: [getLogs(), getLogs()],
-  width: 1000,
-  height: 350,
-};
+class LoggerExample extends React.Component {
+  state = {
+    logs: [],
+  };
 
-const actions = {};
+  componentDidMount() {
+    this.setState({ logs: [getLogs(), getLogs()] });
+  }
+
+  render() {
+    return <Logger logs={this.state.logs} width={1000} height={350} />;
+  }
+}
 
 storiesOf('Logger', module)
-  .add('default', () => <Logger {...props} {...actions} />)
-  .add('data', () => <Logger {...props} {...actions} />);
+  .add('default', () => <LoggerExample />)
+  .add('data', () => <LoggerExample />);
