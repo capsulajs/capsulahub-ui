@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Editor from './editor';
-import { Dropdown, Button } from '..';
+import { Dropdown, Input, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
 import { codeModes } from '../../constants';
@@ -47,8 +47,15 @@ const Title = styled.div`
   text-transform: uppercase;
   color: ${(props) => props.color};
 `;
+const ArgumentsCount = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const ArgumentsCountLabel = styled.label`
+  margin-right: 10px;
+`;
 
-const argumentsCount = [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }];
+const defaultArgValue = 'return {};';
 const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
 export default class RequestForm extends React.Component {
@@ -64,8 +71,9 @@ export default class RequestForm extends React.Component {
 
   state = {
     language: codeModes.javascript,
-    arguments: ['return {};'],
-    isValid: false,
+    requestArgs: [defaultArgValue],
+    argsCount: 1,
+    isValid: true,
   };
 
   onLoad = (editor) => (this.editor = editor);
@@ -74,35 +82,30 @@ export default class RequestForm extends React.Component {
     this.editor.getSession().setMode(`ace/mode/${label}`);
     this.props.selectLanguage(label);
   };
-  onChangeArgumentsCount = ({ label }) => {
-    const args = this.state.arguments;
-    const getRequiredArguments = (n, array = []) => [...array, ...new Array(n).fill('{}')].slice(0, n);
-
-    switch (label) {
-      case 'One':
-        return this.setState({ arguments: getRequiredArguments(1, args) });
-      case 'Two':
-        return this.setState({ arguments: getRequiredArguments(2, args) });
-      case 'Three':
-        return this.setState({ arguments: getRequiredArguments(3, args) });
-      default:
-        return this.setState({ arguments: getRequiredArguments(1, args) });
-    }
+  onChangeArgumentsCount = (argsCount) => {
+    const argsCountNumber = Number(argsCount);
+    this.setState((prevState) => ({
+      requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultArgValue)].slice(
+        0,
+        argsCountNumber
+      ),
+      argsCount,
+    }));
   };
   onChangeArgument = (index, newArgument) => {
-    const args = [...this.state.arguments];
+    const args = [...this.state.requestArgs];
     args[index] = newArgument;
-    this.setState({ arguments: args });
-    this.props.setArgument(index, this.state.arguments);
+    this.setState({ requestArgs: args });
+    this.props.setArgument(index, this.state.requestArgs);
   };
   onValid = (isValid) => isValid !== this.state.isValid && this.setState({ isValid });
   onSubmit = () => {
-    const { isValid, language, arguments: args } = this.state;
+    const { isValid, language, requestArgs: args } = this.state;
 
     if (isValid) {
       this.props.submit({
         language,
-        arguments: args.map((arg) =>
+        requestArgs: args.map((arg) =>
           language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
         ),
       });
@@ -110,7 +113,7 @@ export default class RequestForm extends React.Component {
   };
 
   render() {
-    const { language, isValid, arguments: input } = this.state;
+    const { language, isValid, requestArgs, argsCount } = this.state;
     const { width, height, path } = this.props;
 
     return (
@@ -122,11 +125,14 @@ export default class RequestForm extends React.Component {
               <Title>Request Form</Title>
             </Wrapper>
             <Wrapper>
-              <Dropdown title="Arguments" items={argumentsCount} width={120} onChange={this.onChangeArgumentsCount} />
+              <ArgumentsCount>
+                <ArgumentsCountLabel>Arguments:</ArgumentsCountLabel>
+                <Input min="1" onChange={this.onChangeArgumentsCount} value={argsCount} type="number" width="30px" />
+              </ArgumentsCount>
               <Dropdown title={codeModes.javascript} items={languages} width={120} onChange={this.onChangeLanguage} />
             </Wrapper>
           </Header>
-          {input.map((value, index) => (
+          {requestArgs.map((value, index) => (
             <Editor
               key={index}
               index={index}
@@ -136,7 +142,7 @@ export default class RequestForm extends React.Component {
               onChange={this.onChangeArgument}
               onValid={this.onValid}
               width={width - 10}
-              height={(height - (65 + 2 * input.length)) / input.length}
+              height={(height - (65 + 2 * requestArgs.length)) / requestArgs.length}
             />
           ))}
           <Footer>

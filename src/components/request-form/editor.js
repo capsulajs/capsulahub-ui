@@ -43,6 +43,7 @@ export default class Editor extends React.Component {
     return (
       <React.Fragment>
         <AceEditor
+          annotations={[{ row: 1, column: 1, type: 'error', text: 'Some error.' }]}
           mode={mode}
           theme="capsula-js"
           value={value}
@@ -52,9 +53,8 @@ export default class Editor extends React.Component {
           fontSize={14}
           setOptions={{
             tabSize: 2,
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
           }}
+          editorProps={{ $blockScrolling: true }}
           width={`${width}px`}
           height={`${height}px`}
         />
