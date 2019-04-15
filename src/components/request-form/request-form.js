@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import JSONL from 'json-literal';
 import Editor from './editor';
 import { Dropdown, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
@@ -66,7 +65,7 @@ export default class RequestForm extends React.Component {
   state = {
     language: 'javascript',
     arguments: ['{}'],
-    isValid: true,
+    isValid: false,
   };
 
   onLoad = (editor) => (this.editor = editor);
@@ -96,14 +95,14 @@ export default class RequestForm extends React.Component {
     this.setState({ arguments: args });
     this.props.setArgument(index, this.state.arguments);
   };
-  onValid = (isValid) => this.setState({ isValid });
+  onValid = (isValid) => isValid !== this.state.isValid && this.setState({ isValid });
   onSubmit = () => {
     const { isValid, language, arguments: args } = this.state;
 
     if (isValid) {
       this.props.submit({
         language,
-        arguments: language === javascript ? args.map(JSONL.parse).map(JSON.stringify) : args,
+        arguments: args.map((arg) => eval(`(function(){${arg}})()`)),
       });
     }
   };

@@ -25,10 +25,17 @@ export default class Editor extends React.Component {
   };
 
   onChange = (input) => this.props.onChange(this.props.index, input);
-  onValid = (input) => this.props.onValid(input.length === 0);
+
+  onValid = (errors) => {
+    let isValid = false;
+    if (/.*return .+/.test(this.props.value) && errors.filter((error) => error.type !== 'info').length === 0) {
+      isValid = true;
+    }
+    this.props.onValid(isValid);
+  };
 
   render() {
-    const { width, height, mode, onLoad, onChange, value } = this.props;
+    const { width, height, mode, onLoad, value } = this.props;
 
     return (
       <React.Fragment>
@@ -38,12 +45,12 @@ export default class Editor extends React.Component {
           value={value}
           onLoad={onLoad}
           onChange={this.onChange}
-          enableBasicAutocompletion={true}
-          enableLiveAutocompletion={true}
           onValidate={this.onValid}
-          fontSize={11}
+          fontSize={14}
           setOptions={{
             tabSize: 2,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
           }}
           width={`${width}px`}
           height={`${height}px`}
