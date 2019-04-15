@@ -5,6 +5,7 @@ import Editor from './editor';
 import { Dropdown, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
+import { codeModes } from '../../constants';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -47,9 +48,8 @@ const Title = styled.div`
   color: ${(props) => props.color};
 `;
 
-const javascript = 'javascript';
 const argumentsCount = [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }];
-const languages = [{ label: javascript }, { label: 'json' }];
+const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
 export default class RequestForm extends React.Component {
   static propTypes = {
@@ -63,8 +63,8 @@ export default class RequestForm extends React.Component {
   };
 
   state = {
-    language: 'javascript',
-    arguments: ['{}'],
+    language: codeModes.javascript,
+    arguments: ['return {};'],
     isValid: false,
   };
 
@@ -102,7 +102,9 @@ export default class RequestForm extends React.Component {
     if (isValid) {
       this.props.submit({
         language,
-        arguments: args.map((arg) => eval(`(function(){${arg}})()`)),
+        arguments: args.map((arg) =>
+          language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
+        ),
       });
     }
   };
@@ -121,7 +123,7 @@ export default class RequestForm extends React.Component {
             </Wrapper>
             <Wrapper>
               <Dropdown title="Arguments" items={argumentsCount} width={120} onChange={this.onChangeArgumentsCount} />
-              <Dropdown title="Language" items={languages} width={120} onChange={this.onChangeLanguage} />
+              <Dropdown title={codeModes.javascript} items={languages} width={120} onChange={this.onChangeLanguage} />
             </Wrapper>
           </Header>
           {input.map((value, index) => (

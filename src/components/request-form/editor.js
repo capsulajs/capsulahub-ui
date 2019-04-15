@@ -5,6 +5,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import './theme';
+import { codeModes } from '../../constants';
 
 const Line = styled.div`
   height: 1px;
@@ -28,8 +29,10 @@ export default class Editor extends React.Component {
 
   onValid = (errors) => {
     let isValid = false;
-    if (/.*return .+/.test(this.props.value) && errors.filter((error) => error.type !== 'info').length === 0) {
-      isValid = true;
+    if (errors.filter((error) => error.type !== 'info').length === 0) {
+      if (this.props.mode === codeModes.json || /.*return .+/.test(this.props.value)) {
+        isValid = true;
+      }
     }
     this.props.onValid(isValid);
   };
