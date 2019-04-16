@@ -55,7 +55,8 @@ const ArgumentsCountLabel = styled.label`
   margin-right: 10px;
 `;
 
-const defaultArgValue = 'return {};';
+const defaultJsArgValue = 'return {};';
+const defaultJsonArgValue = '{}';
 const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
 export default class RequestForm extends React.Component {
@@ -71,7 +72,7 @@ export default class RequestForm extends React.Component {
 
   state = {
     language: codeModes.javascript,
-    requestArgs: [defaultArgValue],
+    requestArgs: [defaultJsArgValue],
     argsCount: 1,
     editorsIsValid: [true],
   };
@@ -79,7 +80,12 @@ export default class RequestForm extends React.Component {
   onLoad = (editor) => (this.editor = editor);
 
   onChangeLanguage = ({ label }) => {
-    this.setState({ language: label });
+    this.setState((prevState) => ({
+      language: label,
+      requestArgs: prevState.requestArgs.map(() =>
+        label === codeModes.javascript ? defaultJsArgValue : defaultJsonArgValue
+      ),
+    }));
     this.editor.getSession().setMode(`ace/mode/${label}`);
     this.props.selectLanguage(label);
   };
@@ -92,7 +98,7 @@ export default class RequestForm extends React.Component {
 
     if (argsCountNumber > 0) {
       this.setState((prevState) => ({
-        requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultArgValue)].slice(
+        requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultJsArgValue)].slice(
           0,
           argsCountNumber
         ),
@@ -118,13 +124,15 @@ export default class RequestForm extends React.Component {
     });
 
   onSubmit = () => {
-    const { language, requestArgs: args } = this.state;
-    this.props.submit({
-      language,
-      requestArgs: args.map((arg) =>
-        language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
-      ),
-    });
+    if (this.isFormValid()) {
+      const { language, requestArgs: args } = this.state;
+      this.props.submit({
+        language,
+        requestArgs: args.map((arg) =>
+          language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
+        ),
+      });
+    }
   };
 
   isFormValid = () => typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';

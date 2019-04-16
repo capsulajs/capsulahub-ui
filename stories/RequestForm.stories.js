@@ -8,7 +8,7 @@ export const props = {
   path: 'test/test',
   selectLanguage: console.log,
   setArgument: console.log,
-  submit: console.log,
+  submit: (data) => console.log(data),
 };
 
 storiesOf('RequestForm', module).add('default', () => <RequestForm {...props} />);
