@@ -73,15 +73,17 @@ export default class RequestForm extends React.Component {
     language: codeModes.javascript,
     requestArgs: [defaultArgValue],
     argsCount: 1,
-    isValid: true,
+    editorsIsValid: [true],
   };
 
   onLoad = (editor) => (this.editor = editor);
+
   onChangeLanguage = ({ label }) => {
     this.setState({ language: label });
     this.editor.getSession().setMode(`ace/mode/${label}`);
     this.props.selectLanguage(label);
   };
+
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
     this.setState((prevState) => ({
@@ -92,28 +94,38 @@ export default class RequestForm extends React.Component {
       argsCount,
     }));
   };
+
   onChangeArgument = (index, newArgument) => {
     const args = [...this.state.requestArgs];
     args[index] = newArgument;
     this.setState({ requestArgs: args });
     this.props.setArgument(index, this.state.requestArgs);
   };
-  onValid = (isValid) => isValid !== this.state.isValid && this.setState({ isValid });
-  onSubmit = () => {
-    const { isValid, language, requestArgs: args } = this.state;
 
-    if (isValid) {
-      this.props.submit({
-        language,
-        requestArgs: args.map((arg) =>
-          language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
-        ),
-      });
-    }
+  onValid = ({ isValid, index }) =>
+    isValid !== this.state.editorsIsValid[index] &&
+    this.setState((prevState) => {
+      const newEditorsIsValid = [...prevState.editorsIsValid];
+      newEditorsIsValid[index] = isValid;
+      return {
+        editorsIsValid: newEditorsIsValid,
+      };
+    });
+
+  onSubmit = () => {
+    const { language, requestArgs: args } = this.state;
+    this.props.submit({
+      language,
+      requestArgs: args.map((arg) =>
+        language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
+      ),
+    });
   };
 
+  isFormValid = () => typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';
+
   render() {
-    const { language, isValid, requestArgs, argsCount } = this.state;
+    const { language, requestArgs, argsCount } = this.state;
     const { width, height, path } = this.props;
 
     return (
@@ -148,7 +160,7 @@ export default class RequestForm extends React.Component {
           <Footer>
             <Button
               text="Submit"
-              theme={isValid ? 'active' : 'disabled'}
+              theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
               onClick={this.onSubmit}
             />

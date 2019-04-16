@@ -28,13 +28,14 @@ export default class Editor extends React.Component {
   onChange = (input) => this.props.onChange(this.props.index, input);
 
   onValid = (errors) => {
+    const { mode, value, onValid, index } = this.props;
     let isValid = false;
     if (errors.filter((error) => error.type !== 'info').length === 0) {
-      if (this.props.mode === codeModes.json || /.*return .+/.test(this.props.value)) {
+      if (mode === codeModes.json || /.*return .+/.test(value)) {
         isValid = true;
       }
     }
-    this.props.onValid(isValid);
+    onValid({ isValid, index });
   };
 
   render() {
