@@ -86,13 +86,18 @@ export default class RequestForm extends React.Component {
 
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
-    this.setState((prevState) => ({
-      requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultArgValue)].slice(
-        0,
-        argsCountNumber
-      ),
+    this.setState({
       argsCount,
-    }));
+    });
+
+    if (argsCountNumber > 0) {
+      this.setState((prevState) => ({
+        requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultArgValue)].slice(
+          0,
+          argsCountNumber
+        ),
+      }));
+    }
   };
 
   onChangeArgument = (index, newArgument) => {
