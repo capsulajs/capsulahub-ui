@@ -19,11 +19,18 @@ export default class Editor extends React.Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     mode: PropTypes.string.isRequired,
-    onLoad: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onValid: PropTypes.func.isRequired,
     value: PropTypes.string,
   };
+
+  editor = undefined;
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.mode !== this.props.mode) {
+      this.editor.getSession().setMode(`ace/mode/${this.props.mode}`);
+    }
+  }
 
   onChange = (input) => this.props.onChange(this.props.index, input);
 
@@ -38,17 +45,18 @@ export default class Editor extends React.Component {
     onValid({ isValid, index });
   };
 
+  onLoad = (editor) => (this.editor = editor);
+
   render() {
-    const { width, height, mode, onLoad, value } = this.props;
+    const { width, height, mode, value } = this.props;
 
     return (
       <React.Fragment>
         <AceEditor
-          annotations={[{ row: 1, column: 1, type: 'error', text: 'Some error.' }]}
           mode={mode}
           theme="capsula-js"
           value={value}
-          onLoad={onLoad}
+          onLoad={this.onLoad}
           onChange={this.onChange}
           onValidate={this.onValid}
           fontSize={14}

@@ -77,17 +77,16 @@ export default class RequestForm extends React.Component {
     editorsIsValid: [true],
   };
 
-  onLoad = (editor) => (this.editor = editor);
-
   onChangeLanguage = ({ label }) => {
-    this.setState((prevState) => ({
-      language: label,
-      requestArgs: prevState.requestArgs.map(() =>
-        label === codeModes.javascript ? defaultJsArgValue : defaultJsonArgValue
-      ),
-    }));
-    this.editor.getSession().setMode(`ace/mode/${label}`);
-    this.props.selectLanguage(label);
+    if (label !== this.state.language) {
+      this.setState((prevState) => ({
+        language: label,
+        requestArgs: prevState.requestArgs.map(() =>
+          label === codeModes.javascript ? defaultJsArgValue : defaultJsonArgValue
+        ),
+      }));
+      this.props.selectLanguage(label);
+    }
   };
 
   onChangeArgumentsCount = (argsCount) => {
@@ -163,7 +162,6 @@ export default class RequestForm extends React.Component {
               index={index}
               mode={language}
               value={value}
-              onLoad={this.onLoad}
               onChange={this.onChangeArgument}
               onValid={this.onValid}
               width={width - 10}
