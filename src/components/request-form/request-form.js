@@ -55,8 +55,11 @@ const ArgumentsCountLabel = styled.label`
   margin-right: 10px;
 `;
 
-const defaultJsArgValue = 'return {};';
-const defaultJsonArgValue = '{}';
+const defaultArgVal = {
+  javascript: 'return {};',
+  json: '{}',
+};
+
 const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
 export default class RequestForm extends React.Component {
@@ -72,7 +75,7 @@ export default class RequestForm extends React.Component {
 
   state = {
     language: codeModes.javascript,
-    requestArgs: [defaultJsArgValue],
+    requestArgs: [defaultArgVal.javascript],
     argsCount: 1,
     editorsIsValid: [true],
   };
@@ -81,9 +84,7 @@ export default class RequestForm extends React.Component {
     if (label !== this.state.language) {
       this.setState((prevState) => ({
         language: label,
-        requestArgs: prevState.requestArgs.map(() =>
-          label === codeModes.javascript ? defaultJsArgValue : defaultJsonArgValue
-        ),
+        requestArgs: prevState.requestArgs.map(() => defaultArgVal[label]),
       }));
       this.props.selectLanguage(label);
     }
@@ -97,10 +98,10 @@ export default class RequestForm extends React.Component {
 
     if (argsCountNumber > 0) {
       this.setState((prevState) => ({
-        requestArgs: [...prevState.requestArgs, ...new Array(argsCountNumber).fill(defaultJsArgValue)].slice(
-          0,
-          argsCountNumber
-        ),
+        requestArgs: [
+          ...prevState.requestArgs,
+          ...new Array(argsCountNumber).fill(defaultArgVal[prevState.language]),
+        ].slice(0, argsCountNumber),
       }));
     }
   };
