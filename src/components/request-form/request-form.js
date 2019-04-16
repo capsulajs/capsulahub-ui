@@ -92,7 +92,7 @@ export default class RequestForm extends React.Component {
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
     this.setState({
-      argsCount,
+      argsCount: argsCountNumber,
     });
 
     if (argsCountNumber > 0) {
@@ -109,7 +109,7 @@ export default class RequestForm extends React.Component {
     const args = [...this.state.requestArgs];
     args[index] = newArgument;
     this.setState({ requestArgs: args });
-    this.props.setArgument(index, this.state.requestArgs);
+    this.props.setArgument(index, args);
   };
 
   onValid = ({ isValid, index }) =>
