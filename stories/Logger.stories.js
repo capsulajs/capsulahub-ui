@@ -30,8 +30,8 @@ class LoggerExample extends React.Component {
             timestamp: new Date().getTime(),
             data: { verse1: 'Empty spaces, what are we living for' },
           }))
-        )
-      ),
+        ),
+      )
     });
   }
 
