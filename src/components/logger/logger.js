@@ -69,7 +69,7 @@ export default class Logger extends React.Component {
     if (!isEqual(prevLogs, nextLogs)) {
       this.sub.unsubscribe();
       this.sub = merge(...nextLogs).subscribe(this.onEvent);
-      this.setState({ logs: nextLogs })
+      this.setState({ logs: nextLogs });
     }
   }
 
