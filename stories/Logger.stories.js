@@ -18,7 +18,7 @@ class LoggerExample extends React.Component {
             serviceName: 'AdeleService',
             methodName: 'hello$',
             timestamp: new Date().getTime(),
-            request: { verse2: 'Hello, how are you?' },
+            data: { verse2: 'Hello, how are you?' },
           }))
         ),
         interval(3000).pipe(
@@ -28,7 +28,7 @@ class LoggerExample extends React.Component {
             serviceName: 'QueenService',
             methodName: 'showMustGoOn$',
             timestamp: new Date().getTime(),
-            response: { verse1: 'Empty spaces, what are we living for' },
+            data: { verse1: 'Empty spaces, what are we living for' },
           }))
         )
       ),

@@ -69,7 +69,7 @@ export default class Row extends React.Component {
 
     let content = (
       <ReactJson
-        src={event.type === 'request' ? event.request : event.response}
+        src={event.data}
         name={false}
         iconStyle={'circle'}
         theme={theme}
