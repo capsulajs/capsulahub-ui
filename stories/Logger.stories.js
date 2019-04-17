@@ -14,24 +14,28 @@ class LoggerExample extends React.Component {
     this.setState({
       logs: [
         interval(2000).pipe(
-          map(() => ({
-            correlationId: 'Adele',
-            type: 'request',
-            serviceName: 'AdeleService',
-            methodName: 'hello$',
-            timestamp: new Date().getTime(),
-            data: { verse2: 'Hello, how are you?' },
-          }))
+          map(
+            () => ({
+              correlationId: 'Adele',
+              type: 'request',
+              serviceName: 'AdeleService',
+              methodName: 'hello$',
+              timestamp: new Date().getTime(),
+              data: { verse2: 'Hello, how are you?' },
+            })
+          )
         ),
         interval(3000).pipe(
-          map(() => ({
-            correlationId: 'Queen',
-            type: 'response',
-            serviceName: 'QueenService',
-            methodName: 'showMustGoOn$',
-            timestamp: new Date().getTime(),
-            data: { verse1: 'Empty spaces, what are we living for' },
-          }))
+          map(
+            () => ({
+              correlationId: 'Queen',
+              type: 'response',
+              serviceName: 'QueenService',
+              methodName: 'showMustGoOn$',
+              timestamp: new Date().getTime(),
+              data: { verse1: 'Empty spaces, what are we living for' },
+            })
+          )
         ),
       ],
     });
