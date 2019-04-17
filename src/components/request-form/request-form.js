@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import JSONL from 'json-literal';
 import Editor from './editor';
-import { Dropdown, Button } from '..';
+import { Dropdown, Input, Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 import image from '../../assets/settings.png';
+import { codeModes } from '../../constants';
 
 const Container = styled.div`
   font-family: ${defaultFontFamily};
@@ -47,10 +47,20 @@ const Title = styled.div`
   text-transform: uppercase;
   color: ${(props) => props.color};
 `;
+const ArgumentsCount = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const ArgumentsCountLabel = styled.label`
+  margin-right: 10px;
+`;
 
-const javascript = 'javascript';
-const argumentsCount = [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }];
-const languages = [{ label: javascript }, { label: 'json' }];
+const defaultArgVal = {
+  javascript: 'return {};',
+  json: '{}',
+};
+
+const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
 export default class RequestForm extends React.Component {
   static propTypes = {
@@ -64,52 +74,71 @@ export default class RequestForm extends React.Component {
   };
 
   state = {
-    language: 'javascript',
-    arguments: ['{}'],
-    isValid: true,
+    language: codeModes.javascript,
+    requestArgs: [defaultArgVal.javascript],
+    argsCount: 1,
+    editorsIsValid: [true],
   };
 
-  onLoad = (editor) => (this.editor = editor);
   onChangeLanguage = ({ label }) => {
-    this.setState({ language: label });
-    this.editor.getSession().setMode(`ace/mode/${label}`);
-    this.props.selectLanguage(label);
-  };
-  onChangeArgumentsCount = ({ label }) => {
-    const args = this.state.arguments;
-    const getRequiredArguments = (n, array = []) => [...array, ...new Array(n).fill('{}')].slice(0, n);
-
-    switch (label) {
-      case 'One':
-        return this.setState({ arguments: getRequiredArguments(1, args) });
-      case 'Two':
-        return this.setState({ arguments: getRequiredArguments(2, args) });
-      case 'Three':
-        return this.setState({ arguments: getRequiredArguments(3, args) });
-      default:
-        return this.setState({ arguments: getRequiredArguments(1, args) });
+    if (label !== this.state.language) {
+      this.setState((prevState) => ({
+        language: label,
+        requestArgs: prevState.requestArgs.map(() => defaultArgVal[label]),
+      }));
+      this.props.selectLanguage(label);
     }
   };
-  onChangeArgument = (index, newArgument) => {
-    const args = [...this.state.arguments];
-    args[index] = newArgument;
-    this.setState({ arguments: args });
-    this.props.setArgument(index, this.state.arguments);
-  };
-  onValid = (isValid) => this.setState({ isValid });
-  onSubmit = () => {
-    const { isValid, language, arguments: args } = this.state;
 
-    if (isValid) {
+  onChangeArgumentsCount = (argsCount) => {
+    const argsCountNumber = Number(argsCount);
+    this.setState({
+      argsCount: argsCountNumber,
+    });
+
+    if (argsCountNumber > 0) {
+      this.setState((prevState) => ({
+        requestArgs: [
+          ...prevState.requestArgs,
+          ...new Array(argsCountNumber).fill(defaultArgVal[prevState.language]),
+        ].slice(0, argsCountNumber),
+      }));
+    }
+  };
+
+  onChangeArgument = (index, newArgument) => {
+    const args = [...this.state.requestArgs];
+    args[index] = newArgument;
+    this.setState({ requestArgs: args });
+    this.props.setArgument(index, args);
+  };
+
+  onValid = ({ isValid, index }) =>
+    isValid !== this.state.editorsIsValid[index] &&
+    this.setState((prevState) => {
+      const newEditorsIsValid = [...prevState.editorsIsValid];
+      newEditorsIsValid[index] = isValid;
+      return {
+        editorsIsValid: newEditorsIsValid,
+      };
+    });
+
+  onSubmit = () => {
+    if (this.isFormValid()) {
+      const { language, requestArgs: args } = this.state;
       this.props.submit({
         language,
-        arguments: language === javascript ? args.map(JSONL.parse).map(JSON.stringify) : args,
+        requestArgs: args.map((arg) =>
+          language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
+        ),
       });
     }
   };
 
+  isFormValid = () => typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';
+
   render() {
-    const { language, isValid, arguments: input } = this.state;
+    const { language, requestArgs, argsCount } = this.state;
     const { width, height, path } = this.props;
 
     return (
@@ -121,27 +150,29 @@ export default class RequestForm extends React.Component {
               <Title>Request Form</Title>
             </Wrapper>
             <Wrapper>
-              <Dropdown title="Arguments" items={argumentsCount} width={120} onChange={this.onChangeArgumentsCount} />
-              <Dropdown title="Language" items={languages} width={120} onChange={this.onChangeLanguage} />
+              <ArgumentsCount>
+                <ArgumentsCountLabel>Arguments:</ArgumentsCountLabel>
+                <Input min="1" onChange={this.onChangeArgumentsCount} value={argsCount} type="number" width="30px" />
+              </ArgumentsCount>
+              <Dropdown title={codeModes.javascript} items={languages} width={120} onChange={this.onChangeLanguage} />
             </Wrapper>
           </Header>
-          {input.map((value, index) => (
+          {requestArgs.map((value, index) => (
             <Editor
               key={index}
               index={index}
               mode={language}
               value={value}
-              onLoad={this.onLoad}
               onChange={this.onChangeArgument}
               onValid={this.onValid}
               width={width - 10}
-              height={(height - (65 + 2 * input.length)) / input.length}
+              height={(height - (65 + 2 * requestArgs.length)) / requestArgs.length}
             />
           ))}
           <Footer>
             <Button
               text="Submit"
-              theme={isValid ? 'active' : 'disabled'}
+              theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
               onClick={this.onSubmit}
             />

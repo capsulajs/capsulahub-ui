@@ -5,3 +5,8 @@ export const defaultFontFamily = 'Montserrat';
 
 export const defaultColor = 'rgb(222, 222, 222)';
 export const defaultBackgroundColor = '#3F3F3F';
+
+export const codeModes = {
+  javascript: 'javascript',
+  json: 'json',
+};

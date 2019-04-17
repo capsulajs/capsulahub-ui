@@ -5,6 +5,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import './theme';
+import { codeModes } from '../../constants';
 
 const Line = styled.div`
   height: 1px;
@@ -18,17 +19,36 @@ export default class Editor extends React.Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     mode: PropTypes.string.isRequired,
-    onLoad: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onValid: PropTypes.func.isRequired,
     value: PropTypes.string,
   };
 
+  editor = undefined;
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.mode !== this.props.mode) {
+      this.editor.getSession().setMode(`ace/mode/${this.props.mode}`);
+    }
+  }
+
   onChange = (input) => this.props.onChange(this.props.index, input);
-  onValid = (input) => this.props.onValid(input.length === 0);
+
+  onValid = (errors) => {
+    const { mode, value, onValid, index } = this.props;
+    let isValid = false;
+    if (errors.filter((error) => error.type !== 'info').length === 0) {
+      if (mode === codeModes.json || /.*return .+/.test(value)) {
+        isValid = true;
+      }
+    }
+    onValid({ isValid, index });
+  };
+
+  onLoad = (editor) => (this.editor = editor);
 
   render() {
-    const { width, height, mode, onLoad, onChange, value } = this.props;
+    const { width, height, mode, value } = this.props;
 
     return (
       <React.Fragment>
@@ -36,15 +56,14 @@ export default class Editor extends React.Component {
           mode={mode}
           theme="capsula-js"
           value={value}
-          onLoad={onLoad}
+          onLoad={this.onLoad}
           onChange={this.onChange}
-          enableBasicAutocompletion={true}
-          enableLiveAutocompletion={true}
           onValidate={this.onValid}
-          fontSize={11}
+          fontSize={14}
           setOptions={{
             tabSize: 2,
           }}
+          editorProps={{ $blockScrolling: true }}
           width={`${width}px`}
           height={`${height}px`}
         />
