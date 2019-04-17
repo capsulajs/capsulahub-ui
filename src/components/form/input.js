@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { defaultFontFamily } from '../constants';
 
-const CInput = styled.input`
+const Input = styled.input`
   font-family: ${defaultFontFamily};
   font-style: regular;
   font-size: 12px;
@@ -23,4 +23,4 @@ const CInput = styled.input`
   }
 `;
 
-export default (props) => <CInput {...props} onChange={(e) => props.onChange(e.target.value)} />;
+export default (props) => <Input {...props} onChange={(e) => props.onChange(e.target.value)} />;
