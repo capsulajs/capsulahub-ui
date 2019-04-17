@@ -87,9 +87,7 @@ export default class Row extends React.Component {
         </PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
         <Arrows src={event.type === 'request' ? greenArrows : redArrows} />
-        <Title>
-          {event.serviceName}/{event.methodName}
-        </Title>
+        <Title>{event.serviceName}/{event.methodName}</Title>
         <Content>{content}</Content>
       </Container>
     );
