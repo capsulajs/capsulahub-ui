@@ -49,7 +49,7 @@ export default class Logger extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    logs$: PropTypes.object
+    logs$: PropTypes.object,
   };
 
   state = {
