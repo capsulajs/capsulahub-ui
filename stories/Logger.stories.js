@@ -10,7 +10,7 @@ class LoggerExample extends React.Component {
 
   componentDidMount() {
     this.setState({
-      logs: merge(
+      logs$: merge(
         interval(2000).pipe(
           map(() => ({
             correlationId: 'Adele',
@@ -36,7 +36,7 @@ class LoggerExample extends React.Component {
   }
 
   render() {
-    return <Logger logs={this.state.logs} width={1000} height={350} />;
+    return <Logger logs$={this.state.logs$} width={1000} height={350} />;
   }
 }
 

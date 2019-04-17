@@ -2,7 +2,6 @@ import 'typeface-montserrat/index.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isEqual } from 'lodash';
 import image from '../../assets/settings.png';
 import { defaultFontFamily } from '../constants';
 import Content from './content';
@@ -50,7 +49,7 @@ export default class Logger extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    logs: PropTypes.object,
+    logs$: PropTypes.object,
   };
 
   state = {
@@ -60,19 +59,11 @@ export default class Logger extends React.Component {
   onClear = () => this.setState({ events: [] });
   onEvent = (event) => this.setState((state) => ({ events: [...state.events, event] }));
 
-  componentWillUpdate(nextProps) {
-    const { logs: prevLogs } = this.state;
-    const { logs: nextLogs } = nextProps;
-
-    if (!isEqual(prevLogs, nextLogs)) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.logs$ !== this.props.logs$) {
       this.sub && this.sub.unsubscribe();
-      this.sub = nextLogs.subscribe(this.onEvent);
-      this.setState({ logs: nextLogs });
+      this.sub = this.props.logs$.subscribe(this.onEvent);
     }
-  }
-
-  componentDidMount() {
-    this.sub = this.props.logs && this.props.logs.subscribe(this.onEvent);
   }
 
   render() {

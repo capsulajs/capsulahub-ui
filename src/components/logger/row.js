@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
-import { pick } from 'lodash';
 import theme from './theme';
 import { decorate } from '../utils';
 import greenArrows from '../../assets/green-arrows.png';
