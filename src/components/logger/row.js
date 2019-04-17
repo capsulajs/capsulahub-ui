@@ -28,12 +28,8 @@ const Point = styled.div`
   border-radius: 2px;
 `;
 
-const TimestampWrapper = styled.div`
-  width: 50px;
-`;
-
 const Timestamp = styled.div`
-  color: #dedede;
+  width: 50px;
 `;
 
 const Arrows = styled.img`
@@ -84,7 +80,7 @@ export default class Row extends React.Component {
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
           <Point active={isActive} />
         </PointWrapper>
-        <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
+        <Timestamp>{decorate(event.timestamp)}</Timestamp>
         <Arrows src={event.type === 'request' ? greenArrows : redArrows} />
         <Title>
           {event.serviceName}/{event.methodName}
