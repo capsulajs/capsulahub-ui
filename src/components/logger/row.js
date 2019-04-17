@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import { pick } from 'lodash';
 import theme from './theme';
 import { decorate } from '../utils';
-import arrows from '../../assets/arrows.png';
+import greenArrows from '../../assets/green-arrows.png';
+import redArrows from '../../assets/red-arrows.png';
 
 const Container = styled.div`
   display: flex;
@@ -68,12 +69,11 @@ export default class Row extends React.Component {
 
     let content = (
       <ReactJson
-        src={event.response}
+        src={event.data}
         name={false}
         iconStyle={'circle'}
         theme={theme}
         indentWidth={2}
-        collapsed={true}
         displayDataTypes={false}
         displayObjectSize={false}
         enableClipboard={true}
@@ -86,8 +86,10 @@ export default class Row extends React.Component {
           <Point active={isActive} />
         </PointWrapper>
         <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
-        <Arrows src={arrows} />
-        <Title>{event.methodName}</Title>
+        <Arrows src={event.type === 'request' ? greenArrows : redArrows} />
+        <Title>
+          {event.serviceName}/{event.methodName}
+        </Title>
         <Content>{content}</Content>
       </Container>
     );

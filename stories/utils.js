@@ -1,5 +1,3 @@
-import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { random } from 'lodash';
 
 export const createRandomObject = (fieldCount, allowNested) => {
@@ -40,25 +38,4 @@ export const createRandomObject = (fieldCount, allowNested) => {
   }
 
   return generatedObj;
-};
-
-export const getLogs = () => {
-  let count = 0;
-
-  const f = () => {
-    count = count + 1;
-    const isRequest = count % 2 === 0;
-
-    return {
-      timestamp: new Date().getTime(),
-      correlationId: isRequest ? count : count - 1,
-      type: isRequest ? 'request' : 'response',
-      serviceName: 'Test',
-      methodName: 'test',
-      request: createRandomObject(Math.ceil(Math.random() * 3), true),
-      response: createRandomObject(Math.ceil(Math.random() * 3), true),
-    };
-  };
-
-  return interval(random(1000, 10000)).pipe(map(f));
 };

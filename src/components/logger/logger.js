@@ -2,6 +2,8 @@ import 'typeface-montserrat/index.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { merge } from 'rxjs';
+import { isEqual } from 'lodash';
 import image from '../../assets/settings.png';
 import { defaultFontFamily } from '../constants';
 import Content from './content';
@@ -53,26 +55,26 @@ export default class Logger extends React.Component {
   };
 
   state = {
+    logs: [],
     events: [],
   };
 
   onClear = () => this.setState({ events: [] });
+  onEvent = (event) => this.setState((state) => ({ events: [...state.events, event] }));
 
-  componentWillUpdate({ logs }) {
-    this.logsSubscriptions.map((sub) => sub.unsubscribe());
-    this.logsSubscriptions = logs.map((obs) => {
-      return obs.subscribe((event) => {
-        this.setState((state) => ({ events: [...state.events, event] }));
-      });
-    });
+  componentWillUpdate(nextProps) {
+    const { logs: prevLogs } = this.state;
+    const { logs: nextLogs } = nextProps;
+
+    if (!isEqual(prevLogs, nextLogs)) {
+      this.sub.unsubscribe();
+      this.sub = merge(...nextLogs).subscribe(this.onEvent);
+      this.setState({ logs: nextLogs });
+    }
   }
 
   componentDidMount() {
-    this.logsSubscriptions = this.props.logs.map((obs) => {
-      return obs.subscribe((event) => {
-        this.setState((state) => ({ events: [...state.events, event] }));
-      });
-    });
+    this.sub = merge(...this.props.logs).subscribe(this.onEvent);
   }
 
   render() {
@@ -94,6 +96,6 @@ export default class Logger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.logsSubscriptions.map((sub) => sub.unsubscribe());
+    this.sub.unsubscribe();
   }
 }
