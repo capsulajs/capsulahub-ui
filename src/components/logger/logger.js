@@ -2,7 +2,6 @@ import 'typeface-montserrat/index.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { merge } from 'rxjs';
 import { isEqual } from 'lodash';
 import image from '../../assets/settings.png';
 import { defaultFontFamily } from '../constants';
@@ -51,11 +50,10 @@ export default class Logger extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    logs: PropTypes.array.isRequired,
+    logs: PropTypes.object,
   };
 
   state = {
-    logs: [],
     events: [],
   };
 
@@ -67,14 +65,14 @@ export default class Logger extends React.Component {
     const { logs: nextLogs } = nextProps;
 
     if (!isEqual(prevLogs, nextLogs)) {
-      this.sub.unsubscribe();
-      this.sub = merge(...nextLogs).subscribe(this.onEvent);
+      this.sub && this.sub.unsubscribe();
+      this.sub = nextLogs.subscribe(this.onEvent);
       this.setState({ logs: nextLogs });
     }
   }
 
   componentDidMount() {
-    this.sub = merge(...this.props.logs).subscribe(this.onEvent);
+    this.sub = this.props.logs && this.props.logs.subscribe(this.onEvent);
   }
 
   render() {
@@ -96,6 +94,6 @@ export default class Logger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.sub.unsubscribe();
+    this.sub && this.sub.unsubscribe();
   }
 }

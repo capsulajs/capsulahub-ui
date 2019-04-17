@@ -2,17 +2,15 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Logger } from 'src';
-import { interval } from 'rxjs';
+import { interval, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 class LoggerExample extends React.Component {
-  state = {
-    logs: [],
-  };
+  state = {};
 
   componentDidMount() {
     this.setState({
-      logs: [
+      logs: merge(
         interval(2000).pipe(
           map(() => ({
             correlationId: 'Adele',
@@ -32,8 +30,8 @@ class LoggerExample extends React.Component {
             timestamp: new Date().getTime(),
             data: { verse1: 'Empty spaces, what are we living for' },
           }))
-        ),
-      ],
+        )
+      ),
     });
   }
 
