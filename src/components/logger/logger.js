@@ -48,8 +48,8 @@ const Clear = styled.div`
 
 export default class Logger extends React.Component {
   static defaultProps = {
-    logs$: empty()
-  }
+    logs$: empty(),
+  };
 
   static propTypes = {
     logs$: PropTypes.object,
