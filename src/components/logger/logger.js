@@ -49,7 +49,7 @@ export default class Logger extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    logs: PropTypes.array.isRequired,
+    logs$: PropTypes.object,
   };
 
   state = {
@@ -57,22 +57,17 @@ export default class Logger extends React.Component {
   };
 
   onClear = () => this.setState({ events: [] });
-
-  componentWillUpdate({ logs }) {
-    this.logsSubscriptions.map((sub) => sub.unsubscribe());
-    this.logsSubscriptions = logs.map((obs) => {
-      return obs.subscribe((event) => {
-        this.setState((state) => ({ events: [...state.events, event] }));
-      });
-    });
-  }
+  onEvent = (event) => this.setState((state) => ({ events: [...state.events, event] }));
 
   componentDidMount() {
-    this.logsSubscriptions = this.props.logs.map((obs) => {
-      return obs.subscribe((event) => {
-        this.setState((state) => ({ events: [...state.events, event] }));
-      });
-    });
+    this.sub = this.props.logs$ && this.props.logs$.subscribe(this.onEvent);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.logs$ !== this.props.logs$) {
+      this.sub && this.sub.unsubscribe();
+      this.sub = this.props.logs$.subscribe(this.onEvent);
+    }
   }
 
   render() {
@@ -94,6 +89,6 @@ export default class Logger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.logsSubscriptions.map((sub) => sub.unsubscribe());
+    this.sub && this.sub.unsubscribe();
   }
 }

@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
-import { pick } from 'lodash';
 import theme from './theme';
 import { decorate } from '../utils';
-import arrows from '../../assets/arrows.png';
+import greenArrows from '../../assets/green-arrows.png';
+import redArrows from '../../assets/red-arrows.png';
 
 const Container = styled.div`
   display: flex;
@@ -28,12 +28,8 @@ const Point = styled.div`
   border-radius: 2px;
 `;
 
-const TimestampWrapper = styled.div`
-  width: 50px;
-`;
-
 const Timestamp = styled.div`
-  color: #dedede;
+  width: 50px;
 `;
 
 const Arrows = styled.img`
@@ -68,12 +64,11 @@ export default class Row extends React.Component {
 
     let content = (
       <ReactJson
-        src={event.response}
+        src={event.data}
         name={false}
         iconStyle={'circle'}
         theme={theme}
         indentWidth={2}
-        collapsed={true}
         displayDataTypes={false}
         displayObjectSize={false}
         enableClipboard={true}
@@ -85,9 +80,11 @@ export default class Row extends React.Component {
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
           <Point active={isActive} />
         </PointWrapper>
-        <TimestampWrapper>{decorate(event.timestamp)}</TimestampWrapper>
-        <Arrows src={arrows} />
-        <Title>{event.methodName}</Title>
+        <Timestamp>{decorate(event.timestamp)}</Timestamp>
+        <Arrows src={event.type === 'request' ? greenArrows : redArrows} />
+        <Title>
+          {event.serviceName}/{event.methodName}
+        </Title>
         <Content>{content}</Content>
       </Container>
     );
