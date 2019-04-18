@@ -83,7 +83,9 @@ export default class Logger extends React.Component {
             <Image src={image} />
             <Title>LOG</Title>
           </Row>
-          <Clear onClick={this.onClear}>&#10005;</Clear>
+          <Clear onClick={this.onClear} data-cy="logger-clear">
+            &#10005;
+          </Clear>
         </Header>
         <Content events={events} />
       </Container>

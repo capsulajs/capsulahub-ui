@@ -80,12 +80,15 @@ export default class Row extends React.Component {
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
           <Point active={isActive} />
         </PointWrapper>
-        <Timestamp>{decorate(event.timestamp)}</Timestamp>
-        <Arrows src={event.type === 'request' ? greenArrows : redArrows} />
-        <Title>
+        <Timestamp data-cy="logger-timestemp">{decorate(event.timestamp)}</Timestamp>
+        <Arrows
+          data-cy={event.type === 'request' ? 'logger-arrows-green' : 'logger-arrows-red'}
+          src={event.type === 'request' ? greenArrows : redArrows}
+        />
+        <Title data-cy="logger-title">
           {event.serviceName}/{event.methodName}
         </Title>
-        <Content>{content}</Content>
+        <Content data-cy="logger-content">{content}</Content>
       </Container>
     );
   }

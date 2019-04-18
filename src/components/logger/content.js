@@ -52,6 +52,7 @@ export default class Content extends React.Component {
                 onPointEnter={this.onPointEnter}
                 onPointLeave={this.onPointLeave}
                 onPointClick={this.onPointClick}
+                data-cy="logger-row"
               />
             ))
           : 'No events...'}
