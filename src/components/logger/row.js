@@ -79,9 +79,9 @@ export default class Row extends React.Component {
     return (
       <Container data-cy={`logger-row-${number - 1}`}>
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
-          <Point active={isActive} />
+          <Point active={isActive} data-cy={`logger-point-${isActive ? 'active' : 'not-active'}`} />
         </PointWrapper>
-        <Timestamp data-cy="logger-timestemp">{decorate(event.timestamp)}</Timestamp>
+        <Timestamp data-cy="logger-timestamp">{decorate(event.timestamp)}</Timestamp>
         <Arrows
           data-cy={event.type === 'request' ? 'logger-arrows-green' : 'logger-arrows-red'}
           src={event.type === 'request' ? greenArrows : redArrows}
