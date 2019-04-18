@@ -4,6 +4,12 @@ import { action } from '@storybook/addon-actions';
 import { Logger } from 'src';
 import { interval, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 1000px;
+  height: 500px;
+`;
 
 class LoggerExample extends React.Component {
   state = {};
@@ -36,7 +42,11 @@ class LoggerExample extends React.Component {
   }
 
   render() {
-    return <Logger logs$={this.state.logs$} width={1000} height={350} />;
+    return (
+      <Container>
+        <Logger logs$={this.state.logs$} />
+      </Container>
+    );
   }
 }
 
