@@ -59,15 +59,15 @@ export default class Logger extends React.Component {
   onClear = () => this.setState({ events: [] });
   onEvent = (event) => this.setState((state) => ({ events: [...state.events, event] }));
 
+  componentDidMount() {
+    this.sub = this.props.logs$ && this.props.logs$.subscribe(this.onEvent);
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.logs$ !== this.props.logs$) {
       this.sub && this.sub.unsubscribe();
       this.sub = this.props.logs$.subscribe(this.onEvent);
     }
-  }
-
-  componentDidMount() {
-    this.sub = this.props.logs$ && this.props.logs$.subscribe(this.onEvent);
   }
 
   render() {
