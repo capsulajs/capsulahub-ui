@@ -76,7 +76,7 @@ export default class Row extends React.Component {
     );
 
     return (
-      <Container>
+      <Container data-cy="logger-row">
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
           <Point active={isActive} />
         </PointWrapper>
