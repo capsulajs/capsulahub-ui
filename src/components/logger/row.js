@@ -81,10 +81,10 @@ export default class Row extends React.Component {
           <Point active={isActive} />
         </PointWrapper>
         <Timestamp data-cy="logger-timestemp">{decorate(event.timestamp)}</Timestamp>
-        <Arrows
-          data-cy={event.type === 'request' ? 'logger-arrows-green' : 'logger-arrows-red'}
-          src={event.type === 'request' ? greenArrows : redArrows}
-        />
+        <Arrows data-cy={event.type === 'request'
+          ? 'logger-arrows-green'
+          : 'logger-arrows-red'}
+          src={event.type === 'request' ? greenArrows : redArrows} />
         <Title data-cy="logger-title">
           {event.serviceName}/{event.methodName}
         </Title>
