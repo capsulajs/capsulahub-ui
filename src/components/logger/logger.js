@@ -66,6 +66,10 @@ export default class Logger extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.sub = this.props.logs$ && this.props.logs$.subscribe(this.onEvent);
+  }
+
   render() {
     const { events } = this.state;
     const { width, height } = this.props;
