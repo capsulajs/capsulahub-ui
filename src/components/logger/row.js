@@ -49,6 +49,7 @@ const Content = styled.div`
 export default class Row extends React.Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
+    number: PropTypes.number.isRequired,
     isActive: PropTypes.bool.isRequired,
     onPointEnter: PropTypes.func.isRequired,
     onPointLeave: PropTypes.func.isRequired,
@@ -60,7 +61,7 @@ export default class Row extends React.Component {
   onPointLeave = () => this.props.onPointLeave();
 
   render() {
-    const { event, isActive, onMouseLeave } = this.props;
+    const { number, event, isActive, onMouseLeave } = this.props;
 
     let content = (
       <ReactJson
@@ -76,7 +77,7 @@ export default class Row extends React.Component {
     );
 
     return (
-      <Container>
+      <Container data-cy={`logger-row-${number - 1}`}>
         <PointWrapper onMouseEnter={this.onPointEnter} onMouseLeave={this.onPointLeave} onClick={this.onPointClick}>
           <Point active={isActive} />
         </PointWrapper>
