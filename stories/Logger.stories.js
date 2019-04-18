@@ -42,11 +42,9 @@ class LoggerExample extends React.Component {
   }
 
   render() {
-    return (
-      <Container>
-        <Logger logs$={this.state.logs$} />
-      </Container>
-    );
+    return <Container>
+      <Logger logs$={this.state.logs$} />
+    </Container>;
   }
 }
 
