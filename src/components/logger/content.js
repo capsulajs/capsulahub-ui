@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Row from './row';
 
 const Container = styled.div`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: calc(100% - 20px);
+  height: calc(100% - 36px);
   margin: 0 10px 10px 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
@@ -22,8 +22,6 @@ const Container = styled.div`
 
 export default class Content extends React.Component {
   static propTypes = {
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
     events: PropTypes.array.isRequired,
   };
 
@@ -39,11 +37,11 @@ export default class Content extends React.Component {
 
   render() {
     const { hoverCorrelationId, activeCorrelationId } = this.state;
-    const { width, height, events } = this.props;
+    const { events } = this.props;
     const correlationId = hoverCorrelationId || activeCorrelationId;
 
     return (
-      <Container width={width} height={height}>
+      <Container>
         {events.length
           ? events.map((event, index) => (
               <Row

@@ -2,6 +2,7 @@ import 'typeface-montserrat/index.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { empty } from 'rxjs';
 import image from '../../assets/settings.png';
 import { defaultFontFamily } from '../constants';
 import Content from './content';
@@ -11,10 +12,10 @@ const Container = styled.div`
   font-style: regular;
   font-size: 13px;
   background: #3f3f3f;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
   color: #767676;
   position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 const Header = styled.div`
@@ -46,9 +47,11 @@ const Clear = styled.div`
 `;
 
 export default class Logger extends React.Component {
+  static defaultProps = {
+    logs$: empty(),
+  };
+
   static propTypes = {
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
     logs$: PropTypes.object,
   };
 
@@ -72,10 +75,9 @@ export default class Logger extends React.Component {
 
   render() {
     const { events } = this.state;
-    const { width, height } = this.props;
 
     return (
-      <Container width={width} height={height}>
+      <Container>
         <Header>
           <Row>
             <Image src={image} />
@@ -83,7 +85,7 @@ export default class Logger extends React.Component {
           </Row>
           <Clear onClick={this.onClear}>&#10005;</Clear>
         </Header>
-        <Content events={events} width={width - 20} height={height - 36} />
+        <Content events={events} />
       </Container>
     );
   }
