@@ -38,7 +38,7 @@ export default class Content extends React.Component {
   render() {
     const { activeCorrelationId, hoverCorrelationId } = this.state;
     const { events } = this.props;
-    const correlationId = activeCorrelationId || hoverCorrelationId;
+    const correlationId =  activeCorrelationId || hoverCorrelationId;
 
     return (
       <Container>
