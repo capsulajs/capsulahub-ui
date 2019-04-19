@@ -26,8 +26,8 @@ export default class Content extends React.Component {
   };
 
   state = {
-    hoverCorrelationId: null,
     activeCorrelationId: null,
+    hoverCorrelationId: null,
   };
 
   onPointEnter = ({ correlationId }) => this.setState({ hoverCorrelationId: correlationId });
@@ -36,9 +36,9 @@ export default class Content extends React.Component {
     this.setState((state) => ({ activeCorrelationId: state.activeCorrelationId ? null : correlationId }));
 
   render() {
-    const { hoverCorrelationId, activeCorrelationId } = this.state;
+    const { activeCorrelationId, hoverCorrelationId } = this.state;
     const { events } = this.props;
-    const correlationId = hoverCorrelationId || activeCorrelationId;
+    const correlationId = activeCorrelationId || hoverCorrelationId;
 
     return (
       <Container>
