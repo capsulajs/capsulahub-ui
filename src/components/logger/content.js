@@ -33,7 +33,12 @@ export default class Content extends React.Component {
   onPointEnter = ({ correlationId }) => this.setState({ hoverCorrelationId: correlationId });
   onPointLeave = () => this.setState({ hoverCorrelationId: null });
   onPointClick = ({ correlationId }) =>
-    this.setState((state) => ({ activeCorrelationId: state.activeCorrelationId ? null : correlationId }));
+    this.setState((state) => {
+      if (state.activeCorrelationId) {
+        return { activeCorrelationId: null, hoverCorrelationId: null };
+      }
+      return { activeCorrelationId: correlationId };
+    });
 
   render() {
     const { activeCorrelationId, hoverCorrelationId } = this.state;
