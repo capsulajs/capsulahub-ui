@@ -69,8 +69,8 @@ export default class RequestForm extends PureComponent {
   static propTypes = {
     selectedMethodPath: PropTypes.string.isRequired,
     content: PropTypes.shape({
-      language: PropTypes.string,
-      requestArgs: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+      language: PropTypes.string.isRequired,
+      requestArgs: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
     }).isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
