@@ -16,7 +16,6 @@ const Line = styled.div`
 export default class Editor extends React.Component {
   static propTypes = {
     index: PropTypes.number.isRequired,
-    width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     mode: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -48,7 +47,7 @@ export default class Editor extends React.Component {
   onLoad = (editor) => (this.editor = editor);
 
   render() {
-    const { width, height, mode, value } = this.props;
+    const { height, mode, value } = this.props;
 
     return (
       <React.Fragment>
@@ -64,7 +63,6 @@ export default class Editor extends React.Component {
             tabSize: 2,
           }}
           editorProps={{ $blockScrolling: true }}
-          width={`${width}px`}
           height={`${height}px`}
         />
         <Line />
