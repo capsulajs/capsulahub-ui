@@ -34,12 +34,12 @@ elif [[ "$TRAVIS_BRANCH" == "develop" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false"
     echo "--------------------------------------------"
     echo "|     Deploying latest on npm registry     |"
     echo "--------------------------------------------"
-    npm version patch
-    if [[ "$?" == 0 ]]; then
-        echo $MSG_VERSION_SUCCESS
-    else
-        echo $MSG_VERSION_FAIL && exit 1
-    fi
+#    npm version patch
+#    if [[ "$?" == 0 ]]; then
+#        echo $MSG_VERSION_SUCCESS
+#    else
+#        echo $MSG_VERSION_FAIL && exit 1
+#    fi
     npm publish --access public
     if [[ "$?" == 0 ]]; then
         echo $MSG_PUBLISH_SUCCESS
