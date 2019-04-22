@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Editor from './editor';
@@ -11,11 +11,12 @@ const Container = styled.div`
   font-family: ${defaultFontFamily};
   font-style: ${defaultFontWeight};
   font-size: ${defaultFomtSize};
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: 100%;
+  height: 100%;
   background: #3f3f3f;
   color: #767676;
   min-width: 150px;
+  min-height: 100px;
 `;
 const Column = styled.div`
   display: flex;
@@ -60,33 +61,44 @@ const defaultArgVal = {
   json: '{}',
 };
 
+const height = 555;
+
 const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
-export default class RequestForm extends React.Component {
+export default class RequestForm extends PureComponent {
   static propTypes = {
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    path: PropTypes.string.isRequired,
-    input: PropTypes.string,
-    selectLanguage: PropTypes.func.isRequired,
-    setArgument: PropTypes.func.isRequired,
-    submit: PropTypes.func.isRequired,
+    selectedMethodPath: PropTypes.string.isRequired,
+    content: PropTypes.shape({
+      language: PropTypes.string.isRequired,
+      requestArgs: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
+    }).isRequired,
+    onSubmit: PropTypes.func.isRequired,
   };
 
   state = {
-    language: codeModes.javascript,
-    requestArgs: [defaultArgVal.javascript],
+    language: this.props.content.language,
+    requestArgs: [this.props.content.requestArgs],
     argsCount: 1,
     editorsIsValid: [true],
   };
 
-  onChangeLanguage = ({ label }) => {
-    if (label !== this.state.language) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.content !== prevProps.content) {
+      const { language, requestArgs } = this.props.content;
       this.setState((prevState) => ({
-        language: label,
-        requestArgs: prevState.requestArgs.map(() => defaultArgVal[label]),
+        language,
+        requestArgs,
+        argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
       }));
-      this.props.selectLanguage(label);
+    }
+  }
+
+  onChangeLanguage = ({ label: newLanguage }) => {
+    if (newLanguage !== this.state.language) {
+      this.setState((prevState) => ({
+        language: newLanguage,
+        requestArgs: prevState.requestArgs.map(() => defaultArgVal[newLanguage]),
+      }));
     }
   };
 
@@ -107,10 +119,11 @@ export default class RequestForm extends React.Component {
   };
 
   onChangeArgument = (index, newArgument) => {
-    const args = [...this.state.requestArgs];
-    args[index] = newArgument;
-    this.setState({ requestArgs: args });
-    this.props.setArgument(index, args);
+    this.setState((prevState) => {
+      const newArgs = [...prevState.requestArgs];
+      newArgs[index] = newArgument;
+      return { requestArgs: newArgs };
+    });
   };
 
   onValid = ({ isValid, index }) =>
@@ -126,7 +139,7 @@ export default class RequestForm extends React.Component {
   onSubmit = () => {
     if (this.isFormValid()) {
       const { language, requestArgs: args } = this.state;
-      this.props.submit({
+      this.props.onSubmit({
         language,
         requestArgs: args.map((arg) =>
           language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
@@ -139,10 +152,10 @@ export default class RequestForm extends React.Component {
 
   render() {
     const { language, requestArgs, argsCount } = this.state;
-    const { width, height, path } = this.props;
+    const { selectedMethodPath } = this.props;
 
     return (
-      <Container width={width} height={height}>
+      <Container id="request-form-container">
         <Column>
           <Header>
             <Wrapper>
@@ -165,7 +178,6 @@ export default class RequestForm extends React.Component {
               value={value}
               onChange={this.onChangeArgument}
               onValid={this.onValid}
-              width={width - 10}
               height={(height - (65 + 2 * requestArgs.length)) / requestArgs.length}
             />
           ))}
@@ -176,7 +188,7 @@ export default class RequestForm extends React.Component {
               css="padding: 3px 5px 4px 5px; width: 100px;"
               onClick={this.onSubmit}
             />
-            <Title color="#f8f7f7">{path}</Title>
+            <Title color="#f8f7f7">{selectedMethodPath}</Title>
           </Footer>
         </Column>
       </Container>
