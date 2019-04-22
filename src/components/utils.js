@@ -3,9 +3,9 @@ export const decorate = (timestamp) => {
   const h = d.getHours();
   const m = d.getMinutes();
   const s = d.getSeconds();
-  const hours = h > 9 ? h : `${h}0`;
-  const minutes = m > 9 ? m : `${m}0`;
-  const seconds = s > 9 ? s : `${s}0`;
+  const hours = h > 9 ? h : `0${h}`;
+  const minutes = m > 9 ? m : `0${m}`;
+  const seconds = s > 9 ? s : `0${s}`;
   return [hours, minutes, seconds].join(':');
 };
 
