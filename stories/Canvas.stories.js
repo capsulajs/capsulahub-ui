@@ -2,65 +2,66 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Canvas } from 'src';
+import styled from 'styled-components';
 
-const builders = {
-  text1: () => 'Text 1',
-  text2: () => 'Text 2',
-  text3: () => 'Text 3',
-};
+const Container = styled.div`
+  width: 1000px;
+  height: 500px;
+`;
 
 export default class CanvasExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       layout: {
-        id: '0',
-        type: 'element',
+        id: 'root',
+        type: 'container',
         flex: 0.5,
-        tabIndex: 0,
-        tabs: [],
+        orientation: 'vertical',
+        nodes: [
+          {
+            id: 'node1',
+            type: 'element',
+            flex: 1,
+            tabs: [
+              {
+                id: 'tab1',
+                name: 'Tab 1',
+                content: '<web-cmponent-1></web-component-1>',
+              },
+            ],
+            activeTabIndex: 0,
+          },
+          {
+            id: 'node2',
+            type: 'element',
+            flex: 1,
+            tabs: [
+              {
+                id: 'tab2',
+                name: 'Tab 2',
+                content: '<web-cmponent-2></web-component-2>',
+              },
+            ],
+            activeTabIndex: 0,
+          },
+        ],
       },
     };
     this.onUpdate = this.onUpdate.bind(this);
-    this.onReset = this.onReset.bind(this);
-
-    if (props.persist) {
-      const state = JSON.parse(localStorage.getItem('state'));
-      if (state) {
-        this.state = state;
-      }
-    }
   }
 
   onUpdate(layout) {
     this.setState({ layout });
-    if (this.props.persist) {
-      localStorage.setItem('state', JSON.stringify({ layout }));
-    }
-  }
-
-  onReset() {
-    localStorage.removeItem('state');
-    location.reload();
   }
 
   render() {
     return (
-      <React.Fragment>
-        {this.props.persist && <button onClick={this.onReset}>Reset local storage</button>}
-        <ul style={{ width: 120, height: 60, margin: 0 }}>
-          {Object.keys(builders).map((key) => (
-            <li draggable data-builder-id={key} key={key}>
-              {key}
-            </li>
-          ))}
-        </ul>
-        <Canvas builders={builders} layout={this.state.layout} onUpdate={this.onUpdate} width={1000} height={350} />
-      </React.Fragment>
+      <Container>
+        <Canvas layout={this.state.layout} onUpdate={this.onUpdate} />
+      </Container>
     );
   }
 }
 
-storiesOf('Canvas', module)
-  .add('default', () => <CanvasExample />)
-  .add('persist', () => <CanvasExample persist />);
+storiesOf('Canvas', module).add('default', () => <CanvasExample />);

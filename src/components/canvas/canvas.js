@@ -11,8 +11,8 @@ import bus from './services';
 
 const Container = styled.div`
   font-family: ${canvas.fontFamily};
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  width: 100%;
+  height: 100%;
   font-style: regular;
   font-size: 13px;
   background: #515151;
@@ -25,10 +25,7 @@ const Container = styled.div`
 export default class Canvas extends React.Component {
   static propTypes = {
     layout: PropTypes.object.isRequired,
-    builders: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
   };
 
   state = {
@@ -63,12 +60,12 @@ export default class Canvas extends React.Component {
 
   render() {
     const { metadata } = this.state;
-    const { width, height, builders, layout } = this.props;
+    const { layout } = this.props;
 
     return (
-      <Container width={width} height={height}>
+      <Container>
         <DragDropContext onBeforeDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
-          <Grid layout={layout} metadata={metadata} builders={builders} />
+          <Grid layout={layout} metadata={metadata} />
         </DragDropContext>
       </Container>
     );

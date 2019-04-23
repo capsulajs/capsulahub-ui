@@ -36,7 +36,7 @@ export default class Tabs extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
     tabs: PropTypes.array.isRequired,
-    tabIndex: PropTypes.number.isRequired,
+    activeTabIndex: PropTypes.number.isRequired,
   };
 
   onSelect = (tabId) => bus.emit('select', { tabId, nodeId: this.props.nodeId });
@@ -44,7 +44,7 @@ export default class Tabs extends React.Component {
   onRemove = (tabId) => bus.emit('remove', { tabId, nodeId: this.props.nodeId });
 
   renderDraggable(tab, index) {
-    const { nodeId, tabIndex } = this.props;
+    const { nodeId, activeTabIndex } = this.props;
 
     return (
       <Draggable key={tab.id} draggableId={tab.id} index={index}>
@@ -52,7 +52,7 @@ export default class Tabs extends React.Component {
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Tab
               tab={tab}
-              isActive={tabIndex === index}
+              isActive={activeTabIndex === index}
               onSelect={this.onSelect}
               onUpdate={this.onUpdate}
               onRemove={this.onRemove}

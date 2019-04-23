@@ -10,21 +10,20 @@ import { dropzone } from '../settings';
 export default class Element extends React.Component {
   static propTypes = {
     node: PropTypes.object.isRequired,
-    builders: PropTypes.object.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { node, builders, metadata } = this.props;
-    const { id, type, tabs, tabIndex, flex, orientation, nodes } = node;
+    const { node, metadata } = this.props;
+    const { id, type, tabs, activeTabIndex, flex, orientation, nodes } = node;
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
       <ReflexElement key={id} style={style} flex={flex}>
         {type === 'container' ? (
-          <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />
+          <Container nodes={nodes} orientation={orientation} metadata={metadata} />
         ) : (
-          <Content nodeId={id} tabs={tabs} tabIndex={tabIndex} builders={builders} metadata={metadata} />
+          <Content nodeId={id} tabs={tabs} activeTabIndex={activeTabIndex} metadata={metadata} />
         )}
       </ReflexElement>
     );
