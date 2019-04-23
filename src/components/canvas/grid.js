@@ -10,20 +10,19 @@ import bus from './services';
 export default class Grid extends React.Component {
   static propTypes = {
     layout: PropTypes.object.isRequired,
-    builders: PropTypes.object.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { layout, builders, metadata } = this.props;
-    const { id, tabIndex, tabs, orientation, nodes } = layout;
+    const { layout, metadata } = this.props;
+    const { id, activeTabIndex, tabs, orientation, nodes } = layout;
 
     if (nodes && nodes.length) {
-      return <Container builders={builders} nodes={nodes} orientation={orientation} metadata={metadata} />;
+      return <Container nodes={nodes} orientation={orientation} metadata={metadata} />;
     }
 
     if (tabs && tabs.length) {
-      return <Content nodeId={id} tabs={tabs} tabIndex={tabIndex} builders={builders} metadata={metadata} />;
+      return <Content nodeId={id} tabs={tabs} activeTabIndex={activeTabIndex} metadata={metadata} />;
     }
 
     return <Dropzone nodeId={id} metadata={metadata} />;

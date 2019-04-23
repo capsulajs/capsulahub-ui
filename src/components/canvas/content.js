@@ -20,24 +20,22 @@ export default class Content extends React.Component {
   static propTypes = {
     nodeId: PropTypes.string.isRequired,
     tabs: PropTypes.array.isRequired,
-    tabIndex: PropTypes.number.isRequired,
-    builders: PropTypes.object.isRequired,
+    activeTabIndex: PropTypes.number.isRequired,
     metadata: PropTypes.any,
   };
 
   render() {
-    const { nodeId, tabs, tabIndex, builders, metadata } = this.props;
+    const { nodeId, tabs, activeTabIndex, metadata } = this.props;
 
-    if (tabs && tabs[tabIndex]) {
-      const tab = tabs[tabIndex];
-      const builder = builders[tab.builderId];
+    if (tabs && tabs[activeTabIndex]) {
+      const tab = tabs[activeTabIndex];
 
-      if (builder) {
+      if (tab) {
         if (metadata.source || metadata.destination) {
           if (metadata.source) {
             return (
               <Container>
-                <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
+                <Tabs nodeId={nodeId} tabs={tabs} activeTabIndex={activeTabIndex} />
               </Container>
             );
           }
@@ -47,13 +45,13 @@ export default class Content extends React.Component {
 
         return (
           <Container>
-            <Tabs nodeId={nodeId} tabs={tabs} tabIndex={tabIndex} />
-            {builder(tab.metadata)}
+            <Tabs nodeId={nodeId} tabs={tabs} activeTabIndex={activeTabIndex} />
+            {tab.content}
           </Container>
         );
       }
 
-      return 'No builder..';
+      return 'No Active Tab..';
     }
 
     if (!metadata.source && metadata.destination) {
