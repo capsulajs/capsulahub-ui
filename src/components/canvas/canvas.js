@@ -25,7 +25,7 @@ const Container = styled.div`
 export default class Canvas extends React.Component {
   static propTypes = {
     layout: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired
+    onUpdate: PropTypes.func.isRequired,
   };
 
   state = {
