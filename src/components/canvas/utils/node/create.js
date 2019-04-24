@@ -10,8 +10,8 @@ const nodeTab = (builderId) => ({
 
 const multiplyNode = (node, builderId, sectors) => {
   return dropzone.isNeedReverse[sectors.toString()]
-    ? [emptyNode(), { ...node, tabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }]
-    : [{ ...node, tabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }, emptyNode()];
+    ? [emptyNode(), { ...node, activeTabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }]
+    : [{ ...node, activeTabIndex: 0, tabs: [...node.tabs, nodeTab(builderId)] }, emptyNode()];
 };
 
 const create = (tree, metadata) => {
@@ -23,10 +23,10 @@ const create = (tree, metadata) => {
   switch (true) {
     case tree.id === nodeId:
       const { flex } = tree;
-      const tabIndex = node.tabs.length;
+      const activeTabIndex = node.tabs.length;
 
       return sectors.toString() === dropzone.sectors.toString()
-        ? { id: guid(), type: 'element', flex, tabIndex, tabs: [...node.tabs, nodeTab(builderId)] }
+        ? { id: guid(), type: 'element', flex, activeTabIndex, tabs: [...node.tabs, nodeTab(builderId)] }
         : { id: guid(), type: 'container', flex, nodes: multiplyNode(node, builderId, sectors), orientation };
     case tree.type === 'element':
       return tree;

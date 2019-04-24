@@ -15,7 +15,7 @@ export const guid = () =>
   Math.random()
     .toString(36)
     .substring(2, 5);
-export const emptyNode = () => ({ id: guid(), type: 'element', flex: 0.5, tabIndex: 0, tabs: [] });
+export const emptyNode = () => ({ id: guid(), type: 'element', flex: 0.5, activeTabIndex: 0, tabs: [] });
 export const decamelize = (str, separator) => {
   separator = typeof separator === 'undefined' ? '_' : separator;
 
