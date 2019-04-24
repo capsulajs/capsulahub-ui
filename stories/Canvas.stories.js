@@ -20,7 +20,7 @@ export default class CanvasExample extends React.Component {
         orientation: 'vertical',
         nodes: [
           {
-            id: 'node1',
+            id: 'node11',
             type: 'element',
             flex: 0.5,
             tabs: [
