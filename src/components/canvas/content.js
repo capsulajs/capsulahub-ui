@@ -34,7 +34,7 @@ export default class Content extends React.Component {
         if (metadata.source || metadata.destination) {
           if (metadata.source) {
             return (
-              <Container>
+              <Container data-cy={`canvas-node-${nodeId}`}>
                 <Tabs nodeId={nodeId} tabs={tabs} activeTabIndex={activeTabIndex} />
               </Container>
             );
@@ -44,7 +44,7 @@ export default class Content extends React.Component {
         }
 
         return (
-          <Container>
+          <Container data-cy={`canvas-node-${nodeId}`}>
             <Tabs nodeId={nodeId} tabs={tabs} activeTabIndex={activeTabIndex} />
             {tab.content}
           </Container>
