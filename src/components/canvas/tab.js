@@ -83,7 +83,15 @@ export default class Tab extends React.Component {
     const { tab, isActive } = this.props;
 
     if (isEdit) {
-      return <Input data-cy="tab-input" value={value} onChange={this.onChange} onBlur={this.onSave} onKeyDown={this.onKeyDown} />;
+      return (
+        <Input
+          data-cy="tab-input"
+          value={value}
+          onChange={this.onChange}
+          onBlur={this.onSave}
+          onKeyDown={this.onKeyDown}
+        />
+      );
     }
 
     return (
@@ -98,7 +106,12 @@ export default class Tab extends React.Component {
     const { isActive, tab } = this.props;
 
     return (
-      <Container data-cy={`tab-id-${tab.id}`} isActive={isActive} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+      <Container
+        data-cy={`tab-id-${tab.id}`}
+        isActive={isActive}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+      >
         {this.renderContent()}
         {!isEdit && (
           <Close data-cy="tab-remove" isHover={isHover} onClick={this.onRemove}>
