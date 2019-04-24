@@ -28,8 +28,8 @@ export default (layout, event, metadata) => {
     case 'move':
       return moveTab(layout, source, destination);
     case 'select':
-      const tabIndex = findIndex(node.tabs, (tab) => tab.id === tabId);
-      return updateNode(layout, { nodeId, tabIndex });
+      const activeTabIndex = findIndex(node.tabs, (tab) => tab.id === tabId);
+      return updateNode(layout, { nodeId, activeTabIndex });
     case 'update': {
       const tabs = node.tabs.map((tab) => {
         if (tab.id === tabId) {

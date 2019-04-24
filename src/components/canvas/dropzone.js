@@ -54,7 +54,7 @@ export default class Dropzone extends React.Component {
     const ratio = tabId || isSizeLessThan(ref, dropzone.minSize) ? 1 : dropzone.ratio;
 
     return (
-      <Container ref={ref}>
+      <Container ref={ref} data-cy="canvas-dropzone">
         <Centre data-node-id={nodeId} data-sectors={dropzone.sectors} ratio={ratio} />
         {dropzone.sectors.map((sector) => (
           <Sector data-node-id={nodeId} data-sectors={sector} key={sector} style={this.getStyle(sector)} />

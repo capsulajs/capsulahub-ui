@@ -23,7 +23,7 @@ export default class Container extends React.Component {
   };
 
   render() {
-    const { nodes, orientation, metadata } = this.props;
+    const { id, nodes, orientation, metadata } = this.props;
     const reduce = (acc, node, idx) => {
       const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']} />;
       const n = (
@@ -40,7 +40,7 @@ export default class Container extends React.Component {
     };
 
     return (
-      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container}>
+      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container} data-cy={`canvas-node-${id}`}>
         {nodes.reduce(reduce, [])}
       </ReflexContainer>
     );

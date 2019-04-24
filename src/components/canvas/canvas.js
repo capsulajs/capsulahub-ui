@@ -63,7 +63,7 @@ export default class Canvas extends React.Component {
     const { layout } = this.props;
 
     return (
-      <Container>
+      <Container data-cy="canvas">
         <DragDropContext onBeforeDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
           <Grid layout={layout} metadata={metadata} />
         </DragDropContext>
