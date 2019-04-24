@@ -40,7 +40,7 @@ export default class Container extends React.Component {
     };
 
     return (
-      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container} data-cy={`node-id-${id}`}>
+      <ReflexContainer orientation={orientation || 'horizontal'} style={styles.container} data-cy={`canvas-node-${id}`}>
         {nodes.reduce(reduce, [])}
       </ReflexContainer>
     );

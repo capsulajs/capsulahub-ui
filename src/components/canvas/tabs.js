@@ -67,7 +67,7 @@ export default class Tabs extends React.Component {
     const { nodeId, tabs } = this.props;
 
     return (
-      <Container data-cy="tabs">
+      <Container data-cy="canvas-tabs">
         <Droppable droppableId={nodeId} direction="horizontal">
           {(provided) => (
             <div ref={provided.innerRef} style={getListStyle()} {...provided.droppableProps}>

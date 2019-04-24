@@ -85,7 +85,7 @@ export default class Tab extends React.Component {
     if (isEdit) {
       return (
         <Input
-          data-cy="tab-input"
+          data-cy="canvas-tab-input"
           value={value}
           onChange={this.onChange}
           onBlur={this.onSave}
@@ -95,7 +95,7 @@ export default class Tab extends React.Component {
     }
 
     return (
-      <Title data-cy="tab-title" isActive={isActive} onClick={this.onSelect} onDoubleClick={this.onDoubleClick}>
+      <Title data-cy="canvas-tab-title" isActive={isActive} onClick={this.onSelect} onDoubleClick={this.onDoubleClick}>
         {tab.name}
       </Title>
     );
@@ -107,14 +107,14 @@ export default class Tab extends React.Component {
 
     return (
       <Container
-        data-cy={`tab-id-${tab.id}`}
+        data-cy={`canvas-tab-${tab.id}`}
         isActive={isActive}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
         {this.renderContent()}
         {!isEdit && (
-          <Close data-cy="tab-remove" isHover={isHover} onClick={this.onRemove}>
+          <Close data-cy="canvas-tab-remove" isHover={isHover} onClick={this.onRemove}>
             &#10005;
           </Close>
         )}
