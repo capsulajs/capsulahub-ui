@@ -19,7 +19,7 @@ export default class Element extends React.Component {
     const style = type === 'container' ? styles.container : styles.element[orientation || 'horizontal'];
 
     return (
-      <ReflexElement key={id} style={style} flex={flex}>
+      <ReflexElement key={id} style={style} flex={flex} data-cy={`node-id-${id}`}>
         {type === 'container' ? (
           <Container nodes={nodes} orientation={orientation} metadata={metadata} />
         ) : (
