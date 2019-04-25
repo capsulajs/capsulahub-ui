@@ -46,7 +46,7 @@ export default class Content extends React.Component {
         return (
           <Container data-cy={`canvas-node-${nodeId}`}>
             <Tabs nodeId={nodeId} tabs={tabs} activeTabIndex={activeTabIndex} />
-            <div data-cy="canvas-content" dangerouslySetInnerHTML={{__html: tab.content}}/>
+            <div data-cy="canvas-content" dangerouslySetInnerHTML={{ __html: tab.content }} />
           </Container>
         );
       }
