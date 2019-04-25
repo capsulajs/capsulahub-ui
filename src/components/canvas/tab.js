@@ -96,7 +96,7 @@ export default class Tab extends React.Component {
 
     return (
       <Title
-        data-cy={isActive ? `canvas-tab-${tab.id}-title-active` : `canvas-tab-${tab.id}-title`}
+        data-cy={isActive ? 'canvas-tab-title-active' : 'canvas-tab-title'}
         isActive={isActive}
         onClick={this.onSelect}
         onDoubleClick={this.onDoubleClick}
