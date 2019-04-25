@@ -25,13 +25,7 @@ export default class Container extends React.Component {
   render() {
     const { id, nodes, orientation, metadata } = this.props;
     const reduce = (acc, node, idx) => {
-      const splitter = (
-        <ReflexSplitter
-          key={'S' + idx}
-          style={styles.splitter[orientation || 'horizontal']}
-          data-cy={`canvas-splitter-${orientation || 'horizontal'}`}
-        />
-      );
+      const splitter = <ReflexSplitter key={'S' + idx} style={styles.splitter[orientation || 'horizontal']} />;
       const n = (
         <Element
           flex={node.flex}
