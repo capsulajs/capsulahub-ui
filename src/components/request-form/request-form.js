@@ -197,7 +197,7 @@ export default class RequestForm extends PureComponent {
           ))}
           <Footer>
             <Button
-              data-cy="request-form-submit"
+              data-cy="request-form-submit-btn"
               text="Submit"
               theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
