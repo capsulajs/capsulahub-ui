@@ -104,17 +104,18 @@ export default class RequestForm extends PureComponent {
 
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
-    this.setState({
-      argsCount: argsCountNumber,
-    });
-
     if (argsCountNumber > 0) {
       this.setState((prevState) => ({
+        argsCount: argsCountNumber,
         requestArgs: [
           ...prevState.requestArgs,
           ...new Array(argsCountNumber).fill(defaultArgVal[prevState.language]),
         ].slice(0, argsCountNumber),
       }));
+    } else {
+      this.setState({
+        argsCount: '',
+      });
     }
   };
 
@@ -175,7 +176,7 @@ export default class RequestForm extends PureComponent {
                 />
               </ArgumentsCount>
               <Dropdown
-                data-cy="request-form-language"
+                dataCy="request-form-language-dropdown"
                 title={codeModes.javascript}
                 items={languages}
                 width={120}
@@ -185,7 +186,6 @@ export default class RequestForm extends PureComponent {
           </Header>
           {requestArgs.map((value, index) => (
             <Editor
-              data-cy={`request-form-editor-${index}`}
               key={index}
               index={index}
               mode={language}
@@ -197,7 +197,7 @@ export default class RequestForm extends PureComponent {
           ))}
           <Footer>
             <Button
-              data-cy="request-form-submit-btn"
+              dataCy="request-form-submit-btn"
               text="Submit"
               theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
