@@ -155,23 +155,37 @@ export default class RequestForm extends PureComponent {
     const { selectedMethodPath } = this.props;
 
     return (
-      <Container id="request-form-container">
+      <Container data-cy="request-form-container">
         <Column>
-          <Header>
+          <Header data-cy="request-form-header">
             <Wrapper>
-              <Image src={image} />
-              <Title>Request Form</Title>
+              <Image data-cy="request-form-icon" src={image} />
+              <Title data-cy="request-form-title">Request Form</Title>
             </Wrapper>
             <Wrapper>
-              <ArgumentsCount>
-                <ArgumentsCountLabel>Arguments:</ArgumentsCountLabel>
-                <Input min="1" onChange={this.onChangeArgumentsCount} value={argsCount} type="number" width="30px" />
+              <ArgumentsCount data-cy="request-form-args-count">
+                <ArgumentsCountLabel data-cy="request-form-args-count-label">Arguments:</ArgumentsCountLabel>
+                <Input
+                  data-cy="request-form-args-count-value"
+                  min="1"
+                  onChange={this.onChangeArgumentsCount}
+                  value={argsCount}
+                  type="number"
+                  width="30px"
+                />
               </ArgumentsCount>
-              <Dropdown title={codeModes.javascript} items={languages} width={120} onChange={this.onChangeLanguage} />
+              <Dropdown
+                data-cy="request-form-language"
+                title={codeModes.javascript}
+                items={languages}
+                width={120}
+                onChange={this.onChangeLanguage}
+              />
             </Wrapper>
           </Header>
           {requestArgs.map((value, index) => (
             <Editor
+              data-cy={`request-form-editor-${index}`}
               key={index}
               index={index}
               mode={language}
@@ -183,12 +197,15 @@ export default class RequestForm extends PureComponent {
           ))}
           <Footer>
             <Button
+              data-cy="request-form-submit"
               text="Submit"
               theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
               onClick={this.onSubmit}
             />
-            <Title color="#f8f7f7">{selectedMethodPath}</Title>
+            <Title data-cy="request-form-selected-method-path" color="#f8f7f7">
+              {selectedMethodPath}
+            </Title>
           </Footer>
         </Column>
       </Container>
