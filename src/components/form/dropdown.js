@@ -86,10 +86,12 @@ class Dropdown extends React.Component {
     items: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     width: PropTypes.number,
+    dataCy: PropTypes.string,
   };
 
   static defaultProps = {
     items: [],
+    dataCy: 'dropdown',
   };
 
   state = {
@@ -107,19 +109,25 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { width, items } = this.props;
+    const { width, items, dataCy } = this.props;
     const { title, selected, isOpen } = this.state;
 
     return (
-      <Container width={width}>
-        <Header onClick={this.toggle}>
-          <Title>{Number.isInteger(selected) ? items[selected].label : title}</Title>
-          {isOpen ? <ArrowUp /> : <ArrowDown />}
+      <Container data-cy={dataCy} width={width}>
+        <Header onClick={this.toggle} data-cy={`${dataCy}-header`}>
+          <Title data-cy={`${dataCy}-title`}>{Number.isInteger(selected) ? items[selected].label : title}</Title>
+          {isOpen ? <ArrowUp data-cy={`${dataCy}-arrow-up`} /> : <ArrowDown data-cy={`${dataCy}-arrow-down`} />}
         </Header>
         {isOpen && (
-          <List width={width}>
+          <List data-cy={`${dataCy}-options`} width={width}>
             {items.map((item, index) => (
-              <DropdownItem key={index} item={item} index={index} select={this.select} />
+              <DropdownItem
+                dataCy={`${dataCy}-option-${item.label}`}
+                key={index}
+                item={item}
+                index={index}
+                select={this.select}
+              />
             ))}
           </List>
         )}
@@ -128,10 +136,14 @@ class Dropdown extends React.Component {
   }
 }
 
-const DropdownItem = ({ select, index, item }) => {
+const DropdownItem = ({ select, index, item, dataCy }) => {
   const handleOnClick = () => select(index);
 
-  return <Item onClick={handleOnClick}>{item.label}</Item>;
+  return (
+    <Item data-cy={dataCy} onClick={handleOnClick}>
+      {item.label}
+    </Item>
+  );
 };
 
 export default enhanceWithClickOutside(Dropdown);

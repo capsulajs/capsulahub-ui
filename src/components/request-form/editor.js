@@ -47,10 +47,10 @@ export default class Editor extends React.Component {
   onLoad = (editor) => (this.editor = editor);
 
   render() {
-    const { height, mode, value } = this.props;
+    const { height, mode, value, index } = this.props;
 
     return (
-      <React.Fragment>
+      <div data-cy={`request-form-editor-${index}`}>
         <AceEditor
           mode={mode}
           theme="capsula-js"
@@ -66,7 +66,7 @@ export default class Editor extends React.Component {
           height={`${height}px`}
         />
         <Line />
-      </React.Fragment>
+      </div>
     );
   }
 }

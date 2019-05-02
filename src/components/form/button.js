@@ -29,9 +29,9 @@ const themes = {
   clicked: { bg: '#fff', hoverBg: '#fff', color: '#57D7FF' },
 };
 
-export default ({ id, text, theme, onClick, css }) => {
+export default ({ id, text, theme, onClick, css, dataCy = 'button' }) => {
   return (
-    <Button id={id} theme={themes[theme] || themes['active']} onClick={onClick} css={css}>
+    <Button data-cy={dataCy} id={id} theme={themes[theme] || themes['active']} onClick={onClick} css={css}>
       {text}
     </Button>
   );
