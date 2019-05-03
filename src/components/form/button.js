@@ -9,7 +9,7 @@ const Button = styled.button`
   color: ${(props) => props.theme.color};
   padding: 3px 5px 5px 5px;
   margin: 0;
-  cursor: pointer;
+  cursor: ${(props) => props.theme.cursor};
   border: none;
 
   &:focus {
@@ -24,8 +24,8 @@ const Button = styled.button`
 `;
 
 const themes = {
-  active: { bg: '#57D7FF', hoverBg: '#57D7FF', color: '#666666' },
-  disabled: { bg: '#737373', hoverBg: '#737373', color: '#999999' },
+  active: { bg: '#57D7FF', hoverBg: '#57D7FF', color: '#666666', cursor: 'pointer' },
+  disabled: { bg: '#737373', hoverBg: '#737373', color: '#999999', cursor: 'not-allowed' },
   clicked: { bg: '#fff', hoverBg: '#fff', color: '#57D7FF' },
 };
 
