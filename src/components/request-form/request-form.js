@@ -149,7 +149,10 @@ export default class RequestForm extends PureComponent {
     }
   };
 
-  isFormValid = () => typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';
+  isFormValid = () =>
+    !!this.props.selectedMethodPath &&
+    this.state.requestArgs.every((content) => !!content.trim()) &&
+    typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';
 
   render() {
     const { language, requestArgs, argsCount } = this.state;
