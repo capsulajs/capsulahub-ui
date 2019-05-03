@@ -91,6 +91,11 @@ export default class RequestForm extends PureComponent {
         argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
       }));
     }
+    if (this.state.argsCount < prevState.argsCount) {
+      this.setState({
+        editorsIsValid: prevState.editorsIsValid.slice(0, this.state.argsCount),
+      });
+    }
   }
 
   onChangeLanguage = ({ label: newLanguage }) => {
@@ -111,10 +116,6 @@ export default class RequestForm extends PureComponent {
           ...prevState.requestArgs,
           ...new Array(argsCountNumber).fill(defaultArgVal[prevState.language]),
         ].slice(0, argsCountNumber),
-        editorsIsValid:
-          argsCountNumber < prevState.editorsIsValid.length
-            ? prevState.editorsIsValid.slice(0, argsCountNumber)
-            : prevState.editorsIsValid,
       }));
     } else {
       this.setState({
