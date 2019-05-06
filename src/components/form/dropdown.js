@@ -100,7 +100,14 @@ class Dropdown extends React.Component {
     selected: null,
   };
 
-  handleClickOutside = () => this.setState({ isOpen: false });
+  componentDidUpdate(prevProps) {
+    if (this.props.title !== prevProps.title) {
+      this.setState({
+        title: this.props.title,
+      });
+    }
+  }
+
   toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   select = (selected) => {
     this.setState({ selected });
