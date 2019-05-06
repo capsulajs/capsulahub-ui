@@ -66,7 +66,7 @@ const defaultArgVal = {
   json: '{}',
 };
 
-const height = 555;
+const height = 561;
 
 const languages = [{ label: codeModes.javascript }, { label: codeModes.json }];
 
