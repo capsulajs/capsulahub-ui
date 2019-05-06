@@ -32,7 +32,12 @@ const Footer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  margin-top: 5px;
+`;
+const ErrorMessage = styled.div`
+  color: red;
+  font-weight: bold;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -77,9 +82,13 @@ export default class RequestForm extends PureComponent {
 
   state = {
     language: this.props.content.language,
-    requestArgs: [this.props.content.requestArgs],
+    requestArgs:
+      typeof this.props.content.requestArgs === 'string'
+        ? [this.props.content.requestArgs]
+        : this.props.content.requestArgs,
     argsCount: 1,
     editorsIsValid: [true],
+    executionError: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -87,7 +96,7 @@ export default class RequestForm extends PureComponent {
       const { language, requestArgs } = this.props.content;
       this.setState((prevState) => ({
         language,
-        requestArgs,
+        requestArgs: typeof requestArgs === 'string' ? prevState.requestArgs.map((arg) => requestArgs) : requestArgs,
         argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
       }));
     }
@@ -103,6 +112,7 @@ export default class RequestForm extends PureComponent {
       this.setState((prevState) => ({
         language: newLanguage,
         requestArgs: prevState.requestArgs.map(() => defaultArgVal[newLanguage]),
+        executionError: '',
       }));
     }
   };
@@ -116,6 +126,7 @@ export default class RequestForm extends PureComponent {
           ...prevState.requestArgs,
           ...new Array(argsCountNumber).fill(defaultArgVal[prevState.language]),
         ].slice(0, argsCountNumber),
+        executionError: '',
       }));
     } else {
       this.setState({
@@ -128,7 +139,7 @@ export default class RequestForm extends PureComponent {
     this.setState((prevState) => {
       const newArgs = [...prevState.requestArgs];
       newArgs[index] = newArgument;
-      return { requestArgs: newArgs };
+      return { requestArgs: newArgs, executionError: '' };
     });
   };
 
@@ -145,18 +156,24 @@ export default class RequestForm extends PureComponent {
   onSubmit = () => {
     if (this.isFormValid()) {
       const { language, requestArgs: args } = this.state;
-      this.props.onSubmit({
-        language,
-        requestArgs: args.map((arg) =>
+      try {
+        const requestArgs = args.map((arg) =>
           language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
-        ),
-      });
+        );
+        this.props.onSubmit({
+          language,
+          requestArgs,
+        });
+      } catch (error) {
+        this.setState({ executionError: `${error.name}: ${error.message}` });
+      }
     }
   };
 
   isFormValid = () =>
     !!this.props.selectedMethodPath &&
     this.state.requestArgs.every((content) => !!content.trim()) &&
+    !this.state.executionError &&
     typeof this.state.editorsIsValid.find((isValid) => !isValid) === 'undefined';
 
   render() {
@@ -211,6 +228,9 @@ export default class RequestForm extends PureComponent {
               css="padding: 3px 5px 4px 5px; width: 100px;"
               onClick={this.onSubmit}
             />
+            {this.state.executionError && (
+              <ErrorMessage data-cy="request-form-error-message">{this.state.executionError}</ErrorMessage>
+            )}
             <Title data-cy="request-form-selected-method-path" color="#f8f7f7">
               {selectedMethodPath}
             </Title>
