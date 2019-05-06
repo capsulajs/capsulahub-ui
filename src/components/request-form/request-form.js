@@ -156,21 +156,17 @@ export default class RequestForm extends PureComponent {
   onSubmit = () => {
     if (this.isFormValid()) {
       const { language, requestArgs: args } = this.state;
-
-      let requestArgs;
-
       try {
-        requestArgs = args.map((arg) =>
+        const requestArgs = args.map((arg) =>
           language === codeModes.javascript ? eval(`(function(){${arg}})()`) : JSON.parse(arg)
         );
+        this.props.onSubmit({
+          language,
+          requestArgs,
+        });
       } catch (error) {
         this.setState({ executionError: `${error.name}: ${error.message}` });
       }
-
-      this.props.onSubmit({
-        language,
-        requestArgs,
-      });
     }
   };
 
