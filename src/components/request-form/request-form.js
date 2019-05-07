@@ -202,7 +202,7 @@ export default class RequestForm extends PureComponent {
               </ArgumentsCount>
               <Dropdown
                 dataCy="request-form-language-dropdown"
-                title={codeModes.javascript}
+                title={this.state.language}
                 items={languages}
                 width={120}
                 onChange={this.onChangeLanguage}
