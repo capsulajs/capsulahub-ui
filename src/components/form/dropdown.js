@@ -85,6 +85,7 @@ class Dropdown extends React.Component {
     title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
+    selected: PropTypes.string.isRequired,
     width: PropTypes.number,
     dataCy: PropTypes.string,
   };
@@ -96,45 +97,29 @@ class Dropdown extends React.Component {
 
   state = {
     isOpen: false,
-    title: this.props.title,
-    selected: null,
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.title !== prevProps.title) {
-      this.setState({
-        title: this.props.title,
-      });
-    }
-  }
-
   toggle = () => this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
-  select = (selected) => {
-    this.setState({ selected });
+
+  select = (item) => {
     this.toggle();
-    this.props.onChange(this.props.items[selected]);
+    this.props.onChange(item);
   };
 
   render() {
-    const { width, items, dataCy } = this.props;
-    const { title, selected, isOpen } = this.state;
+    const { width, items, dataCy, selected, title } = this.props;
+    const { isOpen } = this.state;
 
     return (
       <Container data-cy={dataCy} width={width}>
         <Header onClick={this.toggle} data-cy={`${dataCy}-header`}>
-          <Title data-cy={`${dataCy}-title`}>{Number.isInteger(selected) ? items[selected].label : title}</Title>
+          <Title data-cy={`${dataCy}-title`}>{selected || title}</Title>
           {isOpen ? <ArrowUp data-cy={`${dataCy}-arrow-up`} /> : <ArrowDown data-cy={`${dataCy}-arrow-down`} />}
         </Header>
         {isOpen && (
           <List data-cy={`${dataCy}-options`} width={width}>
             {items.map((item, index) => (
-              <DropdownItem
-                dataCy={`${dataCy}-option-${item.label}`}
-                key={index}
-                item={item}
-                index={index}
-                select={this.select}
-              />
+              <DropdownItem dataCy={`${dataCy}-option-${item.label}`} key={index} item={item} select={this.select} />
             ))}
           </List>
         )}
@@ -143,8 +128,8 @@ class Dropdown extends React.Component {
   }
 }
 
-const DropdownItem = ({ select, index, item, dataCy }) => {
-  const handleOnClick = () => select(index);
+const DropdownItem = ({ select, item, dataCy }) => {
+  const handleOnClick = () => select(item);
 
   return (
     <Item data-cy={dataCy} onClick={handleOnClick}>
