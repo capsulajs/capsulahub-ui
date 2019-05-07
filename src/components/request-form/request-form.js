@@ -222,7 +222,7 @@ export default class RequestForm extends PureComponent {
           ))}
           <Footer>
             <Button
-              dataCy="request-form-submit-btn"
+              dataCy={`request-form-submit-btn-${this.isFormValid() ? 'active' : 'disabled'}`}
               text="Submit"
               theme={this.isFormValid() ? 'active' : 'disabled'}
               css="padding: 3px 5px 4px 5px; width: 100px;"
