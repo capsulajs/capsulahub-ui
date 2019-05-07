@@ -119,9 +119,6 @@ export default class RequestForm extends PureComponent {
 
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
-
-    console.log('onChangeArgumentsCount', argsCount);
-
     if (argsCountNumber > 0) {
       this.setState((prevState) => ({
         argsCount: argsCountNumber,
@@ -151,9 +148,6 @@ export default class RequestForm extends PureComponent {
     this.setState((prevState) => {
       const newEditorsIsValid = [...prevState.editorsIsValid];
       newEditorsIsValid[index] = isValid;
-
-      console.log('newEditorsIsValid', newEditorsIsValid);
-
       return {
         editorsIsValid: newEditorsIsValid,
       };
