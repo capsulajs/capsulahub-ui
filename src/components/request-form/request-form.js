@@ -100,7 +100,7 @@ export default class RequestForm extends PureComponent {
         argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
       }));
     }
-    if (this.state.argsCount < prevState.argsCount) {
+    if (this.state.argsCount < prevState.argsCount && this.state.argsCount) {
       this.setState({
         editorsIsValid: prevState.editorsIsValid.slice(0, this.state.argsCount),
       });
