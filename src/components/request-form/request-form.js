@@ -100,7 +100,7 @@ export default class RequestForm extends PureComponent {
         argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
       }));
     }
-    if (this.state.argsCount < prevState.argsCount) {
+    if (this.state.argsCount < prevState.argsCount && this.state.argsCount) {
       this.setState({
         editorsIsValid: prevState.editorsIsValid.slice(0, this.state.argsCount),
       });
@@ -119,6 +119,9 @@ export default class RequestForm extends PureComponent {
 
   onChangeArgumentsCount = (argsCount) => {
     const argsCountNumber = Number(argsCount);
+
+    console.log('onChangeArgumentsCount', argsCount);
+
     if (argsCountNumber > 0) {
       this.setState((prevState) => ({
         argsCount: argsCountNumber,
@@ -148,6 +151,9 @@ export default class RequestForm extends PureComponent {
     this.setState((prevState) => {
       const newEditorsIsValid = [...prevState.editorsIsValid];
       newEditorsIsValid[index] = isValid;
+
+      console.log('newEditorsIsValid', newEditorsIsValid);
+
       return {
         editorsIsValid: newEditorsIsValid,
       };
