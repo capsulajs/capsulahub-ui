@@ -6,6 +6,7 @@ import { Dropdown } from 'src';
 export const props = {
   title: 'Example of drop down list',
   items: [{ label: 'one' }, { label: 'two' }, { label: 'three' }],
+  selected: '',
 };
 
 export const actions = {

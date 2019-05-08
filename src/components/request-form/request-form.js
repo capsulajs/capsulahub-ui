@@ -202,7 +202,8 @@ export default class RequestForm extends PureComponent {
               </ArgumentsCount>
               <Dropdown
                 dataCy="request-form-language-dropdown"
-                title={this.state.language}
+                selected={this.state.language}
+                title="Choose the language"
                 items={languages}
                 width={120}
                 onChange={this.onChangeLanguage}
