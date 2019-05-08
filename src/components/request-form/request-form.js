@@ -98,6 +98,7 @@ export default class RequestForm extends PureComponent {
         language,
         requestArgs: typeof requestArgs === 'string' ? prevState.requestArgs.map((arg) => requestArgs) : requestArgs,
         argsCount: typeof requestArgs.map === 'function' ? requestArgs.length : prevState.argsCount,
+        executionError: '',
       }));
     }
     if (this.state.argsCount < prevState.argsCount && this.state.argsCount) {
