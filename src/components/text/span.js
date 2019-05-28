@@ -1,4 +1,3 @@
-import 'typeface-montserrat/index.css';
 import styled from 'styled-components';
 
 export default styled.span`
