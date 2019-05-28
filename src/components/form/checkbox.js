@@ -1,12 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultFontFamily } from '../constants';
+import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily, defaultColor } from '../../constants';
 
 const Container = styled.label`
-  font-family: ${defaultFontFamily};
-  font-style: regular;
-  font-size: 12px;
-  color: #898989;
+  font-style: ${(props) => props.theme.fontStyle};
+  font-weight: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.color};
   position: relative;
   padding-left: 25px;
   cursor: pointer;
@@ -47,10 +49,32 @@ const CheckMark = styled.span`
   }
 `;
 
-export default ({ label, onChange }) => (
-  <Container>
-    {label}
-    <Input type="checkbox" onChange={(e) => onChange(e.target.checked)} />
-    <CheckMark />
-  </Container>
-);
+export default class Checkbox extends React.Component {
+  static defaultProps = {
+    theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
+      color: defaultColor,
+    },
+  };
+
+  static propTypes = {
+    theme: PropTypes.object,
+    label: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
+
+  render() {
+    const { theme, label, onChange } = this.props;
+
+    return (
+      <Container theme={theme}>
+        {label}
+        <Input type="checkbox" onChange={(e) => onChange(e.target.checked)} />
+        <CheckMark />
+      </Container>
+    );
+  }
+}
