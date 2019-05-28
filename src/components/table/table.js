@@ -1,6 +1,8 @@
+import 'react-table/react-table.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ReactTable from 'react-table';
 import { Button } from '..';
 import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
 
@@ -12,25 +14,35 @@ const Container = styled.div`
   height: 100%;
   background: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.color};
-  min-width: 150px;
-  min-height: 100px;
+  min-width: 300px;
+  min-height: 200px;
 `;
 
 export default class Table extends React.Component {
   static propTypes = {
+    data: PropTypes.array.isRequired,
+    columns: PropTypes.array.isRequired,
     theme: PropTypes.object,
   };
 
   static defaultProps = {
     theme: {
-      bgColor: '#3f3f3f',
-      color: '#767676',
+      bgColor: '#fff',
+      color: '#3f3f3f',
     },
+    data: [],
+    columns: [],
   };
 
   state = {};
 
   render() {
-    return <Container theme={this.props.theme}>Test</Container>;
+    const { theme, data, columns } = this.props;
+
+    return (
+      <Container theme={theme}>
+        <ReactTable data={data} columns={columns} />
+      </Container>
+    );
   }
 }
