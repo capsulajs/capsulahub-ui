@@ -9,7 +9,7 @@ import {
   defaultBackgroundColor,
 } from '../constants';
 
-export default () => styled.p`
+export default styled.p`
   font-style: ${(props) => props.fontStyle || defaultFontStyle};
   font-weight: ${(props) => props.fontWeight || defaultFontWeight};
   font-size: ${(props) => props.fontSize || defaultFomtSize};

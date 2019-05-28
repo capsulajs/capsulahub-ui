@@ -1,3 +1,4 @@
+import './index.css';
 import Canvas from './canvas/canvas';
 import Logger from './logger/logger';
 import Catalog from './catalog/catalog';

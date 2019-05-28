@@ -10,16 +10,18 @@ const Container = styled.div`
   font-size: ${defaultFomtSize};
   width: 100%;
   height: 100%;
-  background: ${(props) => console.log(props) || props.theme.bgColor};
+  background: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.color};
   min-width: 150px;
   min-height: 100px;
 `;
 
 export default class Table extends React.Component {
-  static propTypes = {};
+  static propTypes = {
+    theme: PropTypes.object,
+  };
+
   static defaultProps = {
-    foo: 'bar',
     theme: {
       bgColor: '#3f3f3f',
       color: '#767676',
@@ -29,6 +31,6 @@ export default class Table extends React.Component {
   state = {};
 
   render() {
-    return <Container>Test</Container>;
+    return <Container theme={this.props.theme}>Test</Container>;
   }
 }
