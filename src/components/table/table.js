@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactTable from 'react-table';
 import { Button } from '..';
-import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily } from '../../constants';
+import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily } from '../constants';
 
 const Container = styled.div`
   font-family: ${(props) => props.theme.fontStyle};

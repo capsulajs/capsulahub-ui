@@ -9,7 +9,7 @@ import {
   defaultFontFamily,
   defaultColor,
   defaultBackgroundColor,
-} from '../../constants';
+} from '../constants';
 
 const Container = styled.div`
   font-style: ${(props) => props.theme.fontStyle};

@@ -5,7 +5,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/javascript';
 import 'brace/mode/json';
 import './theme';
-import { codeModes } from '../../constants';
+import { codeModes } from '../constants';
 
 const Line = styled.div`
   height: 1px;

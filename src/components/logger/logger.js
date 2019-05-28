@@ -10,7 +10,7 @@ import {
   defaultFontFamily,
   defaultColor,
   defaultBackgroundColor,
-} from '../../constants';
+} from '../constants';
 import Content from './content';
 
 const Container = styled.div`

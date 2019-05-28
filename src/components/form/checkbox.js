@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily, defaultColor } from '../../constants';
+import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily, defaultColor } from '../constants';
 
 const Container = styled.label`
   font-style: ${(props) => props.theme.fontStyle};

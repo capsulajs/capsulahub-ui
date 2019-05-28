@@ -10,9 +10,9 @@ import {
   defaultFontFamily,
   defaultColor,
   defaultBackgroundColor,
-} from '../../constants';
+  codeModes,
+} from '../constants';
 import image from '../../assets/settings.png';
-import { codeModes } from '../../constants';
 
 const Container = styled.div`
   font-style: ${(props) => props.theme.fontStyle};

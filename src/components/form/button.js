@@ -11,7 +11,7 @@ import {
   defaultBackgroundHoverColor,
   defaultButtonPadding,
   defaultCursor,
-} from '../../constants';
+} from '../constants';
 
 const Container = styled.button`
   font-style: ${(props) => props.theme.fontStyle};

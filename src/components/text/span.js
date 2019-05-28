@@ -8,7 +8,7 @@ import {
   defaultFontFamily,
   defaultColor,
   defaultBackgroundColor,
-} from '../../constants';
+} from '../constants';
 
 const Container = styled.span`
   font-style: ${(props) => props.theme.fontStyle};
