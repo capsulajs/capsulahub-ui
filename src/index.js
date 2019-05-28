@@ -9,6 +9,7 @@ export {
   Dropdown,
   Loader,
   Modal,
+  Table,
   Paragraph,
   Span,
 } from './components';
