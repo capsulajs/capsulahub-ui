@@ -28,13 +28,11 @@ export default class Table extends React.Component {
   static defaultProps = {
     theme: {
       bgColor: '#fff',
-      color: '#3f3f3f',
+      color: '#222',
     },
     data: [],
     columns: [],
   };
-
-  state = {};
 
   render() {
     const { theme, data, columns } = this.props;
