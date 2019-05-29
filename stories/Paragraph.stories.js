@@ -3,9 +3,11 @@ import { storiesOf } from '@storybook/react';
 import { Paragraph } from 'src';
 
 export const props = {
-  fontSize: 48,
-  backgroundColor: '#fff',
-  color: '#222',
+  theme: {
+    fontSize: 48,
+    bgColor: '#fff',
+    color: '#222',
+  },
 };
 
 storiesOf('Paragraph', module)

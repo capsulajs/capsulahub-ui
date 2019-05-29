@@ -3,15 +3,23 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { empty } from 'rxjs';
 import image from '../../assets/settings.png';
-import { defaultFontFamily } from '../constants';
+import {
+  defaultFontStyle,
+  defaultFontWeight,
+  defaultFontSize,
+  defaultFontFamily,
+  defaultColor,
+  defaultBackgroundColor,
+} from '../constants';
 import Content from './content';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
-  font-style: regular;
-  font-size: 13px;
-  background: #3f3f3f;
-  color: #767676;
+  font-style: ${(props) => props.theme.fontStyle};
+  font-weight: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.color};
+  background-color: ${(props) => props.theme.bgColor};
   position: relative;
   width: 100%;
   height: 100%;
@@ -47,10 +55,19 @@ const Clear = styled.div`
 
 export default class Logger extends React.Component {
   static defaultProps = {
+    theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
+      bgColor: defaultBackgroundColor,
+      color: defaultColor,
+    },
     logs$: empty(),
   };
 
   static propTypes = {
+    theme: PropTypes.object,
     logs$: PropTypes.object,
   };
 
@@ -73,10 +90,11 @@ export default class Logger extends React.Component {
   }
 
   render() {
+    const { theme } = this.props;
     const { events } = this.state;
 
     return (
-      <Container>
+      <Container theme={theme}>
         <Header>
           <Row>
             <Image src={image} />

@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactTable from 'react-table';
 import { Button } from '..';
-import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
+import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily } from '../constants';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
-  font-style: ${defaultFontWeight};
-  font-size: ${defaultFomtSize};
+  font-family: ${(props) => props.theme.fontStyle};
+  font-style: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
   width: 100%;
   height: 100%;
   background: ${(props) => props.theme.bgColor};
@@ -27,6 +28,10 @@ export default class Table extends React.Component {
 
   static defaultProps = {
     theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
       bgColor: '#fff',
       color: '#222',
     },

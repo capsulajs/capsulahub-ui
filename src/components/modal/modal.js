@@ -1,17 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
-import { defaultFontFamily } from '../constants';
+import {
+  defaultFontStyle,
+  defaultFontWeight,
+  defaultFontSize,
+  defaultFontFamily,
+  defaultColor,
+  defaultBackgroundColor,
+} from '../constants';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
-  font-style: regular;
-  font-size: 13px;
+  font-style: ${(props) => props.theme.fontStyle};
+  font-weight: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.color};
+  background-color: ${(props) => props.theme.bgColor};
   position: fixed;
   top: 15%;
   left: calc(50% - 274px);
-  background: #525252;
-  color: #a9a9a9;
   padding: 19px;
   width: 548px;
   height: 361px;
@@ -28,34 +37,45 @@ const Header = styled.div`
 `;
 
 class Modal extends React.Component {
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
+      bgColor: defaultBackgroundColor,
+      color: defaultColor,
+    },
+    isOpened: false,
+  };
 
-    this.state = {
-      isOpened: false,
-    };
-  }
+  static propTypes = {
+    theme: PropTypes.object,
+  };
 
-  handleClickOutside(e) {
+  state = {
+    isOpened: this.props.isOpened,
+  };
+
+  toggle = () => this.setState({ isOpened: !this.state.isOpened });
+  handleClickOutside = (e) => {
     e.target.id === this.props.id ? this.toggle() : this.setState({ isOpened: false });
-  }
-
-  toggle() {
-    this.setState({ isOpened: !this.state.isOpened });
-  }
+  };
 
   render() {
+    const { theme, children, title } = this.props;
+
     if (!this.state.isOpened) {
       return null;
     }
 
     return (
-      <Container>
+      <Container theme={theme}>
         <Header>
-          <div>{this.props.title}</div>
+          <div>{title}</div>
           <Close onClick={() => this.toggle()}>&#10005;</Close>
         </Header>
-        {this.props.children}
+        {children}
       </Container>
     );
   }

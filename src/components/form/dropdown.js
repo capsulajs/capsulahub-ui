@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
-import { defaultFontFamily } from '../constants';
+import { defaultFontStyle, defaultFontWeight, defaultFontSize, defaultFontFamily, defaultColor } from '../constants';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
-  font-size: 12px;
-  font-style: regular;
-  background: #767676;
-  color: #f8f7f7;
+  font-style: ${(props) => props.theme.fontStyle};
+  font-weight: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.color};
   width: ${(props) => props.width || 200}px;
 `;
 
@@ -81,6 +81,18 @@ const Item = styled.div`
 `;
 
 class Dropdown extends React.Component {
+  static defaultProps = {
+    theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
+      color: defaultColor,
+    },
+    items: [],
+    dataCy: 'dropdown',
+  };
+
   static propTypes = {
     title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
@@ -88,11 +100,7 @@ class Dropdown extends React.Component {
     selected: PropTypes.string.isRequired,
     width: PropTypes.number,
     dataCy: PropTypes.string,
-  };
-
-  static defaultProps = {
-    items: [],
-    dataCy: 'dropdown',
+    theme: PropTypes.object,
   };
 
   state = {
@@ -107,11 +115,11 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { width, items, dataCy, selected, title } = this.props;
+    const { theme, width, items, dataCy, selected, title } = this.props;
     const { isOpen } = this.state;
 
     return (
-      <Container data-cy={dataCy} width={width}>
+      <Container theme={theme} data-cy={dataCy} width={width}>
         <Header onClick={this.toggle} data-cy={`${dataCy}-header`}>
           <Title data-cy={`${dataCy}-title`}>{selected || title}</Title>
           {isOpen ? <ArrowUp data-cy={`${dataCy}-arrow-up`} /> : <ArrowDown data-cy={`${dataCy}-arrow-down`} />}

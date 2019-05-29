@@ -3,18 +3,26 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Editor from './editor';
 import { Dropdown, Input, Button } from '..';
-import { defaultFontFamily, defaultFomtSize, defaultFontWeight } from '../constants';
+import {
+  defaultFontStyle,
+  defaultFontWeight,
+  defaultFontSize,
+  defaultFontFamily,
+  defaultColor,
+  defaultBackgroundColor,
+  codeModes,
+} from '../constants';
 import image from '../../assets/settings.png';
-import { codeModes } from '../../constants';
 
 const Container = styled.div`
-  font-family: ${defaultFontFamily};
-  font-style: ${defaultFontWeight};
-  font-size: ${defaultFomtSize};
+  font-style: ${(props) => props.theme.fontStyle};
+  font-weight: ${(props) => props.theme.fontWeight};
+  font-size: ${(props) => props.theme.fontSize};
+  font-family: ${(props) => props.theme.fontFamily};
+  color: ${(props) => props.theme.color};
+  background-color: ${(props) => props.theme.bgColor};
   width: 100%;
   height: 100%;
-  background: #3f3f3f;
-  color: #767676;
   min-width: 150px;
   min-height: 100px;
 `;
@@ -78,6 +86,18 @@ export default class RequestForm extends PureComponent {
       requestArgs: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]).isRequired,
     }).isRequired,
     onSubmit: PropTypes.func.isRequired,
+    theme: PropTypes.object,
+  };
+
+  static defaultProps = {
+    theme: {
+      fontStyle: defaultFontStyle,
+      fontWeight: defaultFontWeight,
+      fontSize: defaultFontSize,
+      fontFamily: defaultFontFamily,
+      bgColor: defaultBackgroundColor,
+      color: defaultColor,
+    },
   };
 
   state = {
@@ -179,10 +199,10 @@ export default class RequestForm extends PureComponent {
 
   render() {
     const { language, requestArgs, argsCount } = this.state;
-    const { selectedMethodPath } = this.props;
+    const { theme, selectedMethodPath } = this.props;
 
     return (
-      <Container data-cy="request-form-container">
+      <Container theme={theme} data-cy="request-form-container">
         <Column>
           <Header data-cy="request-form-header">
             <Wrapper>

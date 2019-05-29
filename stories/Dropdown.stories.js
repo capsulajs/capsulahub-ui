@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { Dropdown } from 'src';
 
 export const props = {
-  title: 'Example of drop down list',
+  title: 'Example of dropdown',
   items: [{ label: 'one' }, { label: 'two' }, { label: 'three' }],
   selected: '',
 };
