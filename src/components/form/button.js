@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultFontFamily, defaultFomtSize } from '../constants';
+import { defaultFontFamily, defaultFontSize } from '../constants';
 
 const Button = styled.button`
   font-family: ${defaultFontFamily};
-  font-size: ${defaultFomtSize};
+  font-size: ${defaultFontSize};
   background-color: ${(props) => props.theme.bg};
   font-family: ${(props) => props.theme.fontFamily};
   color: ${(props) => props.theme.color};
