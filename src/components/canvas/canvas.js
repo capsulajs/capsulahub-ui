@@ -7,22 +7,13 @@ import Grid from './grid';
 import { canvas } from './settings';
 import transform from './utils/transform';
 import bus from './services';
-import {
-  defaultFontStyle,
-  defaultFontWeight,
-  defaultFontSize,
-  defaultFontFamily,
-  defaultColor,
-  defaultBackgroundColor,
-} from '../constants';
 
 const Container = styled.div`
-  font-style: ${(props) => props.theme.fontStyle};
-  font-weight: ${(props) => props.theme.fontWeight};
-  font-size: ${(props) => props.theme.fontSize};
-  font-family: ${(props) => props.theme.fontFamily};
-  color: ${(props) => props.theme.color};
-  background-color: ${(props) => props.theme.bgColor};
+  font-family: ${canvas.fontFamily};
+  font-style: regular;
+  font-size: 13px;
+  background: #515151;
+  color: #A9A9A;
   width: 100%;
   height: 100%;
   min-width: 500px;
@@ -31,19 +22,7 @@ const Container = styled.div`
 `;
 
 export default class Canvas extends React.Component {
-  static defaultProps = {
-    theme: {
-      fontStyle: defaultFontStyle,
-      fontWeight: defaultFontWeight,
-      fontSize: defaultFontSize,
-      fontFamily: defaultFontFamily,
-      bgColor: defaultBackgroundColor,
-      color: defaultColor,
-    },
-  };
-
   static propTypes = {
-    theme: PropTypes.object,
     layout: PropTypes.object.isRequired,
     onUpdate: PropTypes.func.isRequired,
   };
@@ -80,10 +59,10 @@ export default class Canvas extends React.Component {
 
   render() {
     const { metadata } = this.state;
-    const { theme, layout } = this.props;
+    const { layout } = this.props;
 
     return (
-      <Container theme={theme} data-cy="canvas">
+      <Container data-cy="canvas">
         <DragDropContext onBeforeDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
           <Grid layout={layout} metadata={metadata} />
         </DragDropContext>
