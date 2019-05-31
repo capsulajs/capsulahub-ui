@@ -2,22 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
-import {
-  defaultFontStyle,
-  defaultFontWeight,
-  defaultFontSize,
-  defaultFontFamily,
-  defaultColor,
-  defaultBackgroundColor,
-} from '../constants';
+import { defaultFontFamily } from '../constants';
 
 const Container = styled.div`
-  font-style: ${(props) => props.theme.fontStyle};
-  font-weight: ${(props) => props.theme.fontWeight};
-  font-size: ${(props) => props.theme.fontSize};
-  font-family: ${(props) => props.theme.fontFamily};
-  color: ${(props) => props.theme.color};
-  background-color: ${(props) => props.theme.bgColor};
+  font-family: ${defaultFontFamily};
+  font-style: regular;
+  font-size: 13px;
+  background: #525252;
+  color: #a9a9a9;
   position: fixed;
   top: 15%;
   left: calc(50% - 274px);
@@ -38,19 +30,7 @@ const Header = styled.div`
 
 class Modal extends React.Component {
   static defaultProps = {
-    theme: {
-      fontStyle: defaultFontStyle,
-      fontWeight: defaultFontWeight,
-      fontSize: defaultFontSize,
-      fontFamily: defaultFontFamily,
-      bgColor: defaultBackgroundColor,
-      color: defaultColor,
-    },
     isOpened: false,
-  };
-
-  static propTypes = {
-    theme: PropTypes.object,
   };
 
   state = {
@@ -63,14 +43,14 @@ class Modal extends React.Component {
   };
 
   render() {
-    const { theme, children, title } = this.props;
+    const { children, title } = this.props;
 
     if (!this.state.isOpened) {
       return null;
     }
 
     return (
-      <Container theme={theme}>
+      <Container>
         <Header>
           <div>{title}</div>
           <Close onClick={() => this.toggle()}>&#10005;</Close>

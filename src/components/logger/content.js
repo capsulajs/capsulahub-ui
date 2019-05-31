@@ -5,7 +5,7 @@ import Row from './row';
 
 const Container = styled.div`
   width: calc(100% - 20px);
-  height: calc(100% - 36px);
+  height: calc(100% - 40px);
   margin: 0 10px 10px 10px;
   overflow: scroll;
   ::-webkit-scrollbar {
