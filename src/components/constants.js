@@ -1,7 +1,7 @@
 export const defaultFontStyle = 'normal';
 export const defaultFontWeight = 'regular';
 export const defaultFontSize = '16px';
-export const defaultFontFamily = 'Montserrat';
+export const defaultFontFamily = 'Montserrat, sans-serif';
 
 export const defaultColor = '#767676';
 export const defaultBackgroundColor = '#3F3F3F';
