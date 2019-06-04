@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { Table } from 'src';
 import styled from 'styled-components';
+import { of } from 'rxjs';
+import { Table } from 'src';
 
 const Link = styled.div`
   color: white;
@@ -10,11 +10,13 @@ const Link = styled.div`
 `;
 
 export const props = {
-  data: new Array(50).fill(null).map((_, i) => ({
-    columnA: `A${i}`,
-    columnB: `B${i}`,
-    columnC: `C${i}`,
-  })),
+  data$: of(
+    new Array(50).fill(null).map((_, i) => ({
+      columnA: `A${i}`,
+      columnB: `B${i}`,
+      columnC: `C${i}`,
+    }))
+  ),
   columns: [
     {
       Header: 'Column A',
