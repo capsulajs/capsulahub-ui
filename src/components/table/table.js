@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ReactTable from 'react-table';
+import { of } from 'rxjs';
 import { Button } from '..';
 import { defaultFontStyle, defaultFontSize, defaultFontFamily, defaultBackgroundColor } from '../constants';
 
@@ -20,15 +21,25 @@ const Container = styled.div`
 
 export default class Table extends React.Component {
   static propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
     defaultPageSize: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    sortable: PropTypes.bool.isRequired,
+    filterable: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
-    data: [],
+    data: of([]),
     columns: [],
     defaultPageSize: 10,
+    height: 450,
+    sortable: false,
+    filterable: false,
+  };
+
+  state = {
+    rows: [],
   };
 
   defaultFilterMethod = (filter, row, column) => {
@@ -44,19 +55,35 @@ export default class Table extends React.Component {
     }
   };
 
+  onRows = (rows) => this.setState({ rows });
+
+  componentDidMount() {
+    this.sub = this.props.data$ && this.props.data$.subscribe(this.onRows);
+  }
+
   render() {
-    const { data, columns, defaultPageSize } = this.props;
+    const { rows } = this.state;
+    const { columns, defaultPageSize, height, sortable, filterable } = this.props;
 
     return (
       <Container>
         <ReactTable
-          data={data}
+          data={rows}
           columns={columns}
-          filterable={true}
           defaultFilterMethod={this.defaultFilterMethod}
           defaultPageSize={defaultPageSize}
+          sortable={sortable}
+          filterable={filterable}
+          style={{
+            height,
+          }}
+          className="-striped -highlight"
         />
       </Container>
     );
+  }
+
+  componentWillUnmount() {
+    this.sub && this.sub.unsubscribe();
   }
 }
