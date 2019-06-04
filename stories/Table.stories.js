@@ -24,6 +24,7 @@ export const props = {
     {
       Header: 'Column B',
       accessor: 'columnB',
+      sortable: true,
     },
     {
       Header: 'Column C',
