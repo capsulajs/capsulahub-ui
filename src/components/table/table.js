@@ -23,12 +23,18 @@ export default class Table extends React.Component {
     data: PropTypes.array.isRequired,
     columns: PropTypes.array.isRequired,
     defaultPageSize: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    sortable: PropTypes.bool.isRequired,
+    filterable: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
     data: [],
     columns: [],
     defaultPageSize: 10,
+    height: 450,
+    sortable: false,
+    filterable: false,
   };
 
   defaultFilterMethod = (filter, row, column) => {
@@ -45,16 +51,21 @@ export default class Table extends React.Component {
   };
 
   render() {
-    const { data, columns, defaultPageSize } = this.props;
+    const { data, columns, defaultPageSize, height, sortable, filterable } = this.props;
 
     return (
       <Container>
         <ReactTable
           data={data}
           columns={columns}
-          filterable={true}
           defaultFilterMethod={this.defaultFilterMethod}
           defaultPageSize={defaultPageSize}
+          sortable={sortable}
+          filterable={filterable}
+          style={{
+            height,
+          }}
+          className="-striped -highlight"
         />
       </Container>
     );
