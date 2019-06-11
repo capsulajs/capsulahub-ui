@@ -27,7 +27,7 @@ export default class Table extends React.Component {
     height: PropTypes.number.isRequired,
     sortable: PropTypes.bool.isRequired,
     filterable: PropTypes.bool.isRequired,
-    noDataText: PropTypes.string.isRequired,
+    noDataText: PropTypes.string,
   };
 
   static defaultProps = {
