@@ -27,6 +27,7 @@ export default class Table extends React.Component {
     height: PropTypes.number.isRequired,
     sortable: PropTypes.bool.isRequired,
     filterable: PropTypes.bool.isRequired,
+    noDataText: PropTypes.string,
   };
 
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class Table extends React.Component {
     height: 450,
     sortable: false,
     filterable: false,
+    noDataText: 'No rows found',
   };
 
   state = {
@@ -63,7 +65,7 @@ export default class Table extends React.Component {
 
   render() {
     const { rows } = this.state;
-    const { columns, defaultPageSize, height, sortable, filterable } = this.props;
+    const { columns, defaultPageSize, height, sortable, filterable, noDataText } = this.props;
 
     return (
       <Container>
@@ -74,6 +76,7 @@ export default class Table extends React.Component {
           defaultPageSize={defaultPageSize}
           sortable={sortable}
           filterable={filterable}
+          noDataText={noDataText}
           style={{
             height,
           }}
