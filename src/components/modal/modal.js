@@ -42,6 +42,8 @@ class Modal extends React.Component {
     isOpen: this.props.isOpen,
   };
 
+  isToggledFromInside = false;
+
   handleClickOutside = (e) => {
     const { onToggle } = this.props;
 
@@ -54,6 +56,7 @@ class Modal extends React.Component {
     this.setState({ isOpen: false });
 
     if (onToggle) {
+      this.isToggledFromInside = true;
       onToggle({ isOpen: false });
     }
   };
@@ -62,9 +65,13 @@ class Modal extends React.Component {
     const { onToggle, isOpen } = this.props;
 
     if (prevProps.isOpen !== isOpen) {
-      const newState = { isOpen: !prevProps.isOpen };
-      this.setState(newState);
-      onToggle && onToggle(newState);
+      if (this.isToggledFromInside) {
+        this.isToggledFromInside = false;
+      } else {
+        const newState = { isOpen: !prevProps.isOpen };
+        this.setState(newState);
+        onToggle && onToggle(newState);
+      }
     }
   }
 
