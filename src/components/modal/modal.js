@@ -32,7 +32,6 @@ class Modal extends React.Component {
   static propTypes = {
     onToggle: PropTypes.func,
     isOpen: PropTypes.bool,
-    toggleSourceId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -45,25 +44,32 @@ class Modal extends React.Component {
 
   status = { isOpen: this.props.isOpen };
 
+  isToggledFromInside = false;
+
   handleClickOutside = (e) => {
-    const { onToggle, toggleSourceId } = this.props;
+    const { onToggle } = this.props;
 
     if (this.state.isOpen) {
       this.setState({ isOpen: false });
 
-      if (e.target.id !== toggleSourceId) {
-        onToggle && onToggle({ isOpen: false });
+      if (onToggle) {
+        this.isToggledFromInside = true;
+        onToggle({ isOpen: false });
       }
     }
   };
 
-  componentWillUpdate(nextProps) {
+  componentDidUpdate(prevProps) {
     const { onToggle, isOpen } = this.props;
 
-    if (nextProps.isOpen !== isOpen) {
-      const newState = { isOpen: nextProps.isOpen };
-      this.setState(newState);
-      onToggle && onToggle(newState);
+    if (prevProps.isOpen !== isOpen) {
+      if (this.isToggledFromInside) {
+        this.isToggledFromInside = false;
+      } else {
+        const newState = { isOpen: !prevProps.isOpen };
+        this.setState(newState);
+        onToggle && onToggle(newState);
+      }
     }
   }
 

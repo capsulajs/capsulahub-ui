@@ -8,16 +8,22 @@ class Example extends React.Component {
     isOpen: true,
   };
 
-  toggle = () => this.setState({ isOpen: !this.state.isOpen });
-  onToggle = (status) => this.setState(status);
+  toggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    console.log('toggle', e);
+
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  onToggle = (status) => console.log('s', status) || this.setState(status);
 
   render() {
     return (
       <React.Fragment>
-        <button id="toggleButton" onClick={this.toggle}>
-          Toggle
-        </button>
-        <Modal title="Title" isOpen={this.state.isOpen} onToggle={this.onToggle} toggleSourceId="toggleButton">
+        <button onClick={this.toggle}>Toggle</button>
+        <Modal title="Title" isOpen={this.state.isOpen} onToggle={this.onToggle}>
           Example of modal content
         </Modal>
       </React.Fragment>
