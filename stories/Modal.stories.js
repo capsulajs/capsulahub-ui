@@ -8,16 +8,8 @@ class Example extends React.Component {
     isOpen: true,
   };
 
-  toggle = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log('toggle', e);
-
-    this.setState({ isOpen: !this.state.isOpen });
-  };
-
-  onToggle = (status) => console.log('s', status) || this.setState(status);
+  toggle = () => this.setState({ isOpen: !this.state.isOpen });
+  onToggle = (status) => this.setState(status);
 
   render() {
     return (
