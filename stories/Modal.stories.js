@@ -3,17 +3,24 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Modal } from 'src';
 
-export const props = {
-  isOpened: true,
-  title: 'Example of title',
-};
+class Example extends React.Component {
+  state = {
+    isOpen: true,
+  };
 
-export const actions = {
-  toggle: action('toggle'),
-};
+  toggle = () => this.setState({ isOpen: !this.state.isOpen });
+  onToggle = (status) => this.setState(status);
 
-storiesOf('Modal', module).add('default', () => (
-  <Modal {...props} {...actions}>
-    Example of modal content
-  </Modal>
-));
+  render() {
+    return (
+      <React.Fragment>
+        <button onClick={this.toggle}>Toggle</button>
+        <Modal title="Title" isOpen={this.state.isOpen} onToggle={this.onToggle}>
+          Example of modal content
+        </Modal>
+      </React.Fragment>
+    );
+  }
+}
+
+storiesOf('Modal', module).add('default', () => <Example />);

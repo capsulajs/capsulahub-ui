@@ -29,23 +29,56 @@ const Header = styled.div`
 `;
 
 class Modal extends React.Component {
+  static propTypes = {
+    onToggle: PropTypes.func,
+    isOpen: PropTypes.bool,
+  };
+
   static defaultProps = {
-    isOpened: false,
+    isOpen: false,
   };
 
   state = {
-    isOpened: this.props.isOpened,
+    isOpen: this.props.isOpen,
   };
 
-  toggle = () => this.setState({ isOpened: !this.state.isOpened });
+  isToggledFromInside = false;
+
   handleClickOutside = (e) => {
-    e.target.id === this.props.id ? this.toggle() : this.setState({ isOpened: false });
+    const { onToggle } = this.props;
+
+    if (!this.state.isOpen) {
+      return;
+    }
+
+    e.stopPropagation();
+
+    this.setState({ isOpen: false });
+
+    if (onToggle) {
+      this.isToggledFromInside = true;
+      onToggle({ isOpen: false });
+    }
   };
+
+  componentDidUpdate(prevProps) {
+    const { onToggle, isOpen } = this.props;
+
+    if (prevProps.isOpen !== isOpen) {
+      if (this.isToggledFromInside) {
+        this.isToggledFromInside = false;
+      } else {
+        const newState = { isOpen: !prevProps.isOpen };
+        this.setState(newState);
+        onToggle && onToggle(newState);
+      }
+    }
+  }
 
   render() {
     const { children, title } = this.props;
 
-    if (!this.state.isOpened) {
+    if (!this.state.isOpen) {
       return null;
     }
 
@@ -53,7 +86,7 @@ class Modal extends React.Component {
       <Container>
         <Header>
           <div>{title}</div>
-          <Close onClick={() => this.toggle()}>&#10005;</Close>
+          <Close onClick={this.handleClickOutside}>&#10005;</Close>
         </Header>
         {children}
       </Container>
