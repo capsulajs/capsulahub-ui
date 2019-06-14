@@ -42,8 +42,6 @@ class Modal extends React.Component {
     isOpen: this.props.isOpen,
   };
 
-  status = { isOpen: this.props.isOpen };
-
   handleClickOutside = (e) => {
     const { onToggle } = this.props;
 
