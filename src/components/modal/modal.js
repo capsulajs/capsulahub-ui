@@ -2,7 +2,6 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import enhanceWithClickOutside from 'react-click-outside';
 import { defaultFontFamily } from '../constants';
 
 const Container = styled.div`
@@ -29,7 +28,7 @@ const Header = styled.div`
   font-size: 10px;
 `;
 
-class Modal extends React.Component {
+export default class Modal extends React.Component {
   static propTypes = {
     onToggle: PropTypes.func,
     isOpen: PropTypes.bool,
@@ -49,6 +48,8 @@ class Modal extends React.Component {
   setDomNode = (ref) => (this.node = ReactDOM.findDOMNode(ref));
 
   handleClickOutside = (e) => {
+    const { onToggle } = this.props;
+
     if (!this.state.isOpen) {
       return;
     }
@@ -64,15 +65,13 @@ class Modal extends React.Component {
   };
 
   handleClick = (e) => {
-    const { onToggle } = this.props;
-
     if (this.node && !this.node.contains(event.target)) {
       this.handleClickOutside(e);
     }
   };
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
+    document.addEventListener('mousedown', this.handleClick, true);
   }
 
   componentDidUpdate(prevProps) {
@@ -108,8 +107,6 @@ class Modal extends React.Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
+    document.removeEventListener('mousedown', this.handleClick, true);
   }
 }
-
-export default Modal;
