@@ -15,9 +15,7 @@ class Example extends React.Component {
     return (
       <React.Fragment>
         <button onClick={this.toggle}>Toggle</button>
-        <Modal title="Title" isOpen={this.state.isOpen} onToggle={this.onToggle}>
-          Example of modal content
-        </Modal>
+        <Modal title="Title" isOpen={this.state.isOpen} onToggle={this.onToggle} children="Example of modal content" />
       </React.Fragment>
     );
   }

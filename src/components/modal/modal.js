@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import enhanceWithClickOutside from 'react-click-outside';
@@ -42,11 +43,12 @@ class Modal extends React.Component {
     isOpen: this.props.isOpen,
   };
 
+  node;
   isToggledFromInside = false;
 
-  handleClickOutside = (e) => {
-    const { onToggle } = this.props;
+  setDomNode = (ref) => (this.node = ReactDOM.findDOMNode(ref));
 
+  handleClickOutside = (e) => {
     if (!this.state.isOpen) {
       return;
     }
@@ -60,6 +62,18 @@ class Modal extends React.Component {
       onToggle({ isOpen: false });
     }
   };
+
+  handleClick = (e) => {
+    const { onToggle } = this.props;
+
+    if (this.node && !this.node.contains(event.target)) {
+      this.handleClickOutside(e);
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
 
   componentDidUpdate(prevProps) {
     const { onToggle, isOpen } = this.props;
@@ -83,7 +97,7 @@ class Modal extends React.Component {
     }
 
     return (
-      <Container>
+      <Container ref={this.setDomNode}>
         <Header>
           <div>{title}</div>
           <Close onClick={this.handleClickOutside}>&#10005;</Close>
@@ -92,6 +106,10 @@ class Modal extends React.Component {
       </Container>
     );
   }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 }
 
-export default enhanceWithClickOutside(Modal);
+export default Modal;
