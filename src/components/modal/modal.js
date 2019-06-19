@@ -83,10 +83,12 @@ class Modal extends React.Component {
     }
 
     return (
-      <Container>
+      <Container data-cy="modal-container">
         <Header>
           <div>{title}</div>
-          <Close onClick={this.handleClickOutside}>&#10005;</Close>
+          <Close data-cy="modal-close" onClick={this.handleClickOutside}>
+            &#10005;
+          </Close>
         </Header>
         {children}
       </Container>
