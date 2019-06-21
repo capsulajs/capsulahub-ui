@@ -17,6 +17,7 @@ export const props = {
       columnC: `C${i}`,
     }))
   ),
+  defaultPageSize: 25,
   columns: [
     {
       Header: 'Column A',
